@@ -1,54 +1,90 @@
 {
-  "run_at": "2026/05/10 14:24",
+  "run_at": "2026/05/10 14:45",
   "output_file": "I:\\我的雲端硬碟\\家泰嘉潤丰藏JANU\\03.建設公司\\01.業主回報\\週報\\土城區實價登錄明細260510自動更新.pptx",
   "cases": [
     {
       "name": "丰藏",
-      "weekly_new": 64
+      "weekly_new": 64,
+      "latest_price": 77.89,
+      "latest_area": 38.5,
+      "weeks_dry": 5
     },
     {
       "name": "台信琢岳",
-      "weekly_new": 2
+      "weekly_new": 2,
+      "latest_price": 82.04,
+      "latest_area": 37.5,
+      "weeks_dry": 46
     },
     {
       "name": "紅布朗花園",
-      "weekly_new": 5
+      "weekly_new": 5,
+      "latest_price": 71.67,
+      "latest_area": 30.3,
+      "weeks_dry": 19
     },
     {
       "name": "寶佳淳青",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 52.24,
+      "latest_area": 43.5,
+      "weeks_dry": 8
     },
     {
       "name": "松陽馥麗",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 73.68,
+      "latest_area": 25.1,
+      "weeks_dry": 5
     },
     {
       "name": "新濠岳",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 74.98,
+      "latest_area": 20.7,
+      "weeks_dry": 5
     },
     {
       "name": "朗沐",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 68.2,
+      "latest_area": 44.5,
+      "weeks_dry": 10
     },
     {
       "name": "合康雙匯",
-      "weekly_new": 2
+      "weekly_new": 2,
+      "latest_price": 56.43,
+      "latest_area": 45.7,
+      "weeks_dry": 10
     },
     {
       "name": "和耀美家雅居",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": null,
+      "latest_area": null,
+      "weeks_dry": null
     },
     {
       "name": "迴東騰",
-      "weekly_new": 2
+      "weekly_new": 2,
+      "latest_price": 73.25,
+      "latest_area": 36.1,
+      "weeks_dry": 7
     },
     {
       "name": "天好運3",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 72.86,
+      "latest_area": 27.1,
+      "weeks_dry": 8
     },
     {
       "name": "若水秧翠",
-      "weekly_new": 0
+      "weekly_new": 0,
+      "latest_price": 75.9,
+      "latest_area": 20.1,
+      "weeks_dry": 5
     }
   ]
 }
