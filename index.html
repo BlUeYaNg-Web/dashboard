@@ -6,136 +6,283 @@
 <title>任務儀表板</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Microsoft JhengHei', sans-serif; background: #0c0f1a; color: #e0e0e0; min-height: 100vh; }
 
-  /* 頂部 */
+  body {
+    font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+    background: #080b14;
+    color: #c8d0e0;
+    min-height: 100vh;
+  }
+
+  /* 背景光暈 */
+  body::before {
+    content: '';
+    position: fixed; top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(74,144,217,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: fixed; bottom: -200px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(39,174,96,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── Navbar ── */
   .navbar {
-    padding: 28px 48px 0;
+    padding: 32px 52px 0;
     display: flex; align-items: flex-end; justify-content: space-between;
   }
-  .navbar-eyebrow { width: 36px; height: 3px; background: #4A90D9; border-radius: 2px; margin-bottom: 14px; }
-  .navbar h1 { font-size: 26px; font-weight: 700; color: #fff; letter-spacing: 2px; }
-  .navbar-right { display: flex; align-items: center; gap: 16px; padding-bottom: 4px; }
-  .time { font-size: 13px; color: #556; }
-  .refresh-btn {
-    background: transparent; border: 1px solid #2a2d3a; color: #778;
-    padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s;
+  .navbar-eyebrow {
+    width: 32px; height: 2px;
+    background: linear-gradient(90deg, #4A90D9, #27AE60);
+    border-radius: 2px; margin-bottom: 12px;
   }
-  .refresh-btn:hover { border-color: #4A90D9; color: #4A90D9; }
+  .navbar h1 {
+    font-size: 24px; font-weight: 700; color: #f0f4ff;
+    letter-spacing: 3px;
+  }
+  .navbar-right { display: flex; align-items: center; gap: 16px; padding-bottom: 4px; }
+  .time { font-size: 12px; color: #3d4560; letter-spacing: 0.5px; }
+  .refresh-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #4a5270;
+    padding: 6px 16px; border-radius: 20px; cursor: pointer;
+    font-size: 12px; letter-spacing: 0.5px;
+    transition: all 0.25s;
+  }
+  .refresh-btn:hover {
+    background: rgba(74,144,217,0.1);
+    border-color: rgba(74,144,217,0.4);
+    color: #7aaede;
+  }
 
-  /* 主要格線：3欄，上排卡片 下排面板 */
+  /* ── 主格線 ── */
   .main-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto 1fr;
-    gap: 24px;
-    padding: 36px 48px 48px;
+    gap: 20px;
+    padding: 32px 52px 52px;
     align-items: start;
   }
 
-  /* 卡片 */
+  /* ── 卡片 ── */
   .portal-card {
-    border-radius: 12px; overflow: hidden;
-    background: #141720; border: 1px solid #1e2230;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 16px; overflow: hidden;
+    background: linear-gradient(160deg, #131829 0%, #0e1220 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+    position: relative;
   }
-  .portal-card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(0,0,0,0.4); }
+  .portal-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+    pointer-events: none;
+  }
+  .portal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+  }
 
-  .card-cover { height: 170px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  /* 封面 */
+  .card-cover {
+    height: 165px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-cover::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.4));
+  }
 
   /* 封面：新聞 */
-  .cover-news { background: linear-gradient(135deg, #0d1b2a 0%, #1a2744 100%); }
-  .cover-bg-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 8px; padding: 18px; opacity: 0.12; }
-  .cover-bg-text span { height: 8px; background: #fff; border-radius: 4px; display: block; }
-  .cover-center { position: relative; text-align: center; }
-  .cover-icon { font-size: 38px; display: block; margin-bottom: 8px; }
-  .cover-label-news { font-size: 12px; letter-spacing: 4px; color: #7aaede; font-weight: 600; text-transform: uppercase; }
+  .cover-news {
+    background: linear-gradient(135deg, #09131e 0%, #0d1e38 50%, #0a1628 100%);
+  }
+  .cover-bg-lines {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 9px; padding: 20px 24px; opacity: 0.08;
+  }
+  .cover-bg-lines span {
+    height: 7px; background: #fff; border-radius: 4px; display: block;
+  }
+  .cover-center { position: relative; text-align: center; z-index: 1; }
+  .cover-icon { font-size: 36px; display: block; margin-bottom: 8px; filter: drop-shadow(0 4px 12px rgba(74,144,217,0.4)); }
+  .cover-label-news {
+    font-size: 10px; letter-spacing: 5px; color: #5a8fc4;
+    font-weight: 700; text-transform: uppercase;
+  }
 
   /* 封面：台股 */
-  .cover-chips { background: linear-gradient(135deg, #0d1f14 0%, #0f2b1a 100%); flex-direction: column; padding-top: 24px; }
-  .cover-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; position: relative; }
-  .cover-taiex { position: absolute; top: -26px; right: 0; font-size: 20px; font-weight: 800; color: #e74c3c; }
-  .bar { width: 16px; border-radius: 3px 3px 0 0; opacity: 0.85; }
-  .bar-up { background: #e74c3c; }
-  .bar-down { background: #27AE60; }
-  .cover-label-chips { font-size: 11px; letter-spacing: 3px; color: #5db87a; font-weight: 600; text-transform: uppercase; margin-top: 12px; }
+  .cover-chips {
+    background: linear-gradient(135deg, #081510 0%, #0c2216 50%, #091a0f 100%);
+    flex-direction: column; padding-top: 20px;
+  }
+  .cover-bars-wrap { position: relative; }
+  .cover-taiex {
+    position: absolute; top: -26px; right: 0;
+    font-size: 18px; font-weight: 800; color: #e74c3c;
+    letter-spacing: 1px; text-shadow: 0 0 20px rgba(231,76,60,0.5);
+  }
+  .cover-bars { display: flex; align-items: flex-end; gap: 5px; height: 74px; }
+  .bar { width: 15px; border-radius: 3px 3px 0 0; transition: opacity 0.3s; }
+  .bar-up { background: linear-gradient(180deg, #e74c3c, #c0392b); }
+  .bar-down { background: linear-gradient(180deg, #27AE60, #1e8449); }
+  .cover-label-chips {
+    font-size: 10px; letter-spacing: 4px; color: #3d8a55;
+    font-weight: 700; text-transform: uppercase; margin-top: 10px;
+  }
 
   /* 封面：PPT */
-  .cover-pptx { background: linear-gradient(135deg, #1a1208 0%, #2a1e0a 100%); }
-  .cover-building { display: flex; flex-direction: column; align-items: center; }
-  .building-top { width: 56px; height: 7px; background: #E67E22; border-radius: 2px; opacity: 0.8; margin-bottom: 4px; }
-  .building-body { width: 76px; height: 74px; background: linear-gradient(180deg, #3a2a10 0%, #251a08 100%); border: 1px solid #E67E22; border-radius: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 7px; }
-  .building-window { background: #E67E22; border-radius: 1px; opacity: 0.7; }
-  .building-window.lit { opacity: 1; background: #f39c12; }
-  .cover-label-pptx { font-size: 11px; letter-spacing: 3px; color: #d4891a; font-weight: 600; text-transform: uppercase; margin-top: 12px; }
+  .cover-pptx {
+    background: linear-gradient(135deg, #120e04 0%, #1e1508 50%, #150f05 100%);
+  }
+  .cover-building { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+  .building-glow {
+    position: absolute; width: 120px; height: 80px;
+    background: radial-gradient(circle, rgba(230,126,34,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -40%);
+  }
+  .building-top { width: 52px; height: 6px; background: linear-gradient(90deg, #E67E22, #f39c12); border-radius: 2px; margin-bottom: 4px; }
+  .building-body {
+    width: 72px; height: 70px;
+    background: linear-gradient(180deg, #2a1e08 0%, #1a1205 100%);
+    border: 1px solid rgba(230,126,34,0.4); border-radius: 4px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 7px;
+  }
+  .building-window { background: rgba(230,126,34,0.3); border-radius: 1px; transition: all 0.3s; }
+  .building-window.lit { background: #f39c12; box-shadow: 0 0 6px rgba(243,156,18,0.6); }
+  .cover-label-pptx {
+    font-size: 10px; letter-spacing: 4px; color: #8a5a1a;
+    font-weight: 700; text-transform: uppercase; margin-top: 10px;
+  }
 
   /* 卡片底部 */
   .card-body { padding: 16px 20px 18px; }
-  .card-meta { font-size: 11px; color: #556; margin-bottom: 6px; }
-  .card-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-  .card-desc { font-size: 12px; color: #667; line-height: 1.5; }
-  .card-footer { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-  .dot-ok { background: #27AE60; }
-  .dot-empty { background: #444; }
-  .status-text { font-size: 11px; color: #556; }
-  .status-text.ok { color: #27AE60; }
+  .card-meta { font-size: 10px; color: #2d3550; margin-bottom: 6px; letter-spacing: 0.5px; }
+  .card-title { font-size: 14px; font-weight: 700; color: #dde4f5; margin-bottom: 5px; }
+  .card-desc { font-size: 11px; color: #3d4a65; line-height: 1.6; }
+  .card-footer { margin-top: 12px; display: flex; align-items: center; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .dot-ok { background: #27AE60; box-shadow: 0 0 6px rgba(39,174,96,0.6); }
+  .dot-empty { background: #2a2d3a; }
+  .status-text { font-size: 11px; color: #2d3550; }
+  .status-text.ok { color: #3d8a55; }
 
-  /* 詳細面板 */
+  /* ── 詳細面板 ── */
   .detail-panel {
-    background: #141720; border: 1px solid #1e2230;
-    border-radius: 12px; overflow: hidden;
+    background: linear-gradient(160deg, #0f1320 0%, #0a0e18 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; overflow: hidden;
     display: flex; flex-direction: column;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
   }
+
+  /* 面板頂部彩色邊線 */
+  .panel-accent {
+    height: 2px;
+    background: var(--panel-color, #4A90D9);
+    opacity: 0.7;
+  }
+
   .detail-panel-header {
-    padding: 14px 20px; border-bottom: 1px solid #1e2230;
+    padding: 14px 20px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     display: flex; align-items: center; gap: 10px;
-    position: sticky; top: 0; background: #141720; z-index: 1;
   }
   .d-icon { font-size: 18px; }
-  .d-name { font-size: 14px; font-weight: 700; color: #fff; }
-  .d-schedule { font-size: 11px; color: #556; margin-top: 1px; }
+  .d-name { font-size: 13px; font-weight: 700; color: #c8d0e0; }
+  .d-schedule { font-size: 10px; color: #2d3550; margin-top: 2px; letter-spacing: 0.5px; }
+
   .detail-body {
-    padding: 20px;
+    padding: 18px 20px;
     overflow-y: auto;
-    max-height: 600px;
+    max-height: 580px;
+    scrollbar-width: thin;
+    scrollbar-color: #1e2535 transparent;
+  }
+  .detail-body::-webkit-scrollbar { width: 4px; }
+  .detail-body::-webkit-scrollbar-track { background: transparent; }
+  .detail-body::-webkit-scrollbar-thumb { background: #1e2535; border-radius: 4px; }
+
+  /* 資料元件 */
+  .meta-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .meta-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 10px 14px; flex: 1; min-width: 90px;
+  }
+  .meta-label { font-size: 9px; color: #2d3550; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+  .meta-value { font-size: 13px; color: #c8d0e0; font-weight: 700; }
+
+  .news-category {
+    font-size: 10px; font-weight: 700; color: #4A90D9;
+    margin: 16px 0 8px; letter-spacing: 2px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .news-category::before {
+    content: ''; display: block;
+    width: 3px; height: 12px;
+    background: currentColor; border-radius: 2px;
   }
 
-  /* 資料樣式 */
-  .meta-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .meta-item { background: #0c0f1a; border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 100px; }
-  .meta-label { font-size: 10px; color: #445; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
-  .meta-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
-
-  .news-category { font-size: 11px; font-weight: 700; color: #4A90D9; margin: 14px 0 8px; letter-spacing: 1px; border-left: 3px solid #4A90D9; padding-left: 8px; }
-  .news-item { background: #0c0f1a; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid #1e2230; }
-  .news-title { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 5px; line-height: 1.4; }
-  .news-summary { font-size: 12px; color: #778; line-height: 1.6; margin-bottom: 6px; }
+  .news-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .news-item:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.09);
+  }
+  .news-title { font-size: 12px; color: #c8d0e0; font-weight: 700; margin-bottom: 5px; line-height: 1.5; }
+  .news-summary { font-size: 11px; color: #4a5575; line-height: 1.7; margin-bottom: 6px; }
   .news-meta-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-  .news-source { font-size: 10px; color: #445; }
-  .news-analysis { font-size: 11px; color: #667; margin-top: 7px; padding-top: 7px; border-top: 1px solid #1e2230; }
+  .news-source { font-size: 10px; color: #2d3550; }
+  .news-analysis {
+    font-size: 10px; color: #3d4a65; margin-top: 8px; padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.05); line-height: 1.6;
+  }
 
-  .value-up { color: #e74c3c; }
-  .value-down { color: #27AE60; }
+  .value-up { color: #e74c3c; font-weight: 700; }
+  .value-down { color: #27AE60; font-weight: 700; }
 
-  .pptx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
-  .pptx-case { background: #0c0f1a; border-radius: 8px; padding: 10px 12px; border: 1px solid #1e2230; }
-  .case-name { font-size: 12px; color: #fff; font-weight: 600; margin-bottom: 4px; }
-  .case-weekly { font-size: 20px; font-weight: 700; color: #E67E22; }
-  .case-label { font-size: 10px; color: #445; }
+  .pptx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
+  .pptx-case {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 10px 12px;
+    transition: background 0.2s;
+  }
+  .pptx-case:hover { background: rgba(255,255,255,0.04); }
+  .case-name { font-size: 11px; color: #8a9ab5; font-weight: 600; margin-bottom: 4px; }
+  .case-weekly { font-size: 22px; font-weight: 800; color: #E67E22; line-height: 1.2; }
+  .case-label { font-size: 9px; color: #2d3550; letter-spacing: 0.5px; margin-top: 2px; }
 
-  .verdict-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
-  .verdict-ok { background: rgba(39,174,96,0.2); color: #27AE60; border: 1px solid #27AE60; }
-  .verdict-warn { background: rgba(255,193,7,0.2); color: #FFC107; border: 1px solid #FFC107; }
-  .verdict-no { background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+  .verdict-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; white-space: nowrap; font-weight: 600; }
+  .verdict-ok { background: rgba(39,174,96,0.15); color: #3d8a55; border: 1px solid rgba(39,174,96,0.3); }
+  .verdict-warn { background: rgba(255,193,7,0.15); color: #b8860b; border: 1px solid rgba(255,193,7,0.3); }
+  .verdict-no { background: rgba(231,76,60,0.15); color: #c0392b; border: 1px solid rgba(231,76,60,0.3); }
 
-  .disclaimer { margin-top: 14px; padding: 8px 12px; background: #0c0f1a; border-radius: 6px; border-left: 3px solid #2a2d3a; font-size: 10px; color: #445; }
+  .disclaimer {
+    margin-top: 14px; padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px; border-left: 2px solid #1e2535;
+    font-size: 10px; color: #2d3550; line-height: 1.6;
+  }
 
-  .empty-state { text-align: center; padding: 40px 20px; color: #334; }
-  .empty-state .icon { font-size: 40px; margin-bottom: 10px; }
-  .empty-state p { font-size: 13px; }
+  .empty-state { text-align: center; padding: 48px 20px; }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; opacity: 0.3; }
+  .empty-state p { font-size: 12px; color: #2d3550; letter-spacing: 0.5px; }
 
-  .loading { text-align: center; padding: 40px; color: #445; font-size: 13px; }
+  .loading { text-align: center; padding: 40px; color: #2d3550; font-size: 12px; letter-spacing: 1px; }
 
   @media (max-width: 1000px) {
     .main-grid { grid-template-columns: 1fr; padding: 20px; }
@@ -160,13 +307,12 @@
 
   <!-- ===== 上排：卡片 ===== -->
 
-  <!-- 新聞卡片 -->
-  <div class="portal-card" style="--card-color:#4A90D9;">
+  <div class="portal-card">
     <div class="card-cover cover-news">
-      <div class="cover-bg-text">
-        <span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span>
-        <span style="width:60%"></span><span style="width:75%"></span><span style="width:50%"></span>
-        <span style="width:85%"></span><span style="width:65%"></span>
+      <div class="cover-bg-lines">
+        <span style="width:88%"></span><span style="width:65%"></span><span style="width:78%"></span>
+        <span style="width:55%"></span><span style="width:72%"></span><span style="width:48%"></span>
+        <span style="width:82%"></span>
       </div>
       <div class="cover-center">
         <span class="cover-icon">📰</span>
@@ -178,24 +324,24 @@
       <div class="card-title">每日財經新聞摘要</div>
       <div class="card-desc">台灣財經、房地產、中國經濟、國際重大新聞，含真偽查核與可信度評級</div>
       <div class="card-footer">
-        <div><span class="status-dot dot-empty" id="dot-news"></span><span class="status-text" id="status-news">載入中...</span></div>
+        <span class="status-dot dot-empty" id="dot-news"></span>
+        <span class="status-text" id="status-news">載入中...</span>
       </div>
     </div>
   </div>
 
-  <!-- 台股卡片 -->
-  <div class="portal-card" style="--card-color:#27AE60;">
+  <div class="portal-card">
     <div class="card-cover cover-chips">
-      <div style="position:relative;">
+      <div class="cover-bars-wrap">
         <div class="cover-taiex">TAIEX</div>
         <div class="cover-bars">
-          <div class="bar bar-up" style="height:42px"></div>
-          <div class="bar bar-down" style="height:28px"></div>
-          <div class="bar bar-up" style="height:60px"></div>
-          <div class="bar bar-up" style="height:46px"></div>
+          <div class="bar bar-up" style="height:40px"></div>
+          <div class="bar bar-down" style="height:26px"></div>
+          <div class="bar bar-up" style="height:58px"></div>
+          <div class="bar bar-up" style="height:44px"></div>
           <div class="bar bar-down" style="height:18px"></div>
-          <div class="bar bar-up" style="height:72px"></div>
-          <div class="bar bar-down" style="height:32px"></div>
+          <div class="bar bar-up" style="height:68px"></div>
+          <div class="bar bar-down" style="height:30px"></div>
           <div class="bar bar-up" style="height:50px"></div>
         </div>
       </div>
@@ -206,14 +352,15 @@
       <div class="card-title">台股籌碼面報告</div>
       <div class="card-desc">三大法人、融資融券、期貨籌碼、主力買賣超、投資建議</div>
       <div class="card-footer">
-        <div><span class="status-dot dot-empty" id="dot-chips"></span><span class="status-text" id="status-chips">載入中...</span></div>
+        <span class="status-dot dot-empty" id="dot-chips"></span>
+        <span class="status-text" id="status-chips">載入中...</span>
       </div>
     </div>
   </div>
 
-  <!-- PPT卡片 -->
-  <div class="portal-card" style="--card-color:#E67E22;">
+  <div class="portal-card">
     <div class="card-cover cover-pptx">
+      <div class="building-glow"></div>
       <div class="cover-building">
         <div class="building-top"></div>
         <div class="building-body">
@@ -229,15 +376,16 @@
       <div class="card-title">土城區實登週報更新</div>
       <div class="card-desc">11個案名的本週新增、月份統計、價格表自動更新</div>
       <div class="card-footer">
-        <div><span class="status-dot dot-empty" id="dot-pptx"></span><span class="status-text" id="status-pptx">載入中...</span></div>
+        <span class="status-dot dot-empty" id="dot-pptx"></span>
+        <span class="status-text" id="status-pptx">載入中...</span>
       </div>
     </div>
   </div>
 
   <!-- ===== 下排：詳細面板 ===== -->
 
-  <!-- 新聞面板 -->
   <div class="detail-panel" id="panel-news">
+    <div class="panel-accent" style="--panel-color: linear-gradient(90deg,#4A90D9,#2c6fa8);"></div>
     <div class="detail-panel-header">
       <span class="d-icon">📰</span>
       <div><div class="d-name">每日財經新聞</div><div class="d-schedule">⏰ 每天 09:00</div></div>
@@ -245,8 +393,8 @@
     <div class="detail-body" id="body-news"><div class="loading">載入中...</div></div>
   </div>
 
-  <!-- 台股面板 -->
   <div class="detail-panel" id="panel-chips">
+    <div class="panel-accent" style="--panel-color: linear-gradient(90deg,#27AE60,#1a7a44);"></div>
     <div class="detail-panel-header">
       <span class="d-icon">📈</span>
       <div><div class="d-name">台股籌碼報告</div><div class="d-schedule">⏰ 週一〜五 16:00</div></div>
@@ -254,8 +402,8 @@
     <div class="detail-body" id="body-chips"><div class="loading">載入中...</div></div>
   </div>
 
-  <!-- PPT面板 -->
   <div class="detail-panel" id="panel-pptx">
+    <div class="panel-accent" style="--panel-color: linear-gradient(90deg,#E67E22,#b5621a);"></div>
     <div class="detail-panel-header">
       <span class="d-icon">🏠</span>
       <div><div class="d-name">土城週報更新</div><div class="d-schedule">⏰ 每週日 13:06</div></div>
@@ -277,8 +425,7 @@ async function fetchJSON(url) {
   try {
     const r = await fetch(url + '?t=' + Date.now());
     if (!r.ok) return null;
-    const data = await r.json();
-    return data;
+    return await r.json();
   } catch { return null; }
 }
 
@@ -307,6 +454,7 @@ function renderNews(r) {
     <div class="meta-item"><div class="meta-label">總則數</div><div class="meta-value">${r.total||0} 則</div></div>
   </div>`;
   for (const [cat, items] of Object.entries(r.categories||{})) {
+    if (!items.length) continue;
     html += `<div class="news-category">${cat}</div>`;
     for (const item of items) {
       html += `<div class="news-item">
@@ -314,9 +462,9 @@ function renderNews(r) {
         <div class="news-summary">${item.summary||''}</div>
         <div class="news-meta-row">
           <span class="news-source">📌 ${item.source||''}</span>
-          <span style="font-size:11px;">${item.credibility||''}</span>
+          <span style="font-size:10px;color:#4a5575;">${item.credibility||''}</span>
         </div>
-        ${item.analysis ? `<div class="news-analysis">💡 ${item.analysis}</div>` : ''}
+        ${item.analysis?`<div class="news-analysis">💡 ${item.analysis}</div>`:''}
       </div>`;
     }
   }
@@ -325,12 +473,12 @@ function renderNews(r) {
 
 function renderChips(r) {
   if (!r) return empty();
-  const fv = (v) => parseFloat(v) > 0
-    ? `<span class="value-up">${v} 億</span>`
+  const fv = v => parseFloat(v) > 0
+    ? `<span class="value-up">+${v} 億</span>`
     : `<span class="value-down">${v} 億</span>`;
   let html = `<div class="meta-row">
     <div class="meta-item"><div class="meta-label">日期</div><div class="meta-value">${r.date||'N/A'}</div></div>
-    <div class="meta-item"><div class="meta-label">大盤</div><div class="meta-value" style="font-size:12px;">${r.taiex||'N/A'}</div></div>
+    <div class="meta-item" style="flex:2"><div class="meta-label">大盤指數</div><div class="meta-value" style="font-size:12px;">${r.taiex||'N/A'}</div></div>
   </div>
   <div class="meta-row">
     <div class="meta-item"><div class="meta-label">外資</div><div class="meta-value">${fv(r.foreign||0)}</div></div>
@@ -339,7 +487,7 @@ function renderChips(r) {
   </div>`;
   if (r.summary) html += `<div class="news-item"><div class="news-title">今日摘要</div><div class="news-summary">${r.summary}</div></div>`;
   if (r.investment_advice?.length) {
-    html += `<div class="news-category" style="color:#f39c12;border-color:#f39c12;">投資建議</div>`;
+    html += `<div class="news-category" style="color:#e8a040;">投資建議</div>`;
     for (const item of r.investment_advice) {
       const vc = item.verdict==='適合'?'verdict-ok':item.verdict==='謹慎'?'verdict-warn':'verdict-no';
       html += `<div class="news-item">
@@ -353,7 +501,7 @@ function renderChips(r) {
     }
   }
   if (r.recommendations?.length) {
-    html += `<div class="news-category" style="color:#9b59b6;border-color:#9b59b6;">推薦觀察股</div>`;
+    html += `<div class="news-category" style="color:#9b59b6;">推薦觀察股</div>`;
     for (const item of r.recommendations) {
       html += `<div class="news-item">
         <div class="news-title">${item.stock}</div>
@@ -371,10 +519,17 @@ function renderPptx(r) {
   let html = `<div class="meta-row">
     <div class="meta-item"><div class="meta-label">執行時間</div><div class="meta-value">${r.run_at||'N/A'}</div></div>
   </div>
-  <div class="meta-item" style="margin-bottom:16px;"><div class="meta-label">輸出檔案</div><div class="meta-value" style="font-size:11px;word-break:break-all;">${r.output_file||'N/A'}</div></div>
+  <div class="news-item" style="margin-bottom:14px;">
+    <div class="meta-label" style="margin-bottom:4px;">輸出檔案</div>
+    <div style="font-size:11px;color:#8a9ab5;word-break:break-all;">${r.output_file||'N/A'}</div>
+  </div>
   <div class="pptx-grid">`;
   for (const c of (r.cases||[])) {
-    html += `<div class="pptx-case"><div class="case-name">${c.name}</div><div class="case-weekly">+${c.weekly_new}</div><div class="case-label">本週新增（戶）</div></div>`;
+    html += `<div class="pptx-case">
+      <div class="case-name">${c.name}</div>
+      <div class="case-weekly">+${c.weekly_new}</div>
+      <div class="case-label">本週新增（戶）</div>
+    </div>`;
   }
   html += '</div>';
   return html;
