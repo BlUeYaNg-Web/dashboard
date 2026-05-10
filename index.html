@@ -8,6 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Microsoft JhengHei', sans-serif; background: #0c0f1a; color: #e0e0e0; min-height: 100vh; }
 
+  /* 頂部 */
   .navbar {
     padding: 28px 48px 0;
     display: flex; align-items: flex-end; justify-content: space-between;
@@ -22,108 +23,123 @@
   }
   .refresh-btn:hover { border-color: #4A90D9; color: #4A90D9; }
 
-  .cards-section { padding: 40px 48px 32px; }
-  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-
-  .portal-card {
-    border-radius: 12px; overflow: hidden; cursor: pointer;
-    transition: transform 0.25s, box-shadow 0.25s;
-    background: #141720; border: 1px solid #1e2230;
+  /* 主要格線：3欄，上排卡片 下排面板 */
+  .main-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 24px;
+    padding: 36px 48px 48px;
+    align-items: start;
   }
-  .portal-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-  .portal-card.active { box-shadow: 0 0 0 1px var(--card-color), 0 12px 40px rgba(0,0,0,0.4); }
-  .portal-card.active { border-color: var(--card-color); }
 
-  .card-cover { height: 190px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  /* 卡片 */
+  .portal-card {
+    border-radius: 12px; overflow: hidden;
+    background: #141720; border: 1px solid #1e2230;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .portal-card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(0,0,0,0.4); }
 
+  .card-cover { height: 170px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+
+  /* 封面：新聞 */
   .cover-news { background: linear-gradient(135deg, #0d1b2a 0%, #1a2744 100%); }
   .cover-bg-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 8px; padding: 18px; opacity: 0.12; }
   .cover-bg-text span { height: 8px; background: #fff; border-radius: 4px; display: block; }
   .cover-center { position: relative; text-align: center; }
-  .cover-icon { font-size: 42px; display: block; margin-bottom: 8px; }
-  .cover-label-news { font-size: 13px; letter-spacing: 4px; color: #7aaede; font-weight: 600; text-transform: uppercase; }
+  .cover-icon { font-size: 38px; display: block; margin-bottom: 8px; }
+  .cover-label-news { font-size: 12px; letter-spacing: 4px; color: #7aaede; font-weight: 600; text-transform: uppercase; }
 
-  .cover-chips { background: linear-gradient(135deg, #0d1f14 0%, #0f2b1a 100%); flex-direction: column; padding-top: 30px; }
-  .cover-bars { display: flex; align-items: flex-end; gap: 6px; height: 90px; position: relative; }
-  .cover-taiex { position: absolute; top: -28px; right: 0; font-size: 22px; font-weight: 800; color: #e74c3c; letter-spacing: 1px; }
-  .bar { width: 18px; border-radius: 3px 3px 0 0; opacity: 0.85; }
+  /* 封面：台股 */
+  .cover-chips { background: linear-gradient(135deg, #0d1f14 0%, #0f2b1a 100%); flex-direction: column; padding-top: 24px; }
+  .cover-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; position: relative; }
+  .cover-taiex { position: absolute; top: -26px; right: 0; font-size: 20px; font-weight: 800; color: #e74c3c; }
+  .bar { width: 16px; border-radius: 3px 3px 0 0; opacity: 0.85; }
   .bar-up { background: #e74c3c; }
   .bar-down { background: #27AE60; }
-  .cover-label-chips { font-size: 11px; letter-spacing: 3px; color: #5db87a; font-weight: 600; text-transform: uppercase; margin-top: 14px; text-align: center; }
+  .cover-label-chips { font-size: 11px; letter-spacing: 3px; color: #5db87a; font-weight: 600; text-transform: uppercase; margin-top: 12px; }
 
+  /* 封面：PPT */
   .cover-pptx { background: linear-gradient(135deg, #1a1208 0%, #2a1e0a 100%); }
   .cover-building { display: flex; flex-direction: column; align-items: center; }
-  .building-top { width: 60px; height: 8px; background: #E67E22; border-radius: 2px; opacity: 0.8; margin-bottom: 4px; }
-  .building-body { width: 80px; height: 80px; background: linear-gradient(180deg, #3a2a10 0%, #251a08 100%); border: 1px solid #E67E22; border-radius: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 8px; opacity: 0.85; }
+  .building-top { width: 56px; height: 7px; background: #E67E22; border-radius: 2px; opacity: 0.8; margin-bottom: 4px; }
+  .building-body { width: 76px; height: 74px; background: linear-gradient(180deg, #3a2a10 0%, #251a08 100%); border: 1px solid #E67E22; border-radius: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 7px; }
   .building-window { background: #E67E22; border-radius: 1px; opacity: 0.7; }
   .building-window.lit { opacity: 1; background: #f39c12; }
-  .cover-label-pptx { font-size: 11px; letter-spacing: 3px; color: #d4891a; font-weight: 600; text-transform: uppercase; margin-top: 14px; text-align: center; }
+  .cover-label-pptx { font-size: 11px; letter-spacing: 3px; color: #d4891a; font-weight: 600; text-transform: uppercase; margin-top: 12px; }
 
-  .card-body { padding: 20px 22px 22px; }
-  .card-meta { font-size: 11px; color: #556; margin-bottom: 8px; }
-  .card-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.4; }
-  .card-desc { font-size: 13px; color: #778; line-height: 1.6; }
-  .card-footer { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; }
+  /* 卡片底部 */
+  .card-body { padding: 16px 20px 18px; }
+  .card-meta { font-size: 11px; color: #556; margin-bottom: 6px; }
+  .card-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .card-desc { font-size: 12px; color: #667; line-height: 1.5; }
+  .card-footer { margin-top: 12px; display: flex; align-items: center; justify-content: space-between; }
   .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
   .dot-ok { background: #27AE60; }
   .dot-empty { background: #444; }
-  .status-text { font-size: 12px; color: #556; }
+  .status-text { font-size: 11px; color: #556; }
   .status-text.ok { color: #27AE60; }
-  .read-more { font-size: 12px; color: var(--card-color); opacity: 0.7; transition: opacity 0.2s; }
-  .portal-card:hover .read-more, .portal-card.active .read-more { opacity: 1; }
 
-  .detail-panel { margin: 0 48px 48px; background: #141720; border: 1px solid #1e2230; border-radius: 12px; overflow: hidden; display: none; }
-  .detail-panel.open { display: block; }
-  .detail-header { padding: 20px 28px; border-bottom: 1px solid #1e2230; display: flex; align-items: center; gap: 14px; }
-  .d-icon { font-size: 24px; }
-  .d-name { font-size: 17px; font-weight: 700; color: #fff; }
-  .d-schedule { font-size: 12px; color: #556; margin-top: 2px; }
-  .detail-close { margin-left: auto; background: none; border: none; color: #445; cursor: pointer; font-size: 20px; padding: 4px; transition: color 0.2s; }
-  .detail-close:hover { color: #778; }
-  .detail-body { padding: 28px; }
+  /* 詳細面板 */
+  .detail-panel {
+    background: #141720; border: 1px solid #1e2230;
+    border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .detail-panel-header {
+    padding: 14px 20px; border-bottom: 1px solid #1e2230;
+    display: flex; align-items: center; gap: 10px;
+    position: sticky; top: 0; background: #141720; z-index: 1;
+  }
+  .d-icon { font-size: 18px; }
+  .d-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .d-schedule { font-size: 11px; color: #556; margin-top: 1px; }
+  .detail-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 600px;
+  }
 
-  .meta-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-  .meta-item { background: #0c0f1a; border-radius: 8px; padding: 12px 16px; flex: 1; min-width: 140px; }
-  .meta-label { font-size: 11px; color: #445; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .meta-value { font-size: 15px; color: #e0e0e0; font-weight: 600; }
+  /* 資料樣式 */
+  .meta-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .meta-item { background: #0c0f1a; border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 100px; }
+  .meta-label { font-size: 10px; color: #445; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .meta-value { font-size: 14px; color: #e0e0e0; font-weight: 600; }
 
-  .news-category { font-size: 12px; font-weight: 700; color: #4A90D9; margin: 18px 0 10px; text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid #4A90D9; padding-left: 10px; }
-  .news-item { background: #0c0f1a; border-radius: 8px; padding: 14px 16px; margin-bottom: 8px; border: 1px solid #1e2230; }
-  .news-title { font-size: 14px; color: #fff; font-weight: 600; margin-bottom: 6px; }
-  .news-summary { font-size: 13px; color: #778; line-height: 1.6; margin-bottom: 8px; }
-  .news-meta-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .news-source { font-size: 11px; color: #445; }
-  .news-analysis { font-size: 12px; color: #667; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1e2230; }
+  .news-category { font-size: 11px; font-weight: 700; color: #4A90D9; margin: 14px 0 8px; letter-spacing: 1px; border-left: 3px solid #4A90D9; padding-left: 8px; }
+  .news-item { background: #0c0f1a; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid #1e2230; }
+  .news-title { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 5px; line-height: 1.4; }
+  .news-summary { font-size: 12px; color: #778; line-height: 1.6; margin-bottom: 6px; }
+  .news-meta-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .news-source { font-size: 10px; color: #445; }
+  .news-analysis { font-size: 11px; color: #667; margin-top: 7px; padding-top: 7px; border-top: 1px solid #1e2230; }
 
-  .chips-meta .value-up { color: #e74c3c; }
-  .chips-meta .value-down { color: #27AE60; }
+  .value-up { color: #e74c3c; }
+  .value-down { color: #27AE60; }
 
-  .pptx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 12px; }
-  .pptx-case { background: #0c0f1a; border-radius: 8px; padding: 12px 14px; border: 1px solid #1e2230; }
-  .case-name { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 6px; }
-  .case-weekly { font-size: 22px; font-weight: 700; color: #E67E22; }
-  .case-label { font-size: 11px; color: #445; }
+  .pptx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+  .pptx-case { background: #0c0f1a; border-radius: 8px; padding: 10px 12px; border: 1px solid #1e2230; }
+  .case-name { font-size: 12px; color: #fff; font-weight: 600; margin-bottom: 4px; }
+  .case-weekly { font-size: 20px; font-weight: 700; color: #E67E22; }
+  .case-label { font-size: 10px; color: #445; }
 
-  .verdict-badge { font-size: 12px; padding: 2px 10px; border-radius: 12px; }
+  .verdict-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
   .verdict-ok { background: rgba(39,174,96,0.2); color: #27AE60; border: 1px solid #27AE60; }
   .verdict-warn { background: rgba(255,193,7,0.2); color: #FFC107; border: 1px solid #FFC107; }
   .verdict-no { background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid #e74c3c; }
 
-  .disclaimer { margin-top: 16px; padding: 10px 14px; background: #0c0f1a; border-radius: 6px; border-left: 3px solid #445; font-size: 11px; color: #556; }
+  .disclaimer { margin-top: 14px; padding: 8px 12px; background: #0c0f1a; border-radius: 6px; border-left: 3px solid #2a2d3a; font-size: 10px; color: #445; }
 
-  .empty-state { text-align: center; padding: 48px; color: #334; }
-  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
+  .empty-state { text-align: center; padding: 40px 20px; color: #334; }
+  .empty-state .icon { font-size: 40px; margin-bottom: 10px; }
+  .empty-state p { font-size: 13px; }
 
-  .loading { text-align: center; padding: 48px; color: #445; font-size: 14px; }
+  .loading { text-align: center; padding: 40px; color: #445; font-size: 13px; }
 
-  .footer { text-align: center; padding: 16px 0 40px; }
-  .footer span { font-size: 13px; color: #334; letter-spacing: 2px; }
-
-  @media (max-width: 900px) {
-    .cards-grid { grid-template-columns: 1fr; }
-    .navbar, .cards-section { padding-left: 20px; padding-right: 20px; }
-    .detail-panel { margin-left: 20px; margin-right: 20px; }
+  @media (max-width: 1000px) {
+    .main-grid { grid-template-columns: 1fr; padding: 20px; }
+    .navbar { padding-left: 20px; padding-right: 20px; }
   }
 </style>
 </head>
@@ -140,132 +156,129 @@
   </div>
 </div>
 
-<div class="cards-section">
-  <div class="cards-grid">
+<div class="main-grid">
 
-    <!-- 每日新聞 -->
-    <div class="portal-card" id="card-news" style="--card-color:#4A90D9;" onclick="selectCard('news')">
-      <div class="card-cover cover-news">
-        <div class="cover-bg-text">
-          <span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span>
-          <span style="width:60%"></span><span style="width:75%"></span><span style="width:50%"></span>
-          <span style="width:85%"></span><span style="width:65%"></span>
-        </div>
-        <div class="cover-center">
-          <span class="cover-icon">📰</span>
-          <div class="cover-label-news">Daily Briefing</div>
-        </div>
+  <!-- ===== 上排：卡片 ===== -->
+
+  <!-- 新聞卡片 -->
+  <div class="portal-card" style="--card-color:#4A90D9;">
+    <div class="card-cover cover-news">
+      <div class="cover-bg-text">
+        <span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span>
+        <span style="width:60%"></span><span style="width:75%"></span><span style="width:50%"></span>
+        <span style="width:85%"></span><span style="width:65%"></span>
       </div>
-      <div class="card-body">
-        <div class="card-meta">⏰ 每天早上 09:00</div>
-        <div class="card-title">每日財經新聞摘要</div>
-        <div class="card-desc">台灣財經、房地產、中國經濟、國際重大新聞，含真偽查核與可信度評級</div>
-        <div class="card-footer">
-          <div><span class="status-dot dot-empty" id="dot-news"></span><span class="status-text" id="status-news">載入中...</span></div>
-          <span class="read-more">查看詳情 →</span>
-        </div>
+      <div class="cover-center">
+        <span class="cover-icon">📰</span>
+        <div class="cover-label-news">Daily Briefing</div>
       </div>
     </div>
-
-    <!-- 台股籌碼 -->
-    <div class="portal-card" id="card-chips" style="--card-color:#27AE60;" onclick="selectCard('chips')">
-      <div class="card-cover cover-chips">
-        <div style="position:relative;">
-          <div class="cover-taiex">TAIEX</div>
-          <div class="cover-bars">
-            <div class="bar bar-up" style="height:45px"></div>
-            <div class="bar bar-down" style="height:30px"></div>
-            <div class="bar bar-up" style="height:65px"></div>
-            <div class="bar bar-up" style="height:50px"></div>
-            <div class="bar bar-down" style="height:20px"></div>
-            <div class="bar bar-up" style="height:80px"></div>
-            <div class="bar bar-down" style="height:35px"></div>
-            <div class="bar bar-up" style="height:55px"></div>
-          </div>
-        </div>
-        <div class="cover-label-chips">Chips Report</div>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">⏰ 週一至週五 16:00</div>
-        <div class="card-title">台股籌碼面報告</div>
-        <div class="card-desc">三大法人、融資融券、期貨籌碼、主力買賣超、因果分析（數據支撐，不硬湊）</div>
-        <div class="card-footer">
-          <div><span class="status-dot dot-empty" id="dot-chips"></span><span class="status-text" id="status-chips">載入中...</span></div>
-          <span class="read-more">查看詳情 →</span>
-        </div>
+    <div class="card-body">
+      <div class="card-meta">⏰ 每天早上 09:00</div>
+      <div class="card-title">每日財經新聞摘要</div>
+      <div class="card-desc">台灣財經、房地產、中國經濟、國際重大新聞，含真偽查核與可信度評級</div>
+      <div class="card-footer">
+        <div><span class="status-dot dot-empty" id="dot-news"></span><span class="status-text" id="status-news">載入中...</span></div>
       </div>
     </div>
+  </div>
 
-    <!-- 土城週報 -->
-    <div class="portal-card" id="card-pptx" style="--card-color:#E67E22;" onclick="selectCard('pptx')">
-      <div class="card-cover cover-pptx">
-        <div class="cover-building">
-          <div class="building-top"></div>
-          <div class="building-body">
-            <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
-            <div class="building-window"></div><div class="building-window lit"></div><div class="building-window lit"></div>
-            <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
-          </div>
-          <div class="cover-label-pptx">Weekly Report</div>
+  <!-- 台股卡片 -->
+  <div class="portal-card" style="--card-color:#27AE60;">
+    <div class="card-cover cover-chips">
+      <div style="position:relative;">
+        <div class="cover-taiex">TAIEX</div>
+        <div class="cover-bars">
+          <div class="bar bar-up" style="height:42px"></div>
+          <div class="bar bar-down" style="height:28px"></div>
+          <div class="bar bar-up" style="height:60px"></div>
+          <div class="bar bar-up" style="height:46px"></div>
+          <div class="bar bar-down" style="height:18px"></div>
+          <div class="bar bar-up" style="height:72px"></div>
+          <div class="bar bar-down" style="height:32px"></div>
+          <div class="bar bar-up" style="height:50px"></div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="card-meta">⏰ 每週日 13:06</div>
-        <div class="card-title">土城區實登週報更新</div>
-        <div class="card-desc">抓取 dualtaipei.datazen.info 實登資料，更新11個案名的本週新增、月份統計、價格表</div>
-        <div class="card-footer">
-          <div><span class="status-dot dot-empty" id="dot-pptx"></span><span class="status-text" id="status-pptx">載入中...</span></div>
-          <span class="read-more">查看詳情 →</span>
-        </div>
+      <div class="cover-label-chips">Chips Report</div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">⏰ 週一至週五 16:00</div>
+      <div class="card-title">台股籌碼面報告</div>
+      <div class="card-desc">三大法人、融資融券、期貨籌碼、主力買賣超、投資建議</div>
+      <div class="card-footer">
+        <div><span class="status-dot dot-empty" id="dot-chips"></span><span class="status-text" id="status-chips">載入中...</span></div>
       </div>
     </div>
-
   </div>
-</div>
 
-<!-- 詳細面板 -->
-<div class="detail-panel" id="panel-news">
-  <div class="detail-header">
-    <span class="d-icon">📰</span>
-    <div><div class="d-name">每日財經新聞摘要</div><div class="d-schedule">⏰ 每天早上 09:00</div></div>
-    <button class="detail-close" onclick="closePanel(event,'news')">✕</button>
+  <!-- PPT卡片 -->
+  <div class="portal-card" style="--card-color:#E67E22;">
+    <div class="card-cover cover-pptx">
+      <div class="cover-building">
+        <div class="building-top"></div>
+        <div class="building-body">
+          <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
+          <div class="building-window"></div><div class="building-window lit"></div><div class="building-window lit"></div>
+          <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
+        </div>
+        <div class="cover-label-pptx">Weekly Report</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">⏰ 每週日 13:06</div>
+      <div class="card-title">土城區實登週報更新</div>
+      <div class="card-desc">11個案名的本週新增、月份統計、價格表自動更新</div>
+      <div class="card-footer">
+        <div><span class="status-dot dot-empty" id="dot-pptx"></span><span class="status-text" id="status-pptx">載入中...</span></div>
+      </div>
+    </div>
   </div>
-  <div class="detail-body" id="body-news"><div class="loading">載入中...</div></div>
-</div>
 
-<div class="detail-panel" id="panel-chips">
-  <div class="detail-header">
-    <span class="d-icon">📈</span>
-    <div><div class="d-name">台股籌碼面報告</div><div class="d-schedule">⏰ 週一至週五 16:00</div></div>
-    <button class="detail-close" onclick="closePanel(event,'chips')">✕</button>
+  <!-- ===== 下排：詳細面板 ===== -->
+
+  <!-- 新聞面板 -->
+  <div class="detail-panel" id="panel-news">
+    <div class="detail-panel-header">
+      <span class="d-icon">📰</span>
+      <div><div class="d-name">每日財經新聞</div><div class="d-schedule">⏰ 每天 09:00</div></div>
+    </div>
+    <div class="detail-body" id="body-news"><div class="loading">載入中...</div></div>
   </div>
-  <div class="detail-body" id="body-chips"><div class="loading">載入中...</div></div>
-</div>
 
-<div class="detail-panel" id="panel-pptx">
-  <div class="detail-header">
-    <span class="d-icon">🏠</span>
-    <div><div class="d-name">土城區實登週報更新</div><div class="d-schedule">⏰ 每週日 13:06</div></div>
-    <button class="detail-close" onclick="closePanel(event,'pptx')">✕</button>
+  <!-- 台股面板 -->
+  <div class="detail-panel" id="panel-chips">
+    <div class="detail-panel-header">
+      <span class="d-icon">📈</span>
+      <div><div class="d-name">台股籌碼報告</div><div class="d-schedule">⏰ 週一〜五 16:00</div></div>
+    </div>
+    <div class="detail-body" id="body-chips"><div class="loading">載入中...</div></div>
   </div>
-  <div class="detail-body" id="body-pptx"><div class="loading">載入中...</div></div>
-</div>
 
-<div class="footer"><span>任務儀表板</span></div>
+  <!-- PPT面板 -->
+  <div class="detail-panel" id="panel-pptx">
+    <div class="detail-panel-header">
+      <span class="d-icon">🏠</span>
+      <div><div class="d-name">土城週報更新</div><div class="d-schedule">⏰ 每週日 13:06</div></div>
+    </div>
+    <div class="detail-body" id="body-pptx"><div class="loading">載入中...</div></div>
+  </div>
+
+</div>
 
 <script>
 const REPO = 'BlUeYaNg-Web/dashboard';
 const BASE = `https://raw.githubusercontent.com/${REPO}/main/results`;
-const openPanels = new Set();
 
-// 更新時間
-document.getElementById('now-time').textContent = new Date().toLocaleString('zh-TW', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+document.getElementById('now-time').textContent = new Date().toLocaleString('zh-TW', {
+  year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
+});
 
 async function fetchJSON(url) {
   try {
     const r = await fetch(url + '?t=' + Date.now());
     if (!r.ok) return null;
-    return await r.json();
+    const data = await r.json();
+    return data;
   } catch { return null; }
 }
 
@@ -284,17 +297,16 @@ function setStatus(id, hasData) {
 }
 
 function empty() {
-  return `<div class="empty-state"><div class="icon">⏳</div><p>此任務尚未執行過，或尚無資料</p></div>`;
+  return `<div class="empty-state"><div class="icon">⏳</div><p>尚未執行或無資料</p></div>`;
 }
 
 function renderNews(r) {
   if (!r) return empty();
   let html = `<div class="meta-row">
     <div class="meta-item"><div class="meta-label">執行時間</div><div class="meta-value">${r.fetched_at||'N/A'}</div></div>
-    <div class="meta-item"><div class="meta-label">新聞總則數</div><div class="meta-value">${r.total||0} 則</div></div>
+    <div class="meta-item"><div class="meta-label">總則數</div><div class="meta-value">${r.total||0} 則</div></div>
   </div>`;
-  const cats = r.categories || {};
-  for (const [cat, items] of Object.entries(cats)) {
+  for (const [cat, items] of Object.entries(r.categories||{})) {
     html += `<div class="news-category">${cat}</div>`;
     for (const item of items) {
       html += `<div class="news-item">
@@ -302,7 +314,7 @@ function renderNews(r) {
         <div class="news-summary">${item.summary||''}</div>
         <div class="news-meta-row">
           <span class="news-source">📌 ${item.source||''}</span>
-          <span>${item.credibility||''}</span>
+          <span style="font-size:11px;">${item.credibility||''}</span>
         </div>
         ${item.analysis ? `<div class="news-analysis">💡 ${item.analysis}</div>` : ''}
       </div>`;
@@ -313,42 +325,43 @@ function renderNews(r) {
 
 function renderChips(r) {
   if (!r) return empty();
-  const fv = (v) => parseFloat(v) > 0 ? `<span class="value-up">${v} 億</span>` : `<span class="value-down">${v} 億</span>`;
-  let html = `<div class="meta-row chips-meta">
-    <div class="meta-item"><div class="meta-label">報告日期</div><div class="meta-value">${r.date||'N/A'}</div></div>
-    <div class="meta-item"><div class="meta-label">大盤指數</div><div class="meta-value">${r.taiex||'N/A'}</div></div>
+  const fv = (v) => parseFloat(v) > 0
+    ? `<span class="value-up">${v} 億</span>`
+    : `<span class="value-down">${v} 億</span>`;
+  let html = `<div class="meta-row">
+    <div class="meta-item"><div class="meta-label">日期</div><div class="meta-value">${r.date||'N/A'}</div></div>
+    <div class="meta-item"><div class="meta-label">大盤</div><div class="meta-value" style="font-size:12px;">${r.taiex||'N/A'}</div></div>
+  </div>
+  <div class="meta-row">
     <div class="meta-item"><div class="meta-label">外資</div><div class="meta-value">${fv(r.foreign||0)}</div></div>
     <div class="meta-item"><div class="meta-label">投信</div><div class="meta-value">${fv(r.investment_trust||0)}</div></div>
     <div class="meta-item"><div class="meta-label">自營商</div><div class="meta-value">${fv(r.dealer||0)}</div></div>
   </div>`;
   if (r.summary) html += `<div class="news-item"><div class="news-title">今日摘要</div><div class="news-summary">${r.summary}</div></div>`;
-
-  if (r.investment_advice && r.investment_advice.length > 0) {
-    html += `<div class="news-category" style="color:#f39c12;border-color:#f39c12;">投資建議｜法人大買個股評估</div>`;
+  if (r.investment_advice?.length) {
+    html += `<div class="news-category" style="color:#f39c12;border-color:#f39c12;">投資建議</div>`;
     for (const item of r.investment_advice) {
-      const vc = item.verdict === '適合' ? 'verdict-ok' : item.verdict === '謹慎' ? 'verdict-warn' : 'verdict-no';
+      const vc = item.verdict==='適合'?'verdict-ok':item.verdict==='謹慎'?'verdict-warn':'verdict-no';
       html += `<div class="news-item">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
           <div class="news-title" style="margin:0;">${item.stock}</div>
           <span class="verdict-badge ${vc}">${item.verdict}</span>
         </div>
         <div class="news-summary">${item.reason}</div>
-        ${item.risk ? `<div class="news-analysis">⚠️ 風險：${item.risk}</div>` : ''}
+        ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
       </div>`;
     }
   }
-
-  if (r.recommendations && r.recommendations.length > 0) {
-    html += `<div class="news-category" style="color:#9b59b6;border-color:#9b59b6;">額外推薦觀察股</div>`;
+  if (r.recommendations?.length) {
+    html += `<div class="news-category" style="color:#9b59b6;border-color:#9b59b6;">推薦觀察股</div>`;
     for (const item of r.recommendations) {
       html += `<div class="news-item">
         <div class="news-title">${item.stock}</div>
         <div class="news-summary">${item.reason}</div>
-        ${item.risk ? `<div class="news-analysis">⚠️ 風險：${item.risk}</div>` : ''}
+        ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
       </div>`;
     }
   }
-
   if (r.disclaimer) html += `<div class="disclaimer">${r.disclaimer}</div>`;
   return html;
 }
@@ -357,8 +370,9 @@ function renderPptx(r) {
   if (!r) return empty();
   let html = `<div class="meta-row">
     <div class="meta-item"><div class="meta-label">執行時間</div><div class="meta-value">${r.run_at||'N/A'}</div></div>
-    <div class="meta-item"><div class="meta-label">輸出檔案</div><div class="meta-value" style="font-size:12px;">${r.output_file||'N/A'}</div></div>
-  </div><div class="pptx-grid">`;
+  </div>
+  <div class="meta-item" style="margin-bottom:16px;"><div class="meta-label">輸出檔案</div><div class="meta-value" style="font-size:11px;word-break:break-all;">${r.output_file||'N/A'}</div></div>
+  <div class="pptx-grid">`;
   for (const c of (r.cases||[])) {
     html += `<div class="pptx-case"><div class="case-name">${c.name}</div><div class="case-weekly">+${c.weekly_new}</div><div class="case-label">本週新增（戶）</div></div>`;
   }
@@ -372,39 +386,12 @@ async function loadAll() {
     fetchJSON(`${BASE}/chips_report.json`),
     fetchJSON(`${BASE}/pptx_update.json`),
   ]);
-
   setStatus('news', !!news);
   setStatus('chips', !!chips);
   setStatus('pptx', !!pptx);
-
   document.getElementById('body-news').innerHTML = renderNews(news);
   document.getElementById('body-chips').innerHTML = renderChips(chips);
   document.getElementById('body-pptx').innerHTML = renderPptx(pptx);
-
-  // 預設全部展開
-  ['news','chips','pptx'].forEach(id => {
-    document.getElementById('card-' + id).classList.add('active');
-    document.getElementById('panel-' + id).classList.add('open');
-    openPanels.add(id);
-  });
-}
-
-function selectCard(id) {
-  const card = document.getElementById('card-' + id);
-  const panel = document.getElementById('panel-' + id);
-  if (openPanels.has(id)) {
-    card.classList.remove('active'); panel.classList.remove('open'); openPanels.delete(id);
-  } else {
-    card.classList.add('active'); panel.classList.add('open'); openPanels.add(id);
-    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-  }
-}
-
-function closePanel(e, id) {
-  e.stopPropagation();
-  document.getElementById('card-' + id).classList.remove('active');
-  document.getElementById('panel-' + id).classList.remove('open');
-  openPanels.delete(id);
 }
 
 loadAll();
