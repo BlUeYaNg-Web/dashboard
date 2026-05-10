@@ -169,7 +169,36 @@
   .verdict-warn { background:rgba(255,193,7,0.15); color:#d4a017; border:1px solid rgba(255,193,7,0.3); }
   .verdict-no { background:rgba(231,76,60,0.15); color:#e05c5c; border:1px solid rgba(231,76,60,0.3); }
 
-  .disclaimer { margin-top:12px; padding:9px 12px; background:rgba(255,255,255,0.02); border-radius:6px; border-left:2px solid #2a3050; font-size:10px; color:#3a4260; line-height:1.7; }
+  .disclaimer { margin-top:12px; padding:9px 12px; background:rgba(255,255,255,0.02); border-radius:6px; border-left:2px solid #2a3050; font-size:11px; color:#6878a0; line-height:1.7; }
+
+  /* ── 籌碼面專用 ── */
+  .chips-section { margin-bottom:12px; }
+  .chips-section-title { font-size:11px; font-weight:700; color:#7888a8; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .chips-inst-row { display:flex; gap:6px; margin-bottom:6px; }
+  .chips-inst-card { flex:1; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:8px 10px; text-align:center; }
+  .chips-inst-label { font-size:11px; color:#7888a8; margin-bottom:3px; }
+  .chips-inst-val { font-size:15px; font-weight:700; }
+  .chips-inst-note { font-size:10px; color:#6878a0; margin-top:2px; }
+  .chips-stat-row { display:flex; gap:6px; margin-bottom:6px; }
+  .chips-stat { flex:1; background:rgba(255,255,255,0.02); border-radius:6px; padding:7px 10px; }
+  .chips-stat-label { font-size:10px; color:#7888a8; }
+  .chips-stat-val { font-size:13px; font-weight:600; color:#a0b0cc; margin-top:2px; }
+  .chips-causality { margin-bottom:12px; }
+  .chips-cause-item { font-size:12px; color:#a0b0cc; line-height:1.7; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .chips-cause-item:last-child { border-bottom:none; }
+  .chips-cause-tag { font-size:10px; font-weight:700; color:#7888a8; margin-right:4px; }
+  .stock-rank-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+  .stock-rank-box { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:9px 11px; }
+  .stock-rank-title { font-size:11px; font-weight:700; margin-bottom:7px; }
+  .stock-rank-title.buy { color:#4dc880; }
+  .stock-rank-title.sell { color:#e05c5c; }
+  .stock-rank-item { display:flex; justify-content:space-between; align-items:baseline; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px; }
+  .stock-rank-item:last-child { border-bottom:none; }
+  .stock-rank-name { color:#a0b0cc; }
+  .stock-rank-shares { font-weight:700; }
+  .stock-rank-shares.buy { color:#4dc880; }
+  .stock-rank-shares.sell { color:#e05c5c; }
+  .stock-rank-who { font-size:10px; color:#6878a0; }
   .empty-state { text-align:center; padding:40px 10px; }
   .empty-state .icon { font-size:32px; margin-bottom:10px; opacity:0.2; }
   .empty-state p { font-size:11px; color:#3a4260; }
@@ -417,43 +446,138 @@ function renderNews(r) {
 
 function renderChips(r) {
   if (!r) { ['overview','stocks','recommend'].forEach(s=>{ document.getElementById('chips-'+s).innerHTML=empty(); }); return; }
-  const fv = v => parseFloat(v)>0?`<span class="value-up">+${v} 億</span>`:`<span class="value-down">${v} 億</span>`;
 
-  // 大盤概況
-  let overview = `<div class="meta-row">
+  const fv = v => {
+    const n = parseFloat(v);
+    const cls = n >= 0 ? 'value-up' : 'value-down';
+    const sign = n >= 0 ? '+' : '';
+    return `<span class="${cls}">${sign}${v} 億</span>`;
+  };
+  const total = ((r.foreign||0) + (r.investment_trust||0) + (r.dealer||0)).toFixed(2);
+
+  // ── overview：大盤 + 三大法人 + 融資期貨 + 因果 + 摘要 ──
+  let overview = '';
+
+  // 大盤基本資訊
+  overview += `<div class="meta-row">
     <div class="meta-item"><div class="meta-label">日期</div><div class="meta-value">${r.date||'N/A'}</div></div>
-    <div class="meta-item" style="flex:2"><div class="meta-label">大盤指數</div><div class="meta-value">${r.taiex||'N/A'}</div></div>
-  </div>
-  <div class="meta-row">
-    <div class="meta-item"><div class="meta-label">外資</div><div class="meta-value">${fv(r.foreign||0)}</div></div>
-    <div class="meta-item"><div class="meta-label">投信</div><div class="meta-value">${fv(r.investment_trust||0)}</div></div>
-    <div class="meta-item"><div class="meta-label">自營商</div><div class="meta-value">${fv(r.dealer||0)}</div></div>
+    <div class="meta-item" style="flex:2"><div class="meta-label">加權指數</div><div class="meta-value">${r.taiex||'N/A'}</div></div>
+    ${r.volume?`<div class="meta-item"><div class="meta-label">成交額</div><div class="meta-value">${r.volume} 億</div></div>`:''}
   </div>`;
-  if (r.summary) overview += `<div class="news-item"><div class="news-title">今日摘要</div><div class="news-summary">${r.summary}</div></div>`;
+  if (r.sentiment) overview += `<div style="margin-bottom:10px;font-size:12px;color:#a0b0cc;">市場氣氛：<strong>${r.sentiment}</strong></div>`;
+
+  // 三大法人
+  overview += `<div class="chips-section">
+    <div class="chips-section-title">三大法人</div>
+    <div class="chips-inst-row">
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">外資</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.foreign)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.foreign)>=0?'+':''}${r.foreign} 億</div>
+        ${r.foreign_streak?`<div class="chips-inst-note">${r.foreign_streak}</div>`:''}
+      </div>
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">投信</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.investment_trust)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.investment_trust)>=0?'+':''}${r.investment_trust} 億</div>
+        ${r.trust_streak?`<div class="chips-inst-note">${r.trust_streak}</div>`:''}
+      </div>
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">自營商</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.dealer)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.dealer)>=0?'+':''}${r.dealer} 億</div>
+      </div>
+      <div class="chips-inst-card" style="border-color:rgba(255,255,255,0.15)">
+        <div class="chips-inst-label">合計</div>
+        <div class="chips-inst-val" style="color:${parseFloat(total)>=0?'#4dc880':'#e05c5c'}">${parseFloat(total)>=0?'+':''}${total} 億</div>
+      </div>
+    </div>
+  </div>`;
+
+  // 融資 + 期貨
+  if (r.margin || r.futures) {
+    overview += `<div class="chips-section"><div class="chips-section-title">融資・期貨</div><div class="chips-stat-row">`;
+    if (r.margin) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">融資餘額</div><div class="chips-stat-val">${r.margin.balance} 億（${r.margin.change} 億）</div></div>
+      <div class="chips-stat"><div class="chips-stat-label">融資使用率</div><div class="chips-stat-val">${r.margin.usage_rate}</div></div>`;
+    }
+    if (r.short) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">融券餘額</div><div class="chips-stat-val">${r.short.balance} 萬張（${r.short.change}）</div></div>`;
+    }
+    if (r.futures) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">外資台指期</div><div class="chips-stat-val" style="color:${r.futures.direction==='多單'?'#4dc880':'#e05c5c'}">${r.futures.direction} ${Math.abs(r.futures.foreign_net).toLocaleString()} 口</div></div>
+      <div class="chips-stat"><div class="chips-stat-label">P/C Ratio</div><div class="chips-stat-val">${r.futures.put_call_ratio}（${r.futures.pc_bias}）</div></div>`;
+    }
+    overview += `</div></div>`;
+  }
+
+  // 籌碼因果
+  if (r.causality?.length) {
+    overview += `<div class="chips-section chips-causality"><div class="chips-section-title">籌碼因果解讀</div>`;
+    overview += r.causality.map(c => {
+      const parts = c.split('→');
+      if (parts.length === 2) {
+        return `<div class="chips-cause-item"><span class="chips-cause-tag">因</span>${parts[0].replace('【因】','').trim()} <span style="color:#5a6a8e;">→</span> <span class="chips-cause-tag">果</span>${parts[1].replace('【果】','').trim()}</div>`;
+      }
+      return `<div class="chips-cause-item">${c}</div>`;
+    }).join('');
+    overview += `</div>`;
+  }
+
+  // 摘要
+  if (r.summary) overview += `<div class="news-item" style="margin-top:4px"><div class="news-title" style="font-size:13px;margin-bottom:4px;">今日籌碼總結</div><div class="news-summary">${r.summary}</div></div>`;
+
   document.getElementById('chips-overview').innerHTML = overview;
 
-  // 熱門股票（法人大買）
+  // ── stocks：多空排行 + 投資建議 ──
   let stocks = '';
+
+  if (r.top_buy?.length || r.top_sell?.length) {
+    stocks += `<div class="stock-rank-grid">`;
+    if (r.top_buy?.length) {
+      stocks += `<div class="stock-rank-box"><div class="stock-rank-title buy">🔼 法人大買</div>`;
+      stocks += r.top_buy.map(s => `<div class="stock-rank-item">
+        <span class="stock-rank-name">${s.stock}</span>
+        <span>
+          <span class="stock-rank-shares buy">${s.shares}</span>
+          <span class="stock-rank-who"> ${s.who}</span>
+        </span>
+      </div>`).join('');
+      stocks += `</div>`;
+    }
+    if (r.top_sell?.length) {
+      stocks += `<div class="stock-rank-box"><div class="stock-rank-title sell">🔽 法人大賣</div>`;
+      stocks += r.top_sell.map(s => `<div class="stock-rank-item">
+        <span class="stock-rank-name">${s.stock}</span>
+        <span>
+          <span class="stock-rank-shares sell">${s.shares}</span>
+          <span class="stock-rank-who"> ${s.who}</span>
+        </span>
+      </div>`).join('');
+      stocks += `</div>`;
+    }
+    stocks += `</div>`;
+  }
+
   if (r.investment_advice?.length) {
-    stocks = r.investment_advice.map(item => {
+    stocks += `<div class="chips-section-title" style="margin-top:4px">投資建議分析</div>`;
+    stocks += r.investment_advice.map(item => {
       const vc = item.verdict==='適合'?'verdict-ok':item.verdict==='謹慎'?'verdict-warn':'verdict-no';
       return `<div class="news-item">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-          <div class="news-title" style="margin:0;">${item.stock}</div>
+          <div class="news-title" style="font-size:14px;margin:0;">${item.stock}</div>
           <span class="verdict-badge ${vc}">${item.verdict}</span>
         </div>
         <div class="news-summary">${item.reason}</div>
         ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
       </div>`;
     }).join('');
-  } else { stocks = empty(); }
+  } else if (!r.top_buy?.length) { stocks = empty(); }
+
   document.getElementById('chips-stocks').innerHTML = stocks;
 
-  // 推薦股票
+  // ── recommend：額外推薦 ──
   let recommend = '';
   if (r.recommendations?.length) {
     recommend = r.recommendations.map(item => `<div class="news-item">
-      <div class="news-title">${item.stock}</div>
+      <div class="news-title" style="font-size:14px;">${item.stock}</div>
       <div class="news-summary">${item.reason}</div>
       ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
     </div>`).join('');
