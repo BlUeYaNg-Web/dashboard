@@ -139,6 +139,8 @@
   .news-analysis { font-size:12px; font-weight:400; color:#a0b0cc; margin-top:7px; padding-top:7px; border-top:1px solid rgba(255,255,255,0.08); line-height:1.6; }
   .news-links    { display:flex; gap:6px; margin-top:7px; flex-wrap:wrap; }
   .news-link     { font-size:11px; font-weight:600; padding:3px 10px; border-radius:10px; text-decoration:none; transition:all 0.2s; }
+  .news-pitch    { margin-top:8px; padding:8px 11px; background:rgba(230,126,34,0.08); border-left:3px solid rgba(230,126,34,0.5); border-radius:0 6px 6px 0; font-size:12px; color:#d4a060; line-height:1.6; }
+  .news-pitch-tag { font-size:10px; font-weight:700; color:#E67E22; letter-spacing:0.5px; margin-bottom:3px; }
   .news-link-orig { background:rgba(74,144,217,0.15); color:#7aaede; border:1px solid rgba(74,144,217,0.3); }
   .news-link-orig:hover { background:rgba(74,144,217,0.3); color:#aad4f5; }
   .news-link-trans { background:rgba(39,174,96,0.12); color:#4dc890; border:1px solid rgba(39,174,96,0.28); }
@@ -392,15 +394,15 @@ function setStatus(id, hasData) {
 
 function empty() { return `<div class="empty-state"><div class="icon">⏳</div><p>尚未執行或無資料</p></div>`; }
 
-function newsItems(items, isIntl) {
+function newsItems(items, isIntl, showPitch) {
   if (!items?.length) return empty();
   return items.map(item => {
-    // 原文連結：優先用 item.url，否則 Google 搜尋
+    // 原文連結
     const searchQ = encodeURIComponent((item.title||'') + ' ' + (item.source||''));
     const origUrl = item.url || `https://www.google.com/search?q=${searchQ}&tbs=qdr:d`;
     const origLabel = item.url ? '看原文 ↗' : '搜尋原文 🔍';
 
-    // 翻譯連結（僅國外新聞）
+    // 翻譯（僅國外新聞）
     let transBtn = '';
     if (isIntl) {
       const transUrl = item.url
@@ -408,6 +410,11 @@ function newsItems(items, isIntl) {
         : `https://translate.google.com/?sl=auto&tl=zh-TW&text=${encodeURIComponent(item.title||'')}`;
       transBtn = `<a class="news-link news-link-trans" href="${transUrl}" target="_blank" rel="noopener">中文翻譯 🌐</a>`;
     }
+
+    // 銷售說詞（台灣財經、房地產、國際才顯示）
+    const pitchHtml = (showPitch && item.sales_pitch)
+      ? `<div class="news-pitch"><div class="news-pitch-tag">🏠 銷售說詞</div>${item.sales_pitch}</div>`
+      : '';
 
     return `<div class="news-item">
     <div class="news-title">${item.title||''}</div>
@@ -417,6 +424,7 @@ function newsItems(items, isIntl) {
       <span style="font-size:11px;color:#7888a8;">${item.credibility||''}</span>
     </div>
     ${item.analysis?`<div class="news-analysis">💡 ${item.analysis}</div>`:''}
+    ${pitchHtml}
     <div class="news-links">
       <a class="news-link news-link-orig" href="${origUrl}" target="_blank" rel="noopener">${origLabel}</a>
       ${transBtn}
@@ -438,10 +446,10 @@ function renderNews(r) {
     <div class="meta-item"><div class="meta-label">更新時間</div><div class="meta-value" style="font-size:12px;">${r.fetched_at||'N/A'}</div></div>
     <div class="meta-item"><div class="meta-label">總則數</div><div class="meta-value">${r.total||0} 則</div></div>
   </div>`;
-  document.getElementById('news-tw').innerHTML = meta + newsItems(map.tw, false);
-  document.getElementById('news-intl').innerHTML = newsItems(map.intl, true);
-  document.getElementById('news-realty').innerHTML = newsItems(map.realty, false);
-  document.getElementById('news-china').innerHTML = newsItems(map.china, false);
+  document.getElementById('news-tw').innerHTML = meta + newsItems(map.tw, false, true);
+  document.getElementById('news-intl').innerHTML = newsItems(map.intl, true, true);
+  document.getElementById('news-realty').innerHTML = newsItems(map.realty, false, true);
+  document.getElementById('news-china').innerHTML = newsItems(map.china, false, false);
 }
 
 function renderChips(r) {
