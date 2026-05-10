@@ -143,11 +143,12 @@
   .pptx-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
   .pptx-case { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 12px; transition:background 0.2s; }
   .pptx-case:hover { background:rgba(255,255,255,0.06); }
-  .case-name { font-size:11px; color:#8a9ab5; font-weight:600; margin-bottom:3px; }
+  .case-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px; }
+  .case-name { font-size:11px; color:#8a9ab5; font-weight:600; }
+  .case-price { font-size:10px; color:#7aaede; text-align:right; }
   .case-weekly { font-size:22px; font-weight:800; color:#E67E22; line-height:1.2; }
   .case-label { font-size:9px; color:#3a4260; margin-top:2px; }
-  .case-price { font-size:10px; color:#7aaede; margin-top:5px; border-top:1px solid rgba(255,255,255,0.05); padding-top:4px; }
-  .case-weeks { font-size:10px; color:#5a6590; margin-top:3px; display:flex; align-items:baseline; gap:3px; }
+  .case-weeks { font-size:10px; color:#5a6590; margin-top:4px; display:flex; align-items:baseline; gap:3px; }
   .weeks-num { font-size:15px; font-weight:700; color:#5a6590; }
   .weeks-alert .weeks-num { font-size:20px; font-weight:800; color:#e74c3c; }
 
@@ -445,10 +446,12 @@ function renderPptx(r) {
       ? `<div class="case-weeks${isAlert?' weeks-alert':''}">連續<span class="weeks-num">${wd}</span>週無實登</div>`
       : '';
     html += `<div class="pptx-case">
-      <div class="case-name">${c.name}</div>
+      <div class="case-header">
+        <div class="case-name">${c.name}</div>
+        <div class="case-price">${priceStr}</div>
+      </div>
       <div class="case-weekly">+${c.weekly_new}</div>
       <div class="case-label">本週新增（戶）</div>
-      <div class="case-price">${priceStr}</div>
       ${weeksHtml}
     </div>`;
   }
