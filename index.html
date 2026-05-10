@@ -146,6 +146,10 @@
   .case-name { font-size:11px; color:#8a9ab5; font-weight:600; margin-bottom:3px; }
   .case-weekly { font-size:22px; font-weight:800; color:#E67E22; line-height:1.2; }
   .case-label { font-size:9px; color:#3a4260; margin-top:2px; }
+  .case-price { font-size:10px; color:#7aaede; margin-top:5px; border-top:1px solid rgba(255,255,255,0.05); padding-top:4px; }
+  .case-weeks { font-size:10px; color:#5a6590; margin-top:3px; display:flex; align-items:baseline; gap:3px; }
+  .weeks-num { font-size:15px; font-weight:700; color:#5a6590; }
+  .weeks-alert .weeks-num { font-size:20px; font-weight:800; color:#e74c3c; }
 
   .verdict-badge { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; white-space:nowrap; }
   .verdict-ok { background:rgba(39,174,96,0.15); color:#4dc880; border:1px solid rgba(39,174,96,0.3); }
@@ -432,7 +436,21 @@ function renderPptx(r) {
     <div class="meta-item" style="flex:2"><div class="meta-label">檔案</div><div class="meta-value" style="font-size:11px;">${(r.output_file||'N/A').split('\\').pop()}</div></div>
   </div><div class="pptx-grid">`;
   for (const c of (r.cases||[])) {
-    html += `<div class="pptx-case"><div class="case-name">${c.name}</div><div class="case-weekly">+${c.weekly_new}</div><div class="case-label">本週新增（戶）</div></div>`;
+    const priceStr = (c.latest_price != null && c.latest_area != null)
+      ? `${c.latest_price}萬／坪・${c.latest_area}坪`
+      : (c.latest_price != null ? `${c.latest_price}萬／坪` : '—');
+    const wd = c.weeks_dry ?? null;
+    const isAlert = wd != null && wd >= 4;
+    const weeksHtml = wd != null
+      ? `<div class="case-weeks${isAlert?' weeks-alert':''}">連續<span class="weeks-num">${wd}</span>週無實登</div>`
+      : '';
+    html += `<div class="pptx-case">
+      <div class="case-name">${c.name}</div>
+      <div class="case-weekly">+${c.weekly_new}</div>
+      <div class="case-label">本週新增（戶）</div>
+      <div class="case-price">${priceStr}</div>
+      ${weeksHtml}
+    </div>`;
   }
   html += '</div>';
   document.getElementById('pptx-tucheng').innerHTML = html;
