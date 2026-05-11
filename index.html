@@ -30,9 +30,9 @@
   /* ── 主格線 3欄 ── */
   .main-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 24px 40px 48px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 24px 20px 48px;
     align-items: start;
   }
 
@@ -343,6 +343,44 @@
     </div>
   </div>
 
+  <!-- ══ 欄4：匯率面板 ══ -->
+  <div class="column" style="--col-color:#9B59B6; --col-color-bg:rgba(155,89,182,0.15);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#9B59B6;"></div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#120a1e,#1a0f2e,#120820);">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.07;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;">
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">CNY / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / CNY</div>
+        </div>
+        <div class="cover-center">
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(155,89,182,0.5));">💱</span>
+          <div class="cover-label" style="color:#7a4fa0;">FX Report</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">⏰ 每天早上 09:05</div>
+        <div class="card-title">每日匯率動態</div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-forex"></span>
+          <span class="status-text" id="status-forex">載入中...</span>
+        </div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onmouseenter="switchSub('forex','twd')">台幣 TWD</div>
+      <div class="sub-tab" onmouseenter="switchSub('forex','usd')">美元 USD</div>
+      <div class="sub-tab" onmouseenter="switchSub('forex','cny')">人民幣 CNY</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div class="sub-content active" id="forex-twd"><div class="loading">載入中...</div></div>
+        <div class="sub-content" id="forex-usd"></div>
+        <div class="sub-content" id="forex-cny"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -358,6 +396,7 @@ const subGroups = {
   news: ['tw','intl','realty','china'],
   chips: ['overview','stocks','recommend'],
   pptx: ['tucheng'],
+  forex: ['twd','usd','cny'],
 };
 function switchSub(group, id) {
   subGroups[group].forEach(s => {
@@ -630,15 +669,48 @@ function renderPptx(r) {
   document.getElementById('pptx-tucheng').innerHTML = html;
 }
 
+function renderForex(r) {
+  if (!r) { ['twd','usd','cny'].forEach(s=>{ document.getElementById('forex-'+s).innerHTML=empty(); }); return; }
+  const rates = r.rates||{};
+  const news = r.news||{};
+
+  function rateCard(key, label) {
+    const d = rates[key];
+    if (!d) return '';
+    const isDown = d.change < 0;
+    const cls = isDown ? 'value-down' : 'value-up';
+    const sign = d.change > 0 ? '+' : '';
+    const trendIcon = d.trend === '升' ? '▲' : d.trend === '貶' ? '▼' : '─';
+    return `<div class="meta-item">
+      <div class="meta-label">${label}</div>
+      <div class="meta-value">${d.rate}</div>
+      <div style="font-size:11px;margin-top:3px;" class="${cls}">${trendIcon} ${sign}${d.change} (${sign}${d.change_pct}%)</div>
+    </div>`;
+  }
+
+  const ratesRow = `<div class="meta-row">
+    ${rateCard('USD_TWD','USD / TWD')}
+    ${rateCard('CNY_TWD','CNY / TWD')}
+    ${rateCard('USD_CNY','USD / CNY')}
+  </div>
+  <div style="font-size:10px;color:#3a4260;margin-bottom:12px;">更新時間：${r.fetched_at||'N/A'}</div>`;
+
+  document.getElementById('forex-twd').innerHTML = ratesRow + newsItems(news['台幣（TWD）']||[], false, false);
+  document.getElementById('forex-usd').innerHTML = ratesRow + newsItems(news['美元（USD）']||[], true, false);
+  document.getElementById('forex-cny').innerHTML = ratesRow + newsItems(news['人民幣（CNY）']||[], false, false);
+}
+
 async function loadAll() {
-  const [news, chips, pptx] = await Promise.all([
+  const [news, chips, pptx, forex] = await Promise.all([
     fetchJSON(`${BASE}/daily_news.json`),
     fetchJSON(`${BASE}/chips_report.json`),
     fetchJSON(`${BASE}/pptx_update.json`),
+    fetchJSON(`${BASE}/forex_report.json`),
   ]);
   setStatus('news', !!news); renderNews(news);
   setStatus('chips', !!chips); renderChips(chips);
   setStatus('pptx', !!pptx); renderPptx(pptx);
+  setStatus('forex', !!forex); renderForex(forex);
 }
 
 loadAll();
