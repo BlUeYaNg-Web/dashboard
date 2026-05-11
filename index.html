@@ -208,7 +208,12 @@
 
   .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
   .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
+  /* ── 匯率折線圖 ── */
+  .forex-chart-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
+  .forex-chart-title { font-size:10px; font-weight:700; color:#5a6a8e; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+  .forex-chart-canvas { position:relative; height:130px; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -413,6 +418,10 @@ function switchSub(group, id) {
     const tabs = col.querySelectorAll('.sub-tab');
     const idx = subGroups[group].indexOf(id);
     if (tabs[idx]) tabs[idx].classList.add('active');
+  }
+  // 匯率分頁切換時重算折線圖尺寸
+  if (group === 'forex') {
+    setTimeout(() => { Object.values(_forexCharts).forEach(c => c?.resize()); }, 20);
   }
 }
 
@@ -669,22 +678,77 @@ function renderPptx(r) {
   document.getElementById('pptx-tucheng').innerHTML = html;
 }
 
-function renderForex(r) {
+const _forexCharts = {};
+
+function _initForexChart(id, labels, data, label, color) {
+  const canvas = document.getElementById(id);
+  if (!canvas || !labels.length) return;
+  if (_forexCharts[id]) { _forexCharts[id].destroy(); delete _forexCharts[id]; }
+  _forexCharts[id] = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: color.replace('rgb(','rgba(').replace(')',',0.08)').replace('#','').replace(/^([0-9a-f]{6})$/i, (h) => `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},0.08)`),
+        borderWidth: 1.8,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        tension: 0.35,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e2440',
+          titleColor: '#7888a8',
+          bodyColor: '#c8d0e8',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(3)}` }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color:'#4a5580', font:{size:9}, maxTicksLimit:7, maxRotation:0 },
+          grid: { color:'rgba(255,255,255,0.04)' },
+          border: { color:'rgba(255,255,255,0.06)' }
+        },
+        y: {
+          ticks: { color:'#4a5580', font:{size:9}, maxTicksLimit:5 },
+          grid: { color:'rgba(255,255,255,0.06)' },
+          border: { color:'rgba(255,255,255,0.06)' }
+        }
+      }
+    }
+  });
+}
+
+function renderForex(r, hist) {
   if (!r) { ['twd','usd','cny'].forEach(s=>{ document.getElementById('forex-'+s).innerHTML=empty(); }); return; }
   const rates = r.rates||{};
-  const news = r.news||{};
+  const news  = r.news||{};
+  const entries  = (hist?.entries||[]).slice(-30);
+  const labels   = entries.map(e => e.date);
+  const hasHist  = entries.length > 1;
 
   function rateCard(key, label) {
     const d = rates[key];
     if (!d) return '';
-    const isDown = d.change < 0;
-    const cls = isDown ? 'value-down' : 'value-up';
-    const sign = d.change > 0 ? '+' : '';
-    const trendIcon = d.trend === '升' ? '▲' : d.trend === '貶' ? '▼' : '─';
+    const n = parseFloat(d.change||0);
+    const cls  = n >= 0 ? 'value-up' : 'value-down';
+    const sign = n > 0 ? '+' : '';
+    const icon = n > 0 ? '▲' : n < 0 ? '▼' : '─';
     return `<div class="meta-item">
       <div class="meta-label">${label}</div>
       <div class="meta-value">${d.rate}</div>
-      <div style="font-size:11px;margin-top:3px;" class="${cls}">${trendIcon} ${sign}${d.change} (${sign}${d.change_pct}%)</div>
+      <div style="font-size:11px;margin-top:3px;" class="${cls}">${icon} ${sign}${d.change} (${sign}${d.change_pct}%)</div>
     </div>`;
   }
 
@@ -692,25 +756,54 @@ function renderForex(r) {
     ${rateCard('USD_TWD','USD / TWD')}
     ${rateCard('CNY_TWD','CNY / TWD')}
     ${rateCard('USD_CNY','USD / CNY')}
-  </div>
-  <div style="font-size:10px;color:#3a4260;margin-bottom:12px;">更新時間：${r.fetched_at||'N/A'}</div>`;
+  </div><div style="font-size:10px;color:#3a4260;margin:-4px 0 12px;">更新：${r.fetched_at||'N/A'}</div>`;
 
-  document.getElementById('forex-twd').innerHTML = ratesRow + newsItems(news['台幣（TWD）']||[], false, false);
-  document.getElementById('forex-usd').innerHTML = ratesRow + newsItems(news['美元（USD）']||[], true, false);
-  document.getElementById('forex-cny').innerHTML = ratesRow + newsItems(news['人民幣（CNY）']||[], false, false);
+  function chartBlock(id, title) {
+    if (!hasHist) return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="empty-state" style="padding:16px 0"><p>資料累積中，明日起可見走勢圖</p></div></div>`;
+    return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="forex-chart-canvas"><canvas id="${id}"></canvas></div></div>`;
+  }
+
+  document.getElementById('forex-twd').innerHTML =
+    ratesRow +
+    chartBlock('ch-usd-twd', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['台幣（TWD）']||[], false, false);
+
+  document.getElementById('forex-usd').innerHTML =
+    ratesRow +
+    chartBlock('ch-usd-twd2', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['美元（USD）']||[], true, false);
+
+  document.getElementById('forex-cny').innerHTML =
+    ratesRow +
+    chartBlock('ch-usd-cny', 'USD / CNY 走勢（近30日）') +
+    chartBlock('ch-cny-twd', 'CNY / TWD 走勢（近30日）') +
+    newsItems(news['人民幣（CNY）']||[], false, false);
+
+  if (hasHist) {
+    const usdTwd = entries.map(e => e.USD_TWD);
+    const cnyTwd = entries.map(e => e.CNY_TWD);
+    const usdCny = entries.map(e => e.USD_CNY);
+    setTimeout(() => {
+      _initForexChart('ch-usd-twd',  labels, usdTwd, 'USD/TWD', '#9B59B6');
+      _initForexChart('ch-usd-twd2', labels, usdTwd, 'USD/TWD', '#4A90D9');
+      _initForexChart('ch-usd-cny',  labels, usdCny, 'USD/CNY', '#E67E22');
+      _initForexChart('ch-cny-twd',  labels, cnyTwd, 'CNY/TWD', '#27AE60');
+    }, 50);
+  }
 }
 
 async function loadAll() {
-  const [news, chips, pptx, forex] = await Promise.all([
+  const [news, chips, pptx, forex, forexHist] = await Promise.all([
     fetchJSON(`${BASE}/daily_news.json`),
     fetchJSON(`${BASE}/chips_report.json`),
     fetchJSON(`${BASE}/pptx_update.json`),
     fetchJSON(`${BASE}/forex_report.json`),
+    fetchJSON(`${BASE}/forex_history.json`),
   ]);
   setStatus('news', !!news); renderNews(news);
   setStatus('chips', !!chips); renderChips(chips);
   setStatus('pptx', !!pptx); renderPptx(pptx);
-  setStatus('forex', !!forex); renderForex(forex);
+  setStatus('forex', !!forex); renderForex(forex, forexHist);
 }
 
 loadAll();
