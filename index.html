@@ -208,6 +208,27 @@
 
   .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
   .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
+
+  /* ── Forex Ticker ── */
+  .forex-ticker {
+    margin: 0 40px 16px;
+    background: #1e2440;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .forex-ticker-label { font-size:10px; font-weight:700; letter-spacing:2px; color:#4a5580; white-space:nowrap; }
+  .forex-strip { display:flex; gap:28px; flex:1; flex-wrap:wrap; align-items:baseline; }
+  .forex-item { display:flex; align-items:baseline; gap:6px; }
+  .forex-ccy { font-size:11px; color:#6878a0; white-space:nowrap; }
+  .forex-rate { font-size:15px; font-weight:700; color:#eef2ff; font-variant-numeric:tabular-nums; }
+  .forex-chg { font-size:11px; }
+  .forex-chg.up { color:#4dc880; }
+  .forex-chg.down { color:#e05c5c; }
+  .forex-chg.flat { color:#6878a0; }
+  .forex-ticker-time { font-size:10px; color:#3a4260; white-space:nowrap; }
+  .forex-impact { font-size:10px; color:#4a5580; margin-top:2px; width:100%; padding-left:0; }
 </style>
 </head>
 <body>
@@ -221,6 +242,13 @@
     <span class="time" id="now-time"></span>
     <button class="refresh-btn" onclick="location.reload()">⟳ 重新整理</button>
   </div>
+</div>
+
+<!-- ── 匯率 Ticker ── -->
+<div class="forex-ticker">
+  <span class="forex-ticker-label">匯率</span>
+  <div class="forex-strip" id="forex-strip"><span style="color:#3a4260;font-size:11px;">載入中...</span></div>
+  <span class="forex-ticker-time" id="forex-time"></span>
 </div>
 
 <div class="main-grid">
@@ -630,15 +658,37 @@ function renderPptx(r) {
   document.getElementById('pptx-tucheng').innerHTML = html;
 }
 
+function renderForex(f) {
+  const strip = document.getElementById('forex-strip');
+  const timeEl = document.getElementById('forex-time');
+  if (!f) { strip.innerHTML = '<span style="color:#3a4260;font-size:11px;">無資料</span>'; return; }
+  if (timeEl) timeEl.textContent = f.updated_at || '';
+  const items = (f.rates || []).map(r => {
+    const sign = r.change > 0 ? '+' : '';
+    const cls = r.change > 0 ? 'up' : r.change < 0 ? 'down' : 'flat';
+    const chgPct = (r.change_pct != null ? r.change_pct : 0).toFixed(2);
+    const chgAbs = (r.change != null ? r.change : 0).toFixed(2);
+    return `<div class="forex-item">
+      <span class="forex-ccy">${r.name}</span>
+      <span class="forex-rate">${(r.rate||0).toFixed(2)}</span>
+      <span class="forex-chg ${cls}">${sign}${chgAbs} (${sign}${chgPct}%)</span>
+    </div>`;
+  }).join('');
+  const impact = f.impact ? `<div class="forex-impact">🏠 ${f.impact}</div>` : '';
+  strip.innerHTML = items + impact;
+}
+
 async function loadAll() {
-  const [news, chips, pptx] = await Promise.all([
+  const [news, chips, pptx, forex] = await Promise.all([
     fetchJSON(`${BASE}/daily_news.json`),
     fetchJSON(`${BASE}/chips_report.json`),
     fetchJSON(`${BASE}/pptx_update.json`),
+    fetchJSON(`${BASE}/forex.json`),
   ]);
   setStatus('news', !!news); renderNews(news);
   setStatus('chips', !!chips); renderChips(chips);
   setStatus('pptx', !!pptx); renderPptx(pptx);
+  renderForex(forex);
 }
 
 loadAll();
