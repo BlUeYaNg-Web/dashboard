@@ -208,6 +208,26 @@
 
   .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
   .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
+
+  /* ── Forex Ticker ── */
+  .forex-ticker {
+    margin: 0 40px 16px;
+    background: #1e2440;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .forex-ticker-label { font-size:10px; font-weight:700; letter-spacing:2px; color:#4a5580; white-space:nowrap; }
+  .forex-strip { display:flex; gap:28px; flex:1; flex-wrap:wrap; align-items:baseline; }
+  .forex-item { display:flex; align-items:baseline; gap:6px; }
+  .forex-ccy { font-size:11px; color:#6878a0; white-space:nowrap; }
+  .forex-rate { font-size:15px; font-weight:700; color:#eef2ff; font-variant-numeric:tabular-nums; }
+  .forex-chg { font-size:11px; }
+  .forex-chg.up { color:#4dc880; }
+  .forex-chg.down { color:#e05c5c; }
+  .forex-chg.flat { color:#6878a0; }
+  .forex-ticker-time { font-size:10px; color:#3a4260; white-space:nowrap; }
   /* ── 匯率折線圖 ── */
   .forex-chart-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
   .forex-chart-title { font-size:10px; font-weight:700; color:#5a6a8e; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
@@ -244,6 +264,13 @@
     <span class="time" id="now-time"></span>
     <button class="refresh-btn" onclick="location.reload()">⟳ 重新整理</button>
   </div>
+</div>
+
+<!-- ── 匯率 Ticker ── -->
+<div class="forex-ticker">
+  <span class="forex-ticker-label">匯率</span>
+  <div class="forex-strip" id="forex-strip"><span style="color:#3a4260;font-size:11px;">載入中...</span></div>
+  <span class="forex-ticker-time" id="forex-time"></span>
 </div>
 
 <div class="main-grid">
@@ -697,6 +724,28 @@ function renderPptx(r) {
   document.getElementById('pptx-tucheng').innerHTML = html;
 }
 
+function renderForexTicker(r) {
+  const strip = document.getElementById('forex-strip');
+  const timeEl = document.getElementById('forex-time');
+  if (!r || !r.rates) { if (strip) strip.innerHTML = '<span style="color:#3a4260;font-size:11px;">無資料</span>'; return; }
+  if (timeEl) timeEl.textContent = r.fetched_at || '';
+  const pairs = [['USD_TWD','美元'],['CNY_TWD','人民幣'],['USD_CNY','USD/CNY']];
+  const items = pairs.map(([key, name]) => {
+    const d = r.rates[key]; if (!d) return '';
+    const rate = d.rate_sell ?? d.rate ?? 0;
+    const chg = parseFloat(d.change || 0);
+    const chgPct = parseFloat(d.change_pct || 0);
+    const sign = chg > 0 ? '+' : '';
+    const cls = chg > 0 ? 'up' : chg < 0 ? 'down' : 'flat';
+    return `<div class="forex-item">
+      <span class="forex-ccy">${name}</span>
+      <span class="forex-rate">${Number(rate).toFixed(2)}</span>
+      <span class="forex-chg ${cls}">${sign}${chg.toFixed(2)} (${sign}${chgPct.toFixed(2)}%)</span>
+    </div>`;
+  }).join('');
+  if (strip) strip.innerHTML = items;
+}
+
 const _forexCharts = {};
 let _fxRates = {};
 
@@ -860,6 +909,7 @@ async function loadAll() {
   setStatus('chips', !!chips); renderChips(chips);
   setStatus('pptx', !!pptx); renderPptx(pptx);
   setStatus('forex', !!forex); renderForex(forex, forexHist);
+  renderForexTicker(forex);
 }
 
 loadAll();
