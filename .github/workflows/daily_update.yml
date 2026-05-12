@@ -5,7 +5,6 @@ on:
     # 每天 08:30 台灣時間（UTC+8）= 00:30 UTC，週一至週五
     - cron: '30 0 * * 1-5'
   workflow_dispatch:
-    # 允許在 GitHub 網頁手動觸發
 
 jobs:
   update:
@@ -21,21 +20,21 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install anthropic requests
+        run: pip install openai requests
 
       - name: Generate daily news
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_news.py
 
       - name: Generate chips report
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_chips.py
 
       - name: Generate forex rates
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_forex.py
 
       - name: Commit and push updates

@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
-import anthropic
 import json
 import os
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime
+from openai import OpenAI
 
 HISTORY_FILE = "results/forex_history.json"
 
 def fetch_real_rates():
-    """Fetch live rates from free API (no key required)."""
     try:
         r = requests.get("https://open.er-api.com/v6/latest/USD", timeout=10)
         data = r.json()
         if data.get("result") == "success":
             raw = data["rates"]
             usd_twd = raw.get("TWD", 32.5)
-            cny_twd = usd_twd / raw.get("CNY", 7.2)
-            usd_cny = raw.get("CNY", 7.2)
-            return {"USD_TWD": usd_twd, "CNY_TWD": cny_twd, "USD_CNY": usd_cny}
+            return {
+                "USD_TWD": usd_twd,
+                "CNY_TWD": usd_twd / raw.get("CNY", 7.2),
+                "USD_CNY": raw.get("CNY", 7.2),
+            }
     except Exception:
         pass
     return None
@@ -34,7 +35,7 @@ def update_history(usd_twd, cny_twd, usd_cny):
         entries[-1] = {"date": today, "USD_TWD": usd_twd, "CNY_TWD": cny_twd, "USD_CNY": usd_cny}
     else:
         entries.append({"date": today, "USD_TWD": usd_twd, "CNY_TWD": cny_twd, "USD_CNY": usd_cny})
-    hist["entries"] = entries[-60:]  # keep 60 days
+    hist["entries"] = entries[-60:]
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(hist, f, ensure_ascii=False, indent=2)
 
@@ -43,12 +44,13 @@ def generate_forex():
     fetched_at = datetime.now().strftime("%Y/%m/%d %H:%M")
 
     real = fetch_real_rates()
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    client = OpenAI(
+        base_url="https://models.inference.ai.azure.com",
+        api_key=os.environ["GITHUB_TOKEN"],
+    )
 
     if real:
-        rate_info = (
-            f"USD/TWD={real['USD_TWD']:.2f}, CNY/TWD={real['CNY_TWD']:.2f}, USD/CNY={real['USD_CNY']:.2f}"
-        )
+        rate_info = f"USD/TWD={real['USD_TWD']:.2f}, CNY/TWD={real['CNY_TWD']:.2f}, USD/CNY={real['USD_CNY']:.2f}"
         prompt = f"""今天是 {today}，台灣銀行即期匯率：{rate_info}
 
 請直接輸出以下格式 JSON，change/change_pct 請合理估算，不加任何說明：
@@ -82,13 +84,13 @@ def generate_forex():
   }}
 }}"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
         max_tokens=2048,
-        messages=[{"role": "user", "content": prompt}]
     )
 
-    text = message.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     if text.startswith("```"):
         text = text.split("```", 1)[1]
         if text.startswith("json"):
@@ -103,13 +105,13 @@ def generate_forex():
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     r = data.get("rates", {})
-    usd_twd = r.get("USD_TWD", {}).get("rate", 0)
-    cny_twd = r.get("CNY_TWD", {}).get("rate", 0)
-    usd_cny = r.get("USD_CNY", {}).get("rate", 0)
-    update_history(usd_twd, cny_twd, usd_cny)
+    update_history(
+        r.get("USD_TWD", {}).get("rate", 0),
+        r.get("CNY_TWD", {}).get("rate", 0),
+        r.get("USD_CNY", {}).get("rate", 0),
+    )
 
-    source = "live API + Claude" if real else "Claude AI"
-    print(f"forex_report.json + forex_history.json updated: {today} (source: {source})")
+    print(f"forex_report.json updated: {today} (source: {'live API' if real else 'AI'})")
 
 if __name__ == "__main__":
     generate_forex()

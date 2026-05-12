@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-import anthropic
 import json
 import os
 from datetime import datetime
+from openai import OpenAI
 
 def generate_news():
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    client = OpenAI(
+        base_url="https://models.inference.ai.azure.com",
+        api_key=os.environ["GITHUB_TOKEN"],
+    )
     today = datetime.now().strftime("%Y/%m/%d")
 
     prompt = f"""今天是 {today}。你是台灣房地產建設公司的業務分析師，每天早上為銷售團隊準備財經新聞摘要。
@@ -63,13 +66,13 @@ def generate_news():
 3. sales_pitch 要自然連結財經新聞到「現在是買土城新成屋的好時機」
 4. 台灣財經、房地產、國際 3 個類別都要有 sales_pitch，中國新聞不用"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
         max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}]
     )
 
-    text = message.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     if text.startswith("```"):
         text = text.split("```", 1)[1]
         if text.startswith("json"):

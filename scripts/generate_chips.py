@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-import anthropic
 import json
 import os
 from datetime import datetime
+from openai import OpenAI
 
 def generate_chips():
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    client = OpenAI(
+        base_url="https://models.inference.ai.azure.com",
+        api_key=os.environ["GITHUB_TOKEN"],
+    )
     today = datetime.now().strftime("%Y/%m/%d")
 
     prompt = f"""今天是 {today}（台灣時間）。
@@ -65,13 +68,13 @@ def generate_chips():
 5. 數據要合理，符合台股當前走勢
 6. 週末（六日）不開盤，若今天是六日請以前一個交易日為準"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
         max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}]
     )
 
-    text = message.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     if text.startswith("```"):
         text = text.split("```", 1)[1]
         if text.startswith("json"):
