@@ -23,19 +23,31 @@ jobs:
         run: pip install openai requests
 
       - name: Generate daily news
+        id: news
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_news.py
 
       - name: Generate chips report
+        id: chips
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_chips.py
 
       - name: Generate forex rates
+        id: forex
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_forex.py
+
+      - name: Show step results
+        run: |
+          echo "news:  ${{ steps.news.outcome }}"
+          echo "chips: ${{ steps.chips.outcome }}"
+          echo "forex: ${{ steps.forex.outcome }}"
 
       - name: Commit and push updates
         run: |
