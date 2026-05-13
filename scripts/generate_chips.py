@@ -1,8 +1,35 @@
 #!/usr/bin/env python3
 import json
 import os
+import time
 from datetime import datetime
 from openai import OpenAI
+
+MAX_RETRIES = 3
+
+def call_api(client, prompt, max_tokens=4096):
+    for attempt in range(MAX_RETRIES):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=max_tokens,
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            print(f"API error (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(2 ** attempt)
+    raise RuntimeError("All API retries exhausted")
+
+def parse_json(text):
+    if text.startswith("```"):
+        text = text.split("```", 1)[1]
+        if text.startswith("json"):
+            text = text[4:]
+    if text.endswith("```"):
+        text = text[:-3]
+    return json.loads(text.strip())
 
 def generate_chips():
     client = OpenAI(
@@ -68,21 +95,17 @@ def generate_chips():
 5. 數據要合理，符合台股當前走勢
 6. 週末（六日）不開盤，若今天是六日請以前一個交易日為準"""
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=4096,
-    )
-
-    text = response.choices[0].message.content.strip()
-    if text.startswith("```"):
-        text = text.split("```", 1)[1]
-        if text.startswith("json"):
-            text = text[4:]
-    if text.endswith("```"):
-        text = text[:-3]
-
-    data = json.loads(text.strip())
+    for attempt in range(MAX_RETRIES):
+        try:
+            text = call_api(client, prompt)
+            data = parse_json(text)
+            break
+        except (json.JSONDecodeError, RuntimeError) as e:
+            print(f"Failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(2 ** attempt)
+            else:
+                raise
 
     os.makedirs("results", exist_ok=True)
     with open("results/chips_report.json", "w", encoding="utf-8") as f:
