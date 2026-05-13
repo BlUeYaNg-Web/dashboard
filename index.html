@@ -683,7 +683,7 @@ function renderChips(r) {
         ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
       </div>`;
     }).join('');
-  } else if (!r.top_buy?.length) { stocks = empty(); }
+  }
 
   document.getElementById('chips-stocks').innerHTML = stocks;
 
