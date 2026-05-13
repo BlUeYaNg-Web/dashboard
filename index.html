@@ -631,6 +631,15 @@ function renderChips(r) {
   // ── stocks：多空排行 + 投資建議 ──
   let stocks = '';
 
+  // 固定自選股
+  const watchlist = ['00403A', '00981A'];
+  stocks += `<div class="chips-section-title">⭐ 自選股追蹤</div>`;
+  stocks += `<div class="stock-rank-box" style="margin-bottom:8px">`;
+  stocks += watchlist.map(code => `<div class="stock-rank-item">
+    <span class="stock-rank-name">${code}</span>
+  </div>`).join('');
+  stocks += `</div>`;
+
   if (r.top_buy?.length || r.top_sell?.length) {
     stocks += `<div class="stock-rank-grid">`;
     if (r.top_buy?.length) {
