@@ -30,9 +30,9 @@
   /* ── 主格線 3欄 ── */
   .main-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 24px 40px 48px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 24px 20px 48px;
     align-items: start;
   }
 
@@ -208,7 +208,50 @@
 
   .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
   .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
+
+  /* ── Forex Ticker ── */
+  .forex-ticker {
+    margin: 0 40px 16px;
+    background: #1e2440;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .forex-ticker-label { font-size:10px; font-weight:700; letter-spacing:2px; color:#4a5580; white-space:nowrap; }
+  .forex-strip { display:flex; gap:28px; flex:1; flex-wrap:wrap; align-items:baseline; }
+  .forex-item { display:flex; align-items:baseline; gap:6px; }
+  .forex-ccy { font-size:11px; color:#6878a0; white-space:nowrap; }
+  .forex-rate { font-size:15px; font-weight:700; color:#eef2ff; font-variant-numeric:tabular-nums; }
+  .forex-chg { font-size:11px; }
+  .forex-chg.up { color:#4dc880; }
+  .forex-chg.down { color:#e05c5c; }
+  .forex-chg.flat { color:#6878a0; }
+  .forex-ticker-time { font-size:10px; color:#3a4260; white-space:nowrap; }
+  /* ── 匯率折線圖 ── */
+  .forex-chart-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
+  .forex-chart-title { font-size:10px; font-weight:700; color:#5a6a8e; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+  .forex-chart-canvas { position:relative; height:130px; }
+  /* ── 匯率換算工具 ── */
+  .forex-converter { background:rgba(155,89,182,0.08); border:1px solid rgba(155,89,182,0.25); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  .forex-converter-title { font-size:10px; font-weight:700; color:#9B59B6; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+  .forex-input-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .forex-input { flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(155,89,182,0.3); border-radius:8px; padding:8px 12px; color:#eef2ff; font-size:15px; font-weight:600; outline:none; width:100%; -moz-appearance:textfield; }
+  .forex-input::-webkit-outer-spin-button, .forex-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+  .forex-input:focus { border-color:rgba(155,89,182,0.65); background:rgba(255,255,255,0.09); }
+  .forex-input::placeholder { color:#3a4260; font-weight:400; }
+  .forex-input-unit { font-size:12px; font-weight:700; color:#9B59B6; white-space:nowrap; }
+  .forex-results { display:flex; gap:8px; }
+  .forex-result-item { flex:1; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:8px 10px; }
+  .forex-result-label { font-size:10px; color:#5a6a8e; display:block; margin-bottom:3px; }
+  .forex-result-val { font-size:18px; font-weight:800; color:#c8a8f0; display:block; }
+  .forex-result-note { font-size:9px; color:#3a4260; margin-top:8px; text-align:right; }
+  /* ── 買入/賣出雙價 ── */
+  .rate-buysell { display:flex; gap:12px; margin-top:4px; }
+  .rate-side-label { font-size:9px; color:#3a4260; margin-bottom:2px; }
+  .rate-side-val { font-size:13px; font-weight:700; color:#eef2ff; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -221,6 +264,13 @@
     <span class="time" id="now-time"></span>
     <button class="refresh-btn" onclick="location.reload()">⟳ 重新整理</button>
   </div>
+</div>
+
+<!-- ── 匯率 Ticker ── -->
+<div class="forex-ticker">
+  <span class="forex-ticker-label">匯率</span>
+  <div class="forex-strip" id="forex-strip"><span style="color:#3a4260;font-size:11px;">載入中...</span></div>
+  <span class="forex-ticker-time" id="forex-time"></span>
 </div>
 
 <div class="main-grid">
@@ -343,6 +393,45 @@
     </div>
   </div>
 
+  <!-- ══ 欄4：匯率面板 ══ -->
+  <div class="column" style="--col-color:#9B59B6; --col-color-bg:rgba(155,89,182,0.15);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#9B59B6;"></div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#120a1e,#1a0f2e,#120820);">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.07;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;">
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">CNY / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / CNY</div>
+        </div>
+        <div class="cover-center">
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(155,89,182,0.5));">💱</span>
+          <div class="cover-label" style="color:#7a4fa0;">FX Report</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">⏰ 每天早上 09:05</div>
+        <div class="card-title">每日匯率動態</div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-forex"></span>
+          <span class="status-text" id="status-forex">載入中...</span>
+        </div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onmouseenter="switchSub('forex','twd')">台幣 TWD</div>
+      <div class="sub-tab" onmouseenter="switchSub('forex','usd')">美元 USD</div>
+      <div class="sub-tab" onmouseenter="switchSub('forex','cny')">人民幣 CNY</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div id="forex-header"></div>
+        <div class="sub-content active" id="forex-twd"><div class="loading">載入中...</div></div>
+        <div class="sub-content" id="forex-usd"></div>
+        <div class="sub-content" id="forex-cny"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -358,6 +447,7 @@ const subGroups = {
   news: ['tw','intl','realty','china'],
   chips: ['overview','stocks','recommend'],
   pptx: ['tucheng'],
+  forex: ['twd','usd','cny'],
 };
 function switchSub(group, id) {
   subGroups[group].forEach(s => {
@@ -374,6 +464,10 @@ function switchSub(group, id) {
     const tabs = col.querySelectorAll('.sub-tab');
     const idx = subGroups[group].indexOf(id);
     if (tabs[idx]) tabs[idx].classList.add('active');
+  }
+  // 匯率分頁切換時重算折線圖尺寸
+  if (group === 'forex') {
+    setTimeout(() => { Object.values(_forexCharts).forEach(c => c?.resize()); }, 20);
   }
 }
 
@@ -630,15 +724,192 @@ function renderPptx(r) {
   document.getElementById('pptx-tucheng').innerHTML = html;
 }
 
+function renderForexTicker(r) {
+  const strip = document.getElementById('forex-strip');
+  const timeEl = document.getElementById('forex-time');
+  if (!r || !r.rates) { if (strip) strip.innerHTML = '<span style="color:#3a4260;font-size:11px;">無資料</span>'; return; }
+  if (timeEl) timeEl.textContent = r.fetched_at || '';
+  const pairs = [['USD_TWD','美元'],['CNY_TWD','人民幣'],['USD_CNY','USD/CNY']];
+  const items = pairs.map(([key, name]) => {
+    const d = r.rates[key]; if (!d) return '';
+    const rate = d.rate_sell ?? d.rate ?? 0;
+    const chg = parseFloat(d.change || 0);
+    const chgPct = parseFloat(d.change_pct || 0);
+    const sign = chg > 0 ? '+' : '';
+    const cls = chg > 0 ? 'up' : chg < 0 ? 'down' : 'flat';
+    return `<div class="forex-item">
+      <span class="forex-ccy">${name}</span>
+      <span class="forex-rate">${Number(rate).toFixed(2)}</span>
+      <span class="forex-chg ${cls}">${sign}${chg.toFixed(2)} (${sign}${chgPct.toFixed(2)}%)</span>
+    </div>`;
+  }).join('');
+  if (strip) strip.innerHTML = items;
+}
+
+const _forexCharts = {};
+let _fxRates = {};
+
+function _hexRgba(hex, a) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+function _initForexChart(id, labels, data, label, color) {
+  const canvas = document.getElementById(id);
+  if (!canvas || !labels.length) return;
+  if (_forexCharts[id]) { _forexCharts[id].destroy(); delete _forexCharts[id]; }
+  _forexCharts[id] = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: _hexRgba(color, 0.08),
+        borderWidth: 1.8,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        tension: 0.35,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e2440',
+          titleColor: '#7888a8',
+          bodyColor: '#c8d0e8',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(3)}` }
+        }
+      },
+      scales: {
+        x: { ticks:{color:'#4a5580',font:{size:9},maxTicksLimit:7,maxRotation:0}, grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.06)'} },
+        y: { ticks:{color:'#4a5580',font:{size:9},maxTicksLimit:5}, grid:{color:'rgba(255,255,255,0.06)'}, border:{color:'rgba(255,255,255,0.06)'} }
+      }
+    }
+  });
+}
+
+function calcForex() {
+  const twd = parseFloat(document.getElementById('forex-twd-input')?.value);
+  const usdEl = document.getElementById('forex-result-usd');
+  const cnyEl = document.getElementById('forex-result-cny');
+  if (!usdEl || !cnyEl) return;
+  if (!twd || isNaN(twd) || twd <= 0) { usdEl.textContent = '—'; cnyEl.textContent = '—'; return; }
+  const usdSell = _fxRates.USD_TWD?.rate_sell ?? _fxRates.USD_TWD?.rate;
+  const cnySell = _fxRates.CNY_TWD?.rate_sell ?? _fxRates.CNY_TWD?.rate;
+  if (usdSell) usdEl.textContent = (twd / usdSell).toFixed(2);
+  if (cnySell) cnyEl.textContent = (twd / cnySell).toFixed(2);
+}
+
+function renderForex(r, hist) {
+  const hdr = document.getElementById('forex-header');
+  if (!r) {
+    ['twd','usd','cny'].forEach(s => { document.getElementById('forex-'+s).innerHTML = empty(); });
+    if (hdr) hdr.innerHTML = '';
+    return;
+  }
+  const rates = r.rates||{};
+  const news  = r.news||{};
+  _fxRates = rates;
+
+  const entries = (hist?.entries||[]).slice(-30);
+  const labels  = entries.map(e => e.date);
+  const hasHist = entries.length > 1;
+
+  function rateCard(key, label) {
+    const d = rates[key];
+    if (!d) return '';
+    const n    = parseFloat(d.change||0);
+    const cls  = n >= 0 ? 'value-up' : 'value-down';
+    const sign = n > 0 ? '+' : '';
+    const icon = n > 0 ? '▲' : n < 0 ? '▼' : '─';
+    const hasBuySell = d.rate_buy != null && d.rate_sell != null;
+    const priceHtml = hasBuySell
+      ? `<div class="rate-buysell">
+           <div><div class="rate-side-label">買入</div><div class="rate-side-val">${d.rate_buy}</div></div>
+           <div><div class="rate-side-label">賣出</div><div class="rate-side-val">${d.rate_sell}</div></div>
+         </div>`
+      : `<div class="meta-value" style="margin-top:4px;">${d.rate_sell??d.rate??'—'}</div>`;
+    return `<div class="meta-item">
+      <div class="meta-label">${label}</div>
+      ${priceHtml}
+      <div style="font-size:11px;margin-top:4px;" class="${cls}">${icon} ${sign}${d.change} (${sign}${d.change_pct}%)</div>
+    </div>`;
+  }
+
+  if (hdr) hdr.innerHTML = `
+    <div class="meta-row">${rateCard('USD_TWD','USD / TWD')}${rateCard('CNY_TWD','CNY / TWD')}${rateCard('USD_CNY','USD / CNY')}</div>
+    <div style="font-size:10px;color:#3a4260;margin:-4px 0 12px;">更新：${r.fetched_at||'N/A'} ・ 台灣銀行即期匯率</div>
+    <div class="forex-converter">
+      <div class="forex-converter-title">💱 新台幣換算</div>
+      <div class="forex-input-row">
+        <input type="number" id="forex-twd-input" class="forex-input" placeholder="輸入新台幣金額…" min="0" oninput="calcForex()">
+        <span class="forex-input-unit">TWD</span>
+      </div>
+      <div class="forex-results">
+        <div class="forex-result-item">
+          <span class="forex-result-label">美元 USD</span>
+          <span class="forex-result-val" id="forex-result-usd">—</span>
+        </div>
+        <div class="forex-result-item">
+          <span class="forex-result-label">人民幣 CNY</span>
+          <span class="forex-result-val" id="forex-result-cny">—</span>
+        </div>
+      </div>
+      <div class="forex-result-note">以即期賣出匯率計算</div>
+    </div>`;
+
+  function chartBlock(id, title) {
+    if (!hasHist) return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="empty-state" style="padding:16px 0"><p>資料累積中</p></div></div>`;
+    return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="forex-chart-canvas"><canvas id="${id}"></canvas></div></div>`;
+  }
+
+  document.getElementById('forex-twd').innerHTML =
+    chartBlock('ch-usd-twd', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['台幣（TWD）']||[], false, false);
+
+  document.getElementById('forex-usd').innerHTML =
+    chartBlock('ch-usd-twd2', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['美元（USD）']||[], true, false);
+
+  document.getElementById('forex-cny').innerHTML =
+    chartBlock('ch-usd-cny', 'USD / CNY 走勢（近30日）') +
+    chartBlock('ch-cny-twd', 'CNY / TWD 走勢（近30日）') +
+    newsItems(news['人民幣（CNY）']||[], false, false);
+
+  if (hasHist) {
+    const usdTwd = entries.map(e => e.USD_TWD);
+    const cnyTwd = entries.map(e => e.CNY_TWD);
+    const usdCny = entries.map(e => e.USD_CNY);
+    setTimeout(() => {
+      _initForexChart('ch-usd-twd',  labels, usdTwd, 'USD/TWD', '#9B59B6');
+      _initForexChart('ch-usd-twd2', labels, usdTwd, 'USD/TWD', '#4A90D9');
+      _initForexChart('ch-usd-cny',  labels, usdCny, 'USD/CNY', '#E67E22');
+      _initForexChart('ch-cny-twd',  labels, cnyTwd, 'CNY/TWD', '#27AE60');
+    }, 50);
+  }
+}
+
 async function loadAll() {
-  const [news, chips, pptx] = await Promise.all([
+  const [news, chips, pptx, forex, forexHist] = await Promise.all([
     fetchJSON(`${BASE}/daily_news.json`),
     fetchJSON(`${BASE}/chips_report.json`),
     fetchJSON(`${BASE}/pptx_update.json`),
+    fetchJSON(`${BASE}/forex_report.json`),
+    fetchJSON(`${BASE}/forex_history.json`),
   ]);
   setStatus('news', !!news); renderNews(news);
   setStatus('chips', !!chips); renderChips(chips);
   setStatus('pptx', !!pptx); renderPptx(pptx);
+  setStatus('forex', !!forex); renderForex(forex, forexHist);
+  renderForexTicker(forex);
 }
 
 loadAll();
