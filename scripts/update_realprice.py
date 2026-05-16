@@ -179,20 +179,40 @@ def get_building_stats(rows, keyword, prev_total):
 
 
 def update_weekly_text(slide, weekly_new):
-    """更新投影片上「本週新增 N 戶」，有新增時數字顯示紅色。"""
+    """
+    更新投影片上「本週新增 N 戶」。
+    原始 PPTX 的文字分 4 個 run：
+      run0: '建案名 '  run1: '本週新增 '  run2: 數字  run3: ' 戶'
+    只更新 run2 的數字文字與顏色。
+    有新增 → 紅色；無新增 → 還原為黑色。
+    """
     from pptx.dml.color import RGBColor
-    RED = RGBColor(0xFF, 0x00, 0x00)
+    from pptx.oxml.ns import qn
+    RED   = RGBColor(0xFF, 0x00, 0x00)
+    BLACK = RGBColor(0x00, 0x00, 0x00)
 
     for shape in slide.shapes:
         if not shape.has_text_frame:
             continue
+        full_text = shape.text_frame.text
+        if "本週新增" not in full_text or "戶" not in full_text:
+            continue
         for para in shape.text_frame.paragraphs:
-            for run in para.runs:
-                if "本週新增" in run.text and "戶" in run.text:
-                    run.text = re.sub(r"本週新增\s*\d+\s*戶",
-                                      f"本週新增 {weekly_new} 戶", run.text)
-                    if weekly_new > 0:
-                        run.font.color.rgb = RED
+            runs = para.runs
+            # 找「本週新增」run 的下一個 run（即數字 run）
+            for i, run in enumerate(runs):
+                if "本週新增" in run.text and i + 1 < len(runs):
+                    num_run = runs[i + 1]
+                    num_run.text = str(weekly_new)
+                    num_run.font.color.rgb = RED if weekly_new > 0 else BLACK
+                    break
+            else:
+                # fallback：整段文字在同一個 run
+                for run in runs:
+                    if "本週新增" in run.text and "戶" in run.text:
+                        run.text = re.sub(r"本週新增\s*\d+\s*戶",
+                                          f"本週新增 {weekly_new} 戶", run.text)
+                        run.font.color.rgb = RED if weekly_new > 0 else BLACK
 
 
 def update_monthly_shapes(slide, monthly):
