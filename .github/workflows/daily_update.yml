@@ -9,6 +9,9 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      models: read
 
     steps:
       - name: Checkout repository
