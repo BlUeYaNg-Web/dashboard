@@ -266,30 +266,8 @@ def generate_chips():
 investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
 
     else:
-        prompt = f"""今天是 {today}（台灣時間），今日為非交易日。請以最近交易日為基準，生成台股籌碼報告。
-直接輸出 JSON，不加說明：
-{{
-  "date": "{today}",
-  "taiex": "指數（漲跌點/漲跌%）",
-  "volume": "成交量億元",
-  "sentiment": "情緒",
-  "foreign": 外資億元,
-  "investment_trust": 投信億元,
-  "dealer": 自營商億元,
-  "foreign_streak": "連續描述",
-  "trust_streak": "連續描述",
-  "margin": {{"balance": "億元", "change": "變動", "usage_rate": "使用率%"}},
-  "short": {{"balance": "萬張", "change": "變動"}},
-  "futures": {{"foreign_net": 口數, "direction": "多/空單", "put_call_ratio": PCR, "pc_bias": "描述"}},
-  "top_buy": [{{"stock": "名稱 代號", "shares": "+張數", "who": "外資/投信"}}],
-  "top_sell": [{{"stock": "名稱 代號", "shares": "-張數", "who": "外資/自營商"}}],
-  "summary": "摘要3-5句",
-  "causality": ["【因】→【果】"],
-  "investment_advice": [{{"stock":"名稱 代號","verdict":"謹慎/觀察/可留意","reason":"原因","risk":"風險"}}],
-  "recommendations": [{{"stock":"名稱 代號","reason":"推薦","risk":"風險"}}],
-  "disclaimer": "⚠️ 以上僅為籌碼面分析參考，不構成投資建議，投資人須自行判斷風險。"
-}}
-top_buy/top_sell 各5檔，investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
+        print("  非交易日，保留最後一次資料，不更新。")
+        return
 
     text = call_api(client, prompt, max_tokens=3000)
     data = parse_json(text)
