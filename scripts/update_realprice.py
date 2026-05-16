@@ -179,7 +179,10 @@ def get_building_stats(rows, keyword, prev_total):
 
 
 def update_weekly_text(slide, weekly_new):
-    """更新投影片上「本週新增 N 戶」"""
+    """更新投影片上「本週新增 N 戶」，有新增時數字顯示紅色。"""
+    from pptx.dml.color import RGBColor
+    RED = RGBColor(0xFF, 0x00, 0x00)
+
     for shape in slide.shapes:
         if not shape.has_text_frame:
             continue
@@ -188,6 +191,8 @@ def update_weekly_text(slide, weekly_new):
                 if "本週新增" in run.text and "戶" in run.text:
                     run.text = re.sub(r"本週新增\s*\d+\s*戶",
                                       f"本週新增 {weekly_new} 戶", run.text)
+                    if weekly_new > 0:
+                        run.font.color.rgb = RED
 
 
 def update_monthly_shapes(slide, monthly):
@@ -241,16 +246,17 @@ def _get_table_font_template(table):
     return font_name, font_size, bold, alignment
 
 
-def _write_cell(cell, text, font_name, font_size, bold, alignment):
-    """清空格子並以指定格式寫入文字，保持原始字體樣式。"""
-    from pptx.enum.text import PP_ALIGN
-    from lxml import etree
-    import copy
+def _write_cell(cell, text, font_name, font_size, bold, alignment, color_rgb=None):
+    """
+    清空格子並以指定格式寫入文字。
+    color_rgb: RGBColor 物件，None 表示繼承原色（不強制設定）。
+    """
+    from pptx.dml.color import RGBColor
 
     tf = cell.text_frame
     tf.word_wrap = False
 
-    # 清除所有段落內容，只保留第一個段落
+    # 清除所有段落，只保留第一個
     for para in tf.paragraphs[1:]:
         p_elem = para._p
         p_elem.getparent().remove(p_elem)
@@ -260,8 +266,7 @@ def _write_cell(cell, text, font_name, font_size, bold, alignment):
 
     # 清除現有 runs
     for run in para.runs:
-        r_elem = run._r
-        r_elem.getparent().remove(r_elem)
+        run._r.getparent().remove(run._r)
 
     run = para.add_run()
     run.text = text
@@ -270,11 +275,14 @@ def _write_cell(cell, text, font_name, font_size, bold, alignment):
         run.font.size = font_size
     if bold is not None:
         run.font.bold = bold
+    if color_rgb is not None:
+        run.font.color.rgb = color_rgb
 
 
 def update_price_table(slide, weekly_txs):
     """
-    根據本週新交易更新成交價格矩陣，完整保留原始字體格式。
+    根據本週新交易更新成交價格矩陣。
+    本週新增的格子字體改為紅色，方便開啟後一眼辨識。
     戶別樓層格式範例：丙/F02-06F/六樓
       → 解析樓層 '6F'、戶別前綴 'F02'
     """
@@ -290,6 +298,8 @@ def update_price_table(slide, weekly_txs):
                        for r in range(len(table.rows))]
 
         # 從此表格取得字體範本（確保與同表格其他格子一致）
+        from pptx.dml.color import RGBColor
+        RED = RGBColor(0xFF, 0x00, 0x00)
         font_name, font_size, bold, alignment = _get_table_font_template(table)
 
         for tx in weekly_txs:
@@ -327,9 +337,9 @@ def update_price_table(slide, weekly_txs):
             if row_idx is not None and col_idx is not None:
                 cell = table.rows[row_idx].cells[col_idx]
                 price_text = f"{price}萬"
-                _write_cell(cell, price_text, font_name, font_size, bold, alignment)
-                print(f"    更新 {floor_label}/{unit_prefix} → {price_text} "
-                      f"[{font_name} {font_size//12700 if font_size else '?'}pt]")
+                _write_cell(cell, price_text, font_name, font_size, bold, alignment,
+                            color_rgb=RED)
+                print(f"    更新 {floor_label}/{unit_prefix} → {price_text} [紅色]")
             else:
                 print(f"    找不到對應格子：{floor_label}/{unit_prefix}")
 
