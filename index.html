@@ -26,6 +26,8 @@
     cursor: pointer; font-size: 12px; transition: all 0.2s;
   }
   .refresh-btn:hover { background: rgba(74,144,217,0.15); border-color: rgba(74,144,217,0.4); color: #7aaede; }
+  .last-update-badge { font-size: 11px; color: #27AE60; background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.25); padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+  .last-update-badge:empty { display: none; }
 
   /* ── 主格線 3欄 ── */
   .main-grid {
@@ -262,6 +264,7 @@
   </div>
   <div class="navbar-right">
     <span class="time" id="now-time"></span>
+    <span class="last-update-badge" id="last-update" title="資料最後更新時間"></span>
     <button class="refresh-btn" onclick="location.reload()">⟳ 重新整理</button>
   </div>
 </div>
@@ -631,6 +634,15 @@ function renderChips(r) {
   // ── stocks：多空排行 + 投資建議 ──
   let stocks = '';
 
+  // 固定自選股
+  const watchlist = ['00403A', '00981A'];
+  stocks += `<div class="chips-section-title">⭐ 自選股追蹤</div>`;
+  stocks += `<div class="stock-rank-box" style="margin-bottom:8px">`;
+  stocks += watchlist.map(code => `<div class="stock-rank-item">
+    <span class="stock-rank-name">${code}</span>
+  </div>`).join('');
+  stocks += `</div>`;
+
   if (r.top_buy?.length || r.top_sell?.length) {
     stocks += `<div class="stock-rank-grid">`;
     if (r.top_buy?.length) {
@@ -671,20 +683,26 @@ function renderChips(r) {
         ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
       </div>`;
     }).join('');
-  } else if (!r.top_buy?.length) { stocks = empty(); }
+  }
 
   document.getElementById('chips-stocks').innerHTML = stocks;
 
   // ── recommend：額外推薦 ──
-  let recommend = '';
+  const watchlist2 = ['00403A', '00981A'];
+  let recommend = `<div class="chips-section-title">⭐ 自選股追蹤</div>`;
+  recommend += `<div class="stock-rank-box" style="margin-bottom:8px">`;
+  recommend += watchlist2.map(code => `<div class="stock-rank-item">
+    <span class="stock-rank-name">${code}</span>
+  </div>`).join('');
+  recommend += `</div>`;
   if (r.recommendations?.length) {
-    recommend = r.recommendations.map(item => `<div class="news-item">
+    recommend += r.recommendations.map(item => `<div class="news-item">
       <div class="news-title" style="font-size:14px;">${item.stock}</div>
       <div class="news-summary">${item.reason}</div>
       ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
     </div>`).join('');
     if (r.disclaimer) recommend += `<div class="disclaimer">${r.disclaimer}</div>`;
-  } else { recommend = empty(); }
+  }
   document.getElementById('chips-recommend').innerHTML = recommend;
 }
 
@@ -910,6 +928,10 @@ async function loadAll() {
   setStatus('pptx', !!pptx); renderPptx(pptx);
   setStatus('forex', !!forex); renderForex(forex, forexHist);
   renderForexTicker(forex);
+
+  const updatedAt = (news && news.fetched_at) || (forex && forex.fetched_at) || '';
+  const el = document.getElementById('last-update');
+  if (el && updatedAt) el.textContent = '最後更新 ' + updatedAt;
 }
 
 loadAll();
