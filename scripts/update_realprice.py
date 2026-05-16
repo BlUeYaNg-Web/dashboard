@@ -109,16 +109,16 @@ def fetch_datazen():
     return {}
 
 
-def get_building_stats(rows, keyword, ref_date):
+def get_building_stats(rows, keyword, prev_total):
     """
     計算建案統計資料。
+    本週新增 = 本週檔案總筆數 - 上週檔案總筆數（prev_total）
+
     欄位索引（0-based）：
       0=執行日期, 1=登錄日期, 2=所在區域, 3=建案名稱,
       4=戶別樓層, 5=平均單價, 9=坪數（若有）
     """
-    week_start = ref_date - timedelta(days=7)
     monthly = {}
-    weekly_txs = []
     all_txs = []
 
     for row in rows:
@@ -141,29 +141,35 @@ def get_building_stats(rows, keyword, ref_date):
             area = round(float(area_m.group(1)), 2)
 
         monthly[reg_date.month] = monthly.get(reg_date.month, 0) + 1
-        tx = {"date": reg_date, "floor_unit": floor_unit, "price": price, "area": area}
-        all_txs.append(tx)
-        if reg_date > week_start:
-            weekly_txs.append(tx)
+        all_txs.append({"date": reg_date, "floor_unit": floor_unit,
+                         "price": price, "area": area})
 
-    weekly_new = len(weekly_txs)
+    current_total = len(all_txs)
+
+    # 本週新增 = 本週總筆數 - 上週總筆數
+    weekly_new = max(0, current_total - prev_total) if prev_total is not None else 0
+
+    # 本週新增的交易（取最新的 weekly_new 筆，即尾端新增部分）
+    all_txs_sorted = sorted(all_txs, key=lambda x: x["date"])
+    weekly_txs = all_txs_sorted[-weekly_new:] if weekly_new > 0 else []
 
     # 最新成交
-    latest = max(all_txs, key=lambda x: x["date"]) if all_txs else {}
+    latest = all_txs_sorted[-1] if all_txs_sorted else {}
     latest_price = latest.get("price")
     latest_area = latest.get("area")
 
-    # 乾旱週數：距離最後一筆交易幾週
+    # 乾旱週數
     if weekly_new > 0:
         weeks_dry = 0
-    elif all_txs:
-        last_date = max(t["date"] for t in all_txs)
-        weeks_dry = max(0, (ref_date - last_date).days // 7)
+    elif all_txs_sorted:
+        last_date = all_txs_sorted[-1]["date"]
+        weeks_dry = max(0, (datetime.now() - last_date).days // 7)
     else:
         weeks_dry = None
 
     return {
         "weekly_new": weekly_new,
+        "current_total": current_total,
         "monthly": monthly,
         "latest_price": latest_price,
         "latest_area": latest_area,
@@ -368,15 +374,27 @@ def main():
 
     prs = Presentation(src_path)
 
-    # 4. 逐建案計算 + 更新 PPTX
+    # 4. 讀取上週各建案筆數（存於 pptx_update.json 的 prev_totals）
+    prev_totals = {}
+    try:
+        with open(JSON_PATH, encoding="utf-8") as f:
+            prev_json = json.load(f)
+        for c in prev_json.get("cases", []):
+            prev_totals[c["name"]] = c.get("total_records", None)
+        print(f"  讀取上週筆數：{prev_totals}")
+    except Exception:
+        print("  無上週資料，本週新增將顯示 0")
+
+    # 5. 逐建案計算 + 更新 PPTX
     cases = []
     for keyword, display in BUILDINGS:
-        stats = get_building_stats(rows, keyword, today)
-        print(f"  {display}: 本週 {stats['weekly_new']} 戶 | "
-              f"最新 {stats['latest_price']} 萬 | "
-              f"乾旱 {stats['weeks_dry']} 週")
+        prev_total = prev_totals.get(display)
+        stats = get_building_stats(rows, keyword, prev_total)
+        print(f"  {display}: 本週新增 {stats['weekly_new']} 戶 "
+              f"(上週 {prev_total} → 本週 {stats['current_total']}) | "
+              f"最新 {stats['latest_price']} 萬 | 乾旱 {stats['weeks_dry']} 週")
 
-        # 找所有含此建案名稱的投影片
+        # 找所有含此建案名稱的投影片並更新
         for slide in prs.slides:
             slide_text = " ".join(
                 s.text_frame.text for s in slide.shapes if s.has_text_frame
@@ -390,18 +408,19 @@ def main():
         cases.append({
             "name": display,
             "weekly_new": stats["weekly_new"],
+            "total_records": stats["current_total"],   # 存本週總筆數供下週比對
             "latest_price": stats["latest_price"],
             "latest_area": stats["latest_area"],
             "weeks_dry": stats["weeks_dry"],
         })
 
-    # 5. 儲存新檔名
+    # 6. 儲存新檔名
     new_name = f"{PPTX_BASENAME}{date_tag}自動更新.pptx"
     new_path = os.path.join(PPTX_DIR, new_name)
     prs.save(new_path)
     print(f"PPTX 已儲存：{new_name}")
 
-    # 6. 更新 pptx_update.json
+    # 7. 更新 pptx_update.json
     json_data = {
         "run_at": run_at,
         "output_file": new_path,
