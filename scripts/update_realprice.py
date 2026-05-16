@@ -203,20 +203,88 @@ def update_monthly_shapes(slide, monthly):
                 break
 
 
+def _get_table_font_template(table):
+    """
+    從表格中找第一個有內容的價格格子，取出字體設定作為範本。
+    回傳 (font_name, font_size, bold, para_alignment)
+    """
+    from pptx.enum.text import PP_ALIGN
+    font_name = "微軟正黑體"
+    font_size = None
+    bold = None
+    alignment = PP_ALIGN.CENTER
+
+    for r, row in enumerate(table.rows):
+        if r < 2:
+            continue  # 跳過標題列
+        for c, cell in enumerate(row.cells):
+            if c == 0:
+                continue  # 跳過樓層欄
+            text = cell.text.strip()
+            if "萬" not in text:
+                continue
+            tf = cell.text_frame
+            if tf.paragraphs:
+                alignment = tf.paragraphs[0].alignment or PP_ALIGN.CENTER
+                for run in tf.paragraphs[0].runs:
+                    font = run.font
+                    font_name = font.name or "微軟正黑體"
+                    font_size = font.size  # EMU 單位，None 表示繼承
+                    bold = font.bold
+                    return font_name, font_size, bold, alignment
+    return font_name, font_size, bold, alignment
+
+
+def _write_cell(cell, text, font_name, font_size, bold, alignment):
+    """清空格子並以指定格式寫入文字，保持原始字體樣式。"""
+    from pptx.enum.text import PP_ALIGN
+    from lxml import etree
+    import copy
+
+    tf = cell.text_frame
+    tf.word_wrap = False
+
+    # 清除所有段落內容，只保留第一個段落
+    for para in tf.paragraphs[1:]:
+        p_elem = para._p
+        p_elem.getparent().remove(p_elem)
+
+    para = tf.paragraphs[0]
+    para.alignment = alignment
+
+    # 清除現有 runs
+    for run in para.runs:
+        r_elem = run._r
+        r_elem.getparent().remove(r_elem)
+
+    run = para.add_run()
+    run.text = text
+    run.font.name = font_name
+    if font_size is not None:
+        run.font.size = font_size
+    if bold is not None:
+        run.font.bold = bold
+
+
 def update_price_table(slide, weekly_txs):
     """
-    根據本週新交易更新成交價格矩陣。
+    根據本週新交易更新成交價格矩陣，完整保留原始字體格式。
     戶別樓層格式範例：丙/F02-06F/六樓
-      → 取第二段 'F02-06F'，解析樓層 '6F'、戶別前綴 'F02'
+      → 解析樓層 '6F'、戶別前綴 'F02'
     """
     for shape in slide.shapes:
         if shape.shape_type != 19:  # 19 = TABLE
             continue
+        if shape.name in ("表格 10", "表格 7"):  # 跳過建案資訊表
+            continue
+
         table = shape.table
-        # 讀取欄位標題（Row 0）和樓層標題（Col 0）
         col_headers = [c.text.strip() for c in table.rows[0].cells]
         row_headers = [table.rows[r].cells[0].text.strip()
                        for r in range(len(table.rows))]
+
+        # 從此表格取得字體範本（確保與同表格其他格子一致）
+        font_name, font_size, bold, alignment = _get_table_font_template(table)
 
         for tx in weekly_txs:
             floor_unit = tx.get("floor_unit", "")
@@ -224,33 +292,40 @@ def update_price_table(slide, weekly_txs):
             if not price:
                 continue
 
-            # 解析樓層（例：06F → 6F）
+            # 解析樓層：取數字部分，去除前導零（06 → 6）
             floor_m = re.search(r"(\d+)[Ff]", floor_unit)
             if not floor_m:
                 continue
             floor_label = f"{int(floor_m.group(1))}F"
 
-            # 解析戶別（取第二段的字母前綴）
+            # 解析戶別：取第二段（以 / 分隔）的字母前綴
             parts = floor_unit.split("/")
             unit_prefix = ""
             if len(parts) >= 2:
-                unit_m = re.match(r"([A-Za-z]+)", parts[1].strip())
+                unit_m = re.match(r"([A-Za-z]+\d*)", parts[1].strip())
                 if unit_m:
                     unit_prefix = unit_m.group(1).upper()
 
-            # 在表格中找對應位置
+            # 在表格中找對應位置（完全匹配優先，再試前綴匹配）
             row_idx = next((i for i, h in enumerate(row_headers)
                             if h == floor_label), None)
-            col_idx = next((i for i, h in enumerate(col_headers)
-                            if h.upper() == unit_prefix or
-                            h.upper().startswith(unit_prefix)), None)
+            col_idx = next(
+                (i for i, h in enumerate(col_headers) if h.upper() == unit_prefix),
+                next(
+                    (i for i, h in enumerate(col_headers)
+                     if h.upper().startswith(unit_prefix) and unit_prefix),
+                    None,
+                ),
+            )
 
             if row_idx is not None and col_idx is not None:
                 cell = table.rows[row_idx].cells[col_idx]
-                cell.text_frame.paragraphs[0].runs[0].text = f"{price}萬" \
-                    if cell.text_frame.paragraphs[0].runs \
-                    else f"{price}萬"
-                print(f"    更新 {floor_label}/{unit_prefix} → {price}萬")
+                price_text = f"{price}萬"
+                _write_cell(cell, price_text, font_name, font_size, bold, alignment)
+                print(f"    更新 {floor_label}/{unit_prefix} → {price_text} "
+                      f"[{font_name} {font_size//12700 if font_size else '?'}pt]")
+            else:
+                print(f"    找不到對應格子：{floor_label}/{unit_prefix}")
 
 
 def find_latest_pptx(pptx_dir, basename):
