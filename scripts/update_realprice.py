@@ -1,0 +1,352 @@
+#!/usr/bin/env python3
+"""
+update_realprice.py
+每週日 13:00 在本機執行：
+1. 從 Google Sheets 抓取最新實價登錄資料
+2. 從 dualtaipei.datazen.info 交叉比對
+3. 更新 PPTX（本週新增、月份統計、成交價格）
+4. 儲存新檔名（含當週日期）
+5. 更新 results/pptx_update.json 並 git push
+"""
+
+import csv
+import json
+import os
+import re
+import subprocess
+import sys
+import glob
+from datetime import datetime, timedelta
+from io import StringIO
+
+import requests
+from pptx import Presentation
+
+# ===== 路徑設定 =====
+SHEETS_CSV_URL = (
+    "https://docs.google.com/spreadsheets/d/e/"
+    "2PACX-1vRUubgSmL8T3f1V4k19nAJXcezDryyyRCrvZPFfn9o2tA5nMkjyzWw2J45kjARXpkM07wscc7_ykclo"
+    "/pub?gid=0&single=true&output=csv"
+)
+DATAZEN_URL = "https://dualtaipei.datazen.info/"
+
+PPTX_DIR = r"I:\我的雲端硬碟\家泰嘉潤丰藏JANU\03.建設公司\01.業主回報\週報"
+PPTX_BASENAME = "土城區實價登錄明細"
+
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JSON_PATH = os.path.join(REPO_DIR, "results", "pptx_update.json")
+
+# ===== 建案對應 =====
+# (Google Sheets 關鍵字, PPTX 顯示名稱)
+BUILDINGS = [
+    ("丰藏",    "丰藏"),
+    ("台信琢岳", "台信琢岳"),
+    ("紅布朗",  "紅布朗花園"),
+    ("寶佳淳青", "寶佳淳青"),
+    ("松陽馥麗", "松陽馥麗"),
+    ("新濠岳",  "新濠岳"),
+    ("朗沐",    "朗沐"),
+    ("合康雙匯", "合康雙匯"),
+    ("和耀美家", "和耀美家雅居"),
+    ("迴東騰",  "迴東騰"),
+    ("天好運",  "天好運"),
+    ("若水秧翠", "若水秧翠"),
+]
+
+MONTH_CN = {
+    "一月": 1, "二月": 2, "三月": 3, "四月": 4,
+    "五月": 5, "六月": 6, "七月": 7, "八月": 8,
+    "九月": 9, "十月": 10, "十一月": 11, "十二月": 12,
+}
+
+
+def roc_to_date(roc_str):
+    """民國日期字串 YYYMMDD → datetime，失敗回傳 None"""
+    try:
+        s = str(int(float(str(roc_str).strip())))
+        if len(s) == 7:
+            return datetime(int(s[:3]) + 1911, int(s[3:5]), int(s[5:7]))
+    except Exception:
+        pass
+    return None
+
+
+def parse_price(price_str):
+    """'87.38萬' → 87.38，失敗回傳 None"""
+    m = re.match(r"([\d.]+)萬", str(price_str).strip())
+    return round(float(m.group(1)), 2) if m else None
+
+
+def fetch_sheets(url):
+    """下載 Google Sheets CSV，跳過前 2 列（metadata + 欄位標題）"""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept-Language": "zh-TW,zh;q=0.9",
+    }
+    r = requests.get(url, headers=headers, timeout=30)
+    r.raise_for_status()
+    r.encoding = "utf-8-sig"
+    rows = list(csv.reader(StringIO(r.text)))
+    # Row 0 = metadata, Row 1 = 欄位名稱, Row 2+ = 資料
+    return rows[2:] if len(rows) > 2 else []
+
+
+def fetch_datazen():
+    """
+    從 dualtaipei.datazen.info 抓取交叉比對資料。
+    回傳 dict: { 建案關鍵字: { '月': count, ... } }
+    若無法取得則回傳空 dict（不中斷主流程）。
+    """
+    try:
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        r = requests.get(DATAZEN_URL, headers=headers, timeout=15)
+        r.raise_for_status()
+        # TODO: 解析 datazen 頁面結構（依實際 HTML 調整）
+        # 目前先回傳空 dict，由 Google Sheets 資料為主
+        print("  [datazen] 取得資料（待解析）")
+    except Exception as e:
+        print(f"  [datazen] 無法取得：{e}（改以 Google Sheets 為主）")
+    return {}
+
+
+def get_building_stats(rows, keyword, ref_date):
+    """
+    計算建案統計資料。
+    欄位索引（0-based）：
+      0=執行日期, 1=登錄日期, 2=所在區域, 3=建案名稱,
+      4=戶別樓層, 5=平均單價, 9=坪數（若有）
+    """
+    week_start = ref_date - timedelta(days=7)
+    monthly = {}
+    weekly_txs = []
+    all_txs = []
+
+    for row in rows:
+        if len(row) < 6:
+            continue
+        name = row[3].strip() if len(row) > 3 else ""
+        if keyword not in name:
+            continue
+
+        reg_date = roc_to_date(row[1]) if len(row) > 1 else None
+        if not reg_date:
+            continue
+
+        price = parse_price(row[5]) if len(row) > 5 else None
+        floor_unit = row[4].strip() if len(row) > 4 else ""
+        area_raw = row[9].strip() if len(row) > 9 else ""
+        area = None
+        area_m = re.match(r"([\d.]+)", area_raw)
+        if area_m:
+            area = round(float(area_m.group(1)), 2)
+
+        monthly[reg_date.month] = monthly.get(reg_date.month, 0) + 1
+        tx = {"date": reg_date, "floor_unit": floor_unit, "price": price, "area": area}
+        all_txs.append(tx)
+        if reg_date > week_start:
+            weekly_txs.append(tx)
+
+    weekly_new = len(weekly_txs)
+
+    # 最新成交
+    latest = max(all_txs, key=lambda x: x["date"]) if all_txs else {}
+    latest_price = latest.get("price")
+    latest_area = latest.get("area")
+
+    # 乾旱週數：距離最後一筆交易幾週
+    if weekly_new > 0:
+        weeks_dry = 0
+    elif all_txs:
+        last_date = max(t["date"] for t in all_txs)
+        weeks_dry = max(0, (ref_date - last_date).days // 7)
+    else:
+        weeks_dry = None
+
+    return {
+        "weekly_new": weekly_new,
+        "monthly": monthly,
+        "latest_price": latest_price,
+        "latest_area": latest_area,
+        "weeks_dry": weeks_dry,
+        "weekly_txs": weekly_txs,
+    }
+
+
+def update_weekly_text(slide, weekly_new):
+    """更新投影片上「本週新增 N 戶」"""
+    for shape in slide.shapes:
+        if not shape.has_text_frame:
+            continue
+        for para in shape.text_frame.paragraphs:
+            for run in para.runs:
+                if "本週新增" in run.text and "戶" in run.text:
+                    run.text = re.sub(r"本週新增\s*\d+\s*戶",
+                                      f"本週新增 {weekly_new} 戶", run.text)
+
+
+def update_monthly_shapes(slide, monthly):
+    """更新投影片上矩形的月份統計"""
+    for shape in slide.shapes:
+        if not shape.has_text_frame:
+            continue
+        text = shape.text_frame.text.strip()
+        for cn, num in MONTH_CN.items():
+            if text.startswith(cn):
+                count = monthly.get(num, 0)
+                for para in shape.text_frame.paragraphs:
+                    for run in para.runs:
+                        run.text = re.sub(
+                            rf"({cn}[：:]\s*)\d+",
+                            rf"\g<1>{count}",
+                            run.text,
+                        )
+                break
+
+
+def update_price_table(slide, weekly_txs):
+    """
+    根據本週新交易更新成交價格矩陣。
+    戶別樓層格式範例：丙/F02-06F/六樓
+      → 取第二段 'F02-06F'，解析樓層 '6F'、戶別前綴 'F02'
+    """
+    for shape in slide.shapes:
+        if shape.shape_type != 19:  # 19 = TABLE
+            continue
+        table = shape.table
+        # 讀取欄位標題（Row 0）和樓層標題（Col 0）
+        col_headers = [c.text.strip() for c in table.rows[0].cells]
+        row_headers = [table.rows[r].cells[0].text.strip()
+                       for r in range(len(table.rows))]
+
+        for tx in weekly_txs:
+            floor_unit = tx.get("floor_unit", "")
+            price = tx.get("price")
+            if not price:
+                continue
+
+            # 解析樓層（例：06F → 6F）
+            floor_m = re.search(r"(\d+)[Ff]", floor_unit)
+            if not floor_m:
+                continue
+            floor_label = f"{int(floor_m.group(1))}F"
+
+            # 解析戶別（取第二段的字母前綴）
+            parts = floor_unit.split("/")
+            unit_prefix = ""
+            if len(parts) >= 2:
+                unit_m = re.match(r"([A-Za-z]+)", parts[1].strip())
+                if unit_m:
+                    unit_prefix = unit_m.group(1).upper()
+
+            # 在表格中找對應位置
+            row_idx = next((i for i, h in enumerate(row_headers)
+                            if h == floor_label), None)
+            col_idx = next((i for i, h in enumerate(col_headers)
+                            if h.upper() == unit_prefix or
+                            h.upper().startswith(unit_prefix)), None)
+
+            if row_idx is not None and col_idx is not None:
+                cell = table.rows[row_idx].cells[col_idx]
+                cell.text_frame.paragraphs[0].runs[0].text = f"{price}萬" \
+                    if cell.text_frame.paragraphs[0].runs \
+                    else f"{price}萬"
+                print(f"    更新 {floor_label}/{unit_prefix} → {price}萬")
+
+
+def find_latest_pptx(pptx_dir, basename):
+    """找資料夾中最新的對應 PPTX"""
+    pattern = os.path.join(pptx_dir, f"{basename}*.pptx")
+    files = glob.glob(pattern)
+    if not files:
+        raise FileNotFoundError(f"找不到 PPTX：{pattern}")
+    return max(files, key=os.path.getmtime)
+
+
+def main():
+    today = datetime.now()
+    date_tag = today.strftime("%y%m%d")       # e.g., 260516
+    run_at = today.strftime("%Y/%m/%d %H:%M")
+
+    print(f"[{run_at}] 開始更新實價登錄...")
+
+    # 1. Google Sheets 資料
+    print("下載 Google Sheets 資料...")
+    try:
+        rows = fetch_sheets(SHEETS_CSV_URL)
+        print(f"  取得 {len(rows)} 筆")
+    except Exception as e:
+        print(f"  失敗：{e}")
+        sys.exit(1)
+
+    # 2. Datazen 交叉比對（不中斷）
+    print("取得 datazen 資料...")
+    datazen = fetch_datazen()
+
+    # 3. 讀取 PPTX
+    print(f"尋找 PPTX 於：{PPTX_DIR}")
+    try:
+        src_path = find_latest_pptx(PPTX_DIR, PPTX_BASENAME)
+        print(f"  來源：{os.path.basename(src_path)}")
+    except FileNotFoundError as e:
+        print(f"  {e}")
+        sys.exit(1)
+
+    prs = Presentation(src_path)
+
+    # 4. 逐建案計算 + 更新 PPTX
+    cases = []
+    for keyword, display in BUILDINGS:
+        stats = get_building_stats(rows, keyword, today)
+        print(f"  {display}: 本週 {stats['weekly_new']} 戶 | "
+              f"最新 {stats['latest_price']} 萬 | "
+              f"乾旱 {stats['weeks_dry']} 週")
+
+        # 找所有含此建案名稱的投影片
+        for slide in prs.slides:
+            slide_text = " ".join(
+                s.text_frame.text for s in slide.shapes if s.has_text_frame
+            )
+            if display in slide_text or keyword in slide_text:
+                update_weekly_text(slide, stats["weekly_new"])
+                update_monthly_shapes(slide, stats["monthly"])
+                if stats["weekly_txs"]:
+                    update_price_table(slide, stats["weekly_txs"])
+
+        cases.append({
+            "name": display,
+            "weekly_new": stats["weekly_new"],
+            "latest_price": stats["latest_price"],
+            "latest_area": stats["latest_area"],
+            "weeks_dry": stats["weeks_dry"],
+        })
+
+    # 5. 儲存新檔名
+    new_name = f"{PPTX_BASENAME}{date_tag}自動更新.pptx"
+    new_path = os.path.join(PPTX_DIR, new_name)
+    prs.save(new_path)
+    print(f"PPTX 已儲存：{new_name}")
+
+    # 6. 更新 pptx_update.json
+    json_data = {
+        "run_at": run_at,
+        "output_file": new_path,
+        "cases": cases,
+    }
+    with open(JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=2)
+    print("pptx_update.json 已更新")
+
+    # 7. Git push
+    try:
+        subprocess.run(["git", "-C", REPO_DIR, "add", "results/pptx_update.json"],
+                       check=True)
+        subprocess.run(["git", "-C", REPO_DIR, "commit", "-m",
+                         f"Update 實價登錄 {run_at}"], check=True)
+        subprocess.run(["git", "-C", REPO_DIR, "push"], check=True)
+        print("Git push 完成 → 網頁自動更新")
+    except subprocess.CalledProcessError as e:
+        print(f"Git 操作失敗：{e}")
+
+
+if __name__ == "__main__":
+    main()
