@@ -430,7 +430,7 @@ def main():
                        check=True)
         subprocess.run(["git", "-C", REPO_DIR, "commit", "-m",
                          f"Update 實價登錄 {run_at}"], check=True)
-        subprocess.run(["git", "-C", REPO_DIR, "push"], check=True)
+        subprocess.run(["git", "-C", REPO_DIR, "push", "origin", "HEAD:main"], check=True)
         print("Git push 完成 → 網頁自動更新")
     except subprocess.CalledProcessError as e:
         print(f"Git 操作失敗：{e}")
