@@ -2,8 +2,10 @@ name: Daily Dashboard Update
 
 on:
   schedule:
-    # 每天 16:00 台灣時間（UTC+8）= 08:00 UTC，週一至週五
-    - cron: '0 8 * * 1-5'
+    # 每天 08:30 台灣時間（UTC+8）= 00:30 UTC，每天（含週末）
+    - cron: '30 0 * * *'
+    # 每天 17:00 台灣時間（UTC+8）= 09:00 UTC，每天（含週末）
+    - cron: '0 9 * * *'
   workflow_dispatch:
 
 jobs:
