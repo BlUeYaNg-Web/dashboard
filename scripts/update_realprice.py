@@ -2,33 +2,28 @@
 """
 update_realprice.py
 每週日 13:00 在本機執行：
-1. 從 Google Sheets 抓取最新實價登錄資料
-2. 從 dualtaipei.datazen.info 交叉比對
-3. 更新 PPTX（本週新增、月份統計、成交價格）
+1. 從 dualtaipei.datazen.info/newtaipei 抓取各建案累積交易筆數
+2. 與上週 pptx_update.json 比對，計算本週新增
+3. 更新 PPTX（本週新增 N 戶）
 4. 儲存新檔名（含當週日期）
 5. 更新 results/pptx_update.json 並 git push
 """
 
-import csv
 import json
 import os
 import re
 import subprocess
 import sys
 import glob
-from datetime import datetime, timedelta
-from io import StringIO
+from datetime import datetime
+from urllib.parse import quote
 
 import requests
 from pptx import Presentation
 
 # ===== 路徑設定 =====
-SHEETS_CSV_URL = (
-    "https://docs.google.com/spreadsheets/d/e/"
-    "2PACX-1vRUubgSmL8T3f1V4k19nAJXcezDryyyRCrvZPFfn9o2tA5nMkjyzWw2J45kjARXpkM07wscc7_ykclo"
-    "/pub?gid=0&single=true&output=csv"
-)
-DATAZEN_URL = "https://dualtaipei.datazen.info/"
+DATAZEN_BASE = "https://dualtaipei.datazen.info"
+DATAZEN_CITY = "newtaipei"
 
 PPTX_DIR = r"I:\我的雲端硬碟\家泰嘉潤丰藏JANU\03.建設公司\01.業主回報\週報"
 PPTX_BASENAME = "土城區實價登錄明細"
@@ -37,20 +32,21 @@ REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_PATH = os.path.join(REPO_DIR, "results", "pptx_update.json")
 
 # ===== 建案對應 =====
-# (Google Sheets 關鍵字, PPTX 顯示名稱)
+# (datazen 建案名稱, JSON/PPTX 顯示名稱)
+# datazen 名稱為 None 表示尚未上 datazen，保留上週數值
 BUILDINGS = [
-    ("丰藏",    "丰藏"),
-    ("台信琢岳", "台信琢岳"),
-    ("紅布朗",  "紅布朗花園"),
-    ("寶佳淳青", "寶佳淳青"),
-    ("松陽馥麗", "松陽馥麗"),
-    ("新濠岳",  "新濠岳"),
-    ("朗沐",    "朗沐"),
-    ("合康雙匯", "合康雙匯"),
-    ("合耀美家", "合耀美家雅居"),
-    ("迴東騰",  "迴東騰"),
-    ("天好運",  "天好運"),
-    ("若水秧翠", "若水秧翠"),
+    ("家泰嘉潤丰藏", "丰藏"),
+    ("台信琢岳",     "台信琢岳"),
+    ("紅布朗花園",   "紅布朗花園"),
+    ("寶佳淳青",     "寶佳淳青"),
+    ("松陽馥麗",     "松陽馥麗"),
+    ("新濠岳",       "新濠岳"),
+    ("朗沐",         "朗沐"),
+    ("合康雙匯",     "合康雙匯"),
+    (None,           "合耀美家雅居"),   # 尚未上 datazen
+    ("迴東騰",       "迴東騰"),
+    (None,           "天好運"),         # 尚未上 datazen
+    ("若水秧翠",     "若水秧翠"),
 ]
 
 MONTH_CN = {
@@ -60,130 +56,72 @@ MONTH_CN = {
 }
 
 
-def roc_to_date(roc_str):
-    """民國日期字串 YYYMMDD → datetime，失敗回傳 None"""
-    try:
-        s = str(int(float(str(roc_str).strip())))
-        if len(s) == 7:
-            return datetime(int(s[:3]) + 1911, int(s[3:5]), int(s[5:7]))
-    except Exception:
-        pass
-    return None
-
-
-def parse_price(price_str):
-    """'87.38萬' → 87.38，失敗回傳 None"""
-    m = re.match(r"([\d.]+)萬", str(price_str).strip())
-    return round(float(m.group(1)), 2) if m else None
-
-
-def fetch_sheets(url):
-    """下載 Google Sheets CSV，跳過前 2 列（metadata + 欄位標題）"""
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        "Accept-Language": "zh-TW,zh;q=0.9",
-    }
-    r = requests.get(url, headers=headers, timeout=30)
+def get_datazen_build_id() -> str:
+    """從 datazen 首頁的 __NEXT_DATA__ 取得 Next.js buildId"""
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    r = requests.get(f"{DATAZEN_BASE}/{DATAZEN_CITY}", headers=headers, timeout=20)
     r.raise_for_status()
-    r.encoding = "utf-8-sig"
-    rows = list(csv.reader(StringIO(r.text)))
-    # Row 0 = metadata, Row 1 = 欄位名稱, Row 2+ = 資料
-    return rows[2:] if len(rows) > 2 else []
+    m = re.search(r'"buildId":"([^"]+)"', r.text)
+    if not m:
+        raise ValueError("無法從 datazen 取得 buildId")
+    return m.group(1)
 
 
-def fetch_datazen():
+def fetch_datazen_project(build_id: str, name: str) -> dict | None:
     """
-    從 dualtaipei.datazen.info 抓取交叉比對資料。
-    回傳 dict: { 建案關鍵字: { '月': count, ... } }
-    若無法取得則回傳空 dict（不中斷主流程）。
+    抓取特定建案的累積交易資料。
+    回傳 dict 或 None（建案不存在）。
     """
-    try:
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-        r = requests.get(DATAZEN_URL, headers=headers, timeout=15)
-        r.raise_for_status()
-        # TODO: 解析 datazen 頁面結構（依實際 HTML 調整）
-        # 目前先回傳空 dict，由 Google Sheets 資料為主
-        print("  [datazen] 取得資料（待解析）")
-    except Exception as e:
-        print(f"  [datazen] 無法取得：{e}（改以 Google Sheets 為主）")
-    return {}
+    url = (f"{DATAZEN_BASE}/_next/data/{build_id}"
+           f"/{DATAZEN_CITY}/project/{quote(name)}.json")
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    r = requests.get(url, headers=headers, timeout=20)
+    r.raise_for_status()
+    project = r.json().get("pageProps", {}).get("project")
+    if not project or not project.get("name"):
+        return None
+    return {
+        "transactionCount": project.get("transactionCount", 0),
+        "avgUnitPrice":     project.get("avgUnitPrice"),
+        "avgArea":          project.get("avgArea"),
+        "lastTransaction":  project.get("lastTransaction"),
+    }
 
 
-def get_building_stats(rows, keyword, prev_total, prev_weeks_dry=None,
-                        prev_latest_price=None, prev_latest_area=None):
+def calc_stats(datazen_data, prev_total, prev_weeks_dry,
+               prev_latest_price, prev_latest_area):
     """
-    計算建案統計資料。
-    本週新增 = 本週總筆數 - 上週總筆數（prev_total）
-
-    欄位索引（0-based）：
-      0=執行日期, 1=登錄日期, 2=所在區域, 3=建案名稱,
-      4=戶別樓層, 5=平均單價, 9=坪數（若有）
+    根據 datazen 資料與上週數值計算本週統計。
+    datazen_data 為 None 時（建案尚未上 datazen）保留上週數值。
     """
-    monthly = {}
-    all_txs = []
+    if datazen_data is None:
+        # 建案尚未上 datazen，維持上週數值並累加乾旱週數
+        return {
+            "weekly_new":    0,
+            "current_total": prev_total or 0,
+            "latest_price":  prev_latest_price,
+            "latest_area":   prev_latest_area,
+            "weeks_dry":     (prev_weeks_dry or 0) + 1,
+        }
 
-    for row in rows:
-        if len(row) < 6:
-            continue
-        name = row[3].strip() if len(row) > 3 else ""
-        if keyword not in name:
-            continue
+    current_total = datazen_data["transactionCount"]
 
-        reg_date = roc_to_date(row[1]) if len(row) > 1 else None
-        if not reg_date:
-            continue
-
-        price = parse_price(row[5]) if len(row) > 5 else None
-        floor_unit = row[4].strip() if len(row) > 4 else ""
-        area_raw = row[9].strip() if len(row) > 9 else ""
-        area = None
-        area_m = re.match(r"([\d.]+)", area_raw)
-        if area_m:
-            area = round(float(area_m.group(1)), 2)
-
-        monthly[reg_date.month] = monthly.get(reg_date.month, 0) + 1
-        all_txs.append({"date": reg_date, "floor_unit": floor_unit,
-                         "price": price, "area": area})
-
-    current_total = len(all_txs)
-
-    # 防呆：若本週總筆數低於上週，視為資料異常，保留上週數值
-    data_error = False
+    # 防呆：筆數下降視為資料異常，保留上週
     if prev_total and prev_total > 0 and current_total < prev_total:
         print(f"    ⚠ 資料異常（{prev_total} → {current_total}），保留上週筆數")
         current_total = prev_total
-        data_error = True
-
-    # 本週新增 = 本週總筆數 - 上週總筆數
-    weekly_new = max(0, current_total - (prev_total or 0)) if not data_error else 0
-
-    all_txs_sorted = sorted(all_txs, key=lambda x: x["date"])
-    weekly_txs = all_txs_sorted[-weekly_new:] if weekly_new > 0 else []
-
-    # 最新成交：資料異常時沿用上週
-    if data_error:
-        latest_price = prev_latest_price
-        latest_area = prev_latest_area
+        weekly_new = 0
     else:
-        latest = all_txs_sorted[-1] if all_txs_sorted else {}
-        latest_price = latest.get("price")
-        latest_area = latest.get("area")
+        weekly_new = max(0, current_total - (prev_total or 0))
 
-    # 乾旱週數：累加制，以首次執行週為第 1 週
-    # 有新增 → 歸零；無新增 → 上週值 +1（若無上週資料則從 1 開始）
-    if weekly_new > 0:
-        weeks_dry = 0
-    else:
-        weeks_dry = (prev_weeks_dry if prev_weeks_dry is not None else 0) + 1
+    weeks_dry = 0 if weekly_new > 0 else (prev_weeks_dry or 0) + 1
 
     return {
-        "weekly_new": weekly_new,
+        "weekly_new":    weekly_new,
         "current_total": current_total,
-        "monthly": monthly,
-        "latest_price": latest_price,
-        "latest_area": latest_area,
-        "weeks_dry": weeks_dry,
-        "weekly_txs": weekly_txs,
+        "latest_price":  datazen_data["avgUnitPrice"],
+        "latest_area":   datazen_data["avgArea"],
+        "weeks_dry":     weeks_dry,
     }
 
 
@@ -389,20 +327,16 @@ def main():
 
     print(f"[{run_at}] 開始更新實價登錄...")
 
-    # 1. Google Sheets 資料
-    print("下載 Google Sheets 資料...")
+    # 1. 取得 datazen buildId
+    print("取得 datazen buildId...")
     try:
-        rows = fetch_sheets(SHEETS_CSV_URL)
-        print(f"  取得 {len(rows)} 筆")
+        build_id = get_datazen_build_id()
+        print(f"  buildId: {build_id}")
     except Exception as e:
         print(f"  失敗：{e}")
         sys.exit(1)
 
-    # 2. Datazen 交叉比對（不中斷）
-    print("取得 datazen 資料...")
-    datazen = fetch_datazen()
-
-    # 3. 讀取 PPTX
+    # 2. 讀取 PPTX
     print(f"尋找 PPTX 於：{PPTX_DIR}")
     try:
         src_path = find_latest_pptx(PPTX_DIR, PPTX_BASENAME)
@@ -431,38 +365,47 @@ def main():
     except Exception:
         print("  無上週資料，本週新增將顯示 0")
 
-    # 5. 逐建案計算 + 更新 PPTX
+    # 5. 逐建案抓 datazen + 更新 PPTX
     cases = []
-    for keyword, display in BUILDINGS:
+    for datazen_name, display in BUILDINGS:
         prev_total = prev_totals.get(display)
-        stats = get_building_stats(
-            rows, keyword, prev_total,
+
+        # 從 datazen 取資料
+        datazen_data = None
+        if datazen_name:
+            try:
+                datazen_data = fetch_datazen_project(build_id, datazen_name)
+                if datazen_data is None:
+                    print(f"  {display}: datazen 查無此建案")
+            except Exception as e:
+                print(f"  {display}: datazen 取得失敗 ({e})，保留上週數值")
+
+        stats = calc_stats(
+            datazen_data,
+            prev_total,
             prev_weeks_dry=prev_weeks_dry_map.get(display),
             prev_latest_price=prev_latest_price_map.get(display),
             prev_latest_area=prev_latest_area_map.get(display),
         )
         print(f"  {display}: 本週新增 {stats['weekly_new']} 戶 "
               f"(上週 {prev_total} → 本週 {stats['current_total']}) | "
-              f"最新 {stats['latest_price']} 萬 | 乾旱 {stats['weeks_dry']} 週")
+              f"均價 {stats['latest_price']} 萬/坪 | 乾旱 {stats['weeks_dry']} 週")
 
-        # 找所有含此建案名稱的投影片並更新
+        # 更新 PPTX「本週新增 N 戶」
         for slide in prs.slides:
             slide_text = " ".join(
                 s.text_frame.text for s in slide.shapes if s.has_text_frame
             )
-            if display in slide_text or keyword in slide_text:
+            if display in slide_text or (datazen_name and datazen_name in slide_text):
                 update_weekly_text(slide, stats["weekly_new"])
-                update_monthly_shapes(slide, stats["monthly"])
-                if stats["weekly_txs"]:
-                    update_price_table(slide, stats["weekly_txs"])
 
         cases.append({
-            "name": display,
-            "weekly_new": stats["weekly_new"],
-            "total_records": stats["current_total"],   # 存本週總筆數供下週比對
-            "latest_price": stats["latest_price"],
-            "latest_area": stats["latest_area"],
-            "weeks_dry": stats["weeks_dry"],
+            "name":          display,
+            "weekly_new":    stats["weekly_new"],
+            "total_records": stats["current_total"],
+            "latest_price":  stats["latest_price"],
+            "latest_area":   stats["latest_area"],
+            "weeks_dry":     stats["weeks_dry"],
         })
 
     # 6. 儲存新檔名
