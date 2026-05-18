@@ -1,65 +1,39 @@
 {
-  "fetched_at": "2026/05/18 14:58",
-  "total": 6,
+  "fetched_at": "2026/05/18 15:03",
+  "total": 3,
   "categories": {
     "台灣財經新聞": [
       {
-        "title": "台股被AI推飛：基金績效全面爆表、最高破百％",
-        "summary": "受AI題材持續推動，台灣半導體與電子零組件產業今年表現強勁，不僅企業獲利與評價同步上修，也帶動台股主動型基金繳出亮眼成績。",
+        "title": "每坪價差破50萬　台北市這兩區買新不如買舊",
+        "summary": "中信房屋研究報告顯示，台北市的中古屋與新成屋之間的單坪價差已達50萬元，讓許多買家選擇價格相對更靈活的中古屋。尤其中正區新成屋和老屋的差距尤為明顯。",
         "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%82%A1%E8%A2%ABai%E6%8E%A8%E9%A3%9B-%E5%9F%BA%E9%87%91%E7%B8%BE%E6%95%88%E5%85%A8%E9%9D%A2%E7%88%86%E8%A1%A8-%E6%9C%80%E9%AB%98%E7%A0%B4%E7%99%BE-064608456.html",
+        "url": "https://tw.news.yahoo.com/%E6%AF%8F%E5%9D%AA%E5%83%B9%E5%B7%AE%E7%A0%B450%E8%90%AC-%E5%8F%B0%E5%8C%97%E5%B8%82%E9%80%99%E5%85%A9%E5%8D%80%E8%B2%B7%E6%96%B0%E4%B8%8D%E5%A6%82%E8%B2%B7%E8%88%8A-065443792.html",
         "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "隨著AI題材的發展，市場信心回升，對於新成屋的需求可能會增強，帶來正面的房市影響。",
-        "sales_pitch": "如果你也想把握這個時機，來看看土城青埔特區的新成屋，這裡真的很不錯喔！"
+        "analysis": "在台北市新屋價格高漲的情況下，許多買家開始轉向性價比更高的中古屋，這可能會影響新成屋的銷售情況，不過對於土城區的青埔特區來說，依然擁有良好的發展潛力。",
+        "sales_pitch": "如果你在考慮投資，不妨看看青埔特區的新成屋，這裡的交通規劃和生活機能都在持續發展，讓你的投資更有保障。"
       },
       {
-        "title": "畢業季餐飲狂歡　餐飲優惠直接拉滿",
-        "summary": "學期接近尾聲，餐飲業者搶攻畢業與聚餐商機，紛紛推出學生與社群限定優惠，吸引年輕族群與團體客用餐。",
+        "title": "台股終場跌280點　「這些族群」逆勢走高",
+        "summary": "台北股市在18日明顯下跌，開盤就下滑76.54點，最終下跌280點，但有些特定族群表現出色，吸引投資者注意。",
         "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E7%95%A2%E6%A5%AD%E5%AD%A3%E9%A4%90%E9%A3%B2%E7%8B%82%E6%AD%A1-%E9%A4%90%E9%A3%B2%E5%84%AA%E6%83%A0%E7%9B%B4%E6%8E%A5%E6%8B%89%E6%BB%BF-064522593.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "餐飲行業的活躍可能會促進周邊房地產的交易，特別是在受年輕族群喜愛的區域。",
-        "sales_pitch": "在這活潑的季節，土城青埔特區的新成屋也許能成為您的聚會好去處！"
+        "url": "https://tw.news.yahoo.com/%E5%8F%B0%E8%82%A1%E7%B5%82%E5%A0%B4%E8%B7%8C280%E9%BB%9E-%E9%80%99%E4%BA%9B%E6%97%8F%E7%BE%A4-%E9%80%86%E5%8B%A2%E8%B5%B0%E9%AB%98-060037606.html",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "雖然股市整體下挫，但某些族群的強勢表現顯示出市場的多樣化，這可能會影響投資人的選擇，進而影響房地產市場的投資熱情。",
+        "sales_pitch": "市場波動之際，考慮在青埔特區的投資，可以助你抓住未來的增長機會！"
       }
     ],
     "房地產新聞": [
       {
         "title": "獨居時代來臨！全台一人宅占比達40.5%　室內格局設計轉向公共空間整合",
-        "summary": "隨著獨居現象增長，全台一人宅占比已達40.5%，使得室內設計逐漸轉向公共空間的整合，滿足獨居者的社交需求。",
+        "summary": "隨著獨居人口的增多，台灣一人住宅的比例已達到40.5%。這一趨勢促使室內設計更注重公共空間的整合，適合現代人的生活需求。",
         "source": "住展房屋網",
         "url": "https://www.myhousing.com.tw/p/p05/275801/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "這一趨勢顯示出對於小型住宅和公寓設計的需求增長，可能會促進相關區域的房價。",
-        "sales_pitch": "如果你也在考慮獨居生活，土城青埔特區的新成屋設計正好符合這種需求！"
-      },
-      {
-        "title": "央行：房市下行不致衝擊金融| 房產新訊",
-        "summary": "央行表示，雖然房市出現下行壓力，但不會對金融體系造成重大衝擊，市場穩定性仍可維持。",
-        "source": "Google新聞-房地產",
-        "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5NTGFvTVBBRUJnOExLVEw4LWEzSk9EUWVzb19mQXBTQm11cVExZ2JjcnpJUzhNeHQ0c3R6Y1JWUzNmdUxMckE5ellvWUFUakt5QURpcG50djJKdEl3?oc=5",
         "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "房市的穩定性對購房者來說是個好消息，尤其是在選擇新房時，可以減少風險。",
-        "sales_pitch": "在這個穩定的市場中，土城青埔特區的新成屋或許是您未來的理想選擇！"
+        "analysis": "獨居人口增長可能會推動小型住房或共居設施的需求，進而影響土城區的房市格局，以及開發方向。",
+        "sales_pitch": "這樣的趨勢讓我們在青埔特區的新成屋中看到了更大的生活潛力，吸引單身族群的關注！"
       }
     ],
     "中國財經經濟新聞": [],
-    "國際重大新聞": [
-      {
-        "title": "WHO declares Ebola outbreak in DR Congo an international emergency",
-        "summary": "The agency added that the outbreak, with around 246 cases and 80 deaths, does not meet the criteria of pandemic emergency.",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c2l2p0wwzzdo?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "全球健康危機可能會影響經濟，進而間接影響房地產市場，包括一人宅和新成屋的需求。"
-      },
-      {
-        "title": "Taiwan will not provoke conflict nor give up sovereignty, says president",
-        "summary": "Lai Ching-te made his first direct response to Trump and Xi's meeting where they discussed Taiwan independence.",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c7591gq10qko?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "政治穩定對於房市來說至關重要，這樣的表態可增強市場信心，促進購房決策。"
-      }
-    ]
+    "國際重大新聞": []
   }
 }
