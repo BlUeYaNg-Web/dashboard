@@ -13,9 +13,12 @@ RSS_FEEDS = {
         ("Yahoo財經",      "https://tw.news.yahoo.com/rss/finance"),
         ("TechNews科技新報", "https://technews.tw/feed/"),
         ("自由時報財經",    "https://news.ltn.com.tw/rss/business.xml"),
+        ("Google新聞-台灣財經", "https://news.google.com/rss/search?q=%E5%8F%B0%E7%81%A3+%E7%B6%93%E6%BF%9F+%E6%99%AF%E6%B0%A3&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"),
     ],
     "房地產新聞": [
         ("住展房屋網",     "https://www.myhousing.com.tw/feed"),
+        ("Google新聞-房地產", "https://news.google.com/rss/search?q=%E5%8F%B0%E7%81%A3+%E6%88%BF%E5%9C%B0%E7%94%A2+%E6%88%BF%E5%B8%82&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"),
+        ("Google新聞-房價",   "https://news.google.com/rss/search?q=%E6%88%BF%E5%83%B9+%E6%96%B0%E6%88%90%E5%B1%8B+%E8%B2%B7%E6%88%BF&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"),
     ],
     "中國財經經濟新聞": [
         ("BBC中文",        "https://feeds.bbci.co.uk/zhongwen/trad/rss.xml"),
