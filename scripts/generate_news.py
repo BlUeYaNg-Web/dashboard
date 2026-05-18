@@ -176,14 +176,14 @@ def generate_news():
 重要規則：
 1. url 必須直接複製上方提供的原始網址，絕對不可自行生成、猜測或修改
 2. 若某類別沒有文章，填入空陣列 []
-3. 每類選 2-4 則
+3. 每類選 5 則（不足 5 則則全選）
 4. 中國財經新聞不需要 sales_pitch
 5. sales_pitch 口語化，像朋友在聊天，不要書面廣告腔
 6. total 填入所有類別文章總數"""
 
     for attempt in range(MAX_RETRIES):
         try:
-            text = call_api(client, prompt, max_tokens=4000)
+            text = call_api(client, prompt, max_tokens=6000)
             data = parse_json(text)
             break
         except (json.JSONDecodeError, RuntimeError) as e:
