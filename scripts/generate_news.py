@@ -31,6 +31,14 @@ RSS_FEEDS = {
     ],
 }
 
+# 各類別是否需要 sales_pitch
+NEEDS_PITCH = {
+    "台灣財經新聞": True,
+    "房地產新聞": True,
+    "中國財經經濟新聞": False,
+    "國際重大新聞": True,
+}
+
 
 def fetch_rss(source_name, url, max_items=15):
     try:
@@ -39,29 +47,24 @@ def fetch_rss(source_name, url, max_items=15):
         root = ET.fromstring(r.content)
 
         items = []
-        # RSS 2.0
         for item in root.findall(".//item")[:max_items]:
             title = (item.findtext("title") or "").strip()
-            # <link> in RSS 2.0 is sometimes a text node, sometimes after a CDATA
             link = (item.findtext("link") or "").strip()
             if not link:
                 link_el = item.find("link")
                 if link_el is not None:
                     link = (link_el.text or "").strip()
-            desc = (item.findtext("description") or "").strip()[:200]
             if title and link:
-                items.append({"title": title, "url": link, "desc": desc, "source": source_name})
+                items.append({"title": title, "url": link, "source": source_name})
 
-        # Atom
         if not items:
             ns = {"a": "http://www.w3.org/2005/Atom"}
             for entry in root.findall(".//a:entry", ns)[:max_items]:
                 title = (entry.findtext("a:title", "", ns) or "").strip()
                 link_el = entry.find("a:link", ns)
                 link = (link_el.get("href", "") if link_el is not None else "").strip()
-                desc = (entry.findtext("a:summary", "", ns) or "").strip()[:200]
                 if title and link:
-                    items.append({"title": title, "url": link, "desc": desc, "source": source_name})
+                    items.append({"title": title, "url": link, "source": source_name})
 
         print(f"  {source_name}: {len(items)} 篇")
         return items
@@ -101,9 +104,55 @@ def build_article_list(articles):
     for i, a in enumerate(articles, 1):
         lines.append(f"{i}. [{a['source']}] {a['title']}")
         lines.append(f"   URL: {a['url']}")
-        if a['desc']:
-            lines.append(f"   摘要: {a['desc']}")
     return "\n".join(lines)
+
+
+def select_articles(client, today, category, articles, needs_pitch):
+    """針對單一類別，呼叫 AI 選出 5 篇並生成摘要"""
+    if not articles:
+        return []
+
+    article_text = build_article_list(articles[:10])
+
+    pitch_field = (
+        '\n        "sales_pitch": "口語化銷售說詞（1-2句，連結土城青埔特區新成屋，像朋友建議）",'
+        if needs_pitch else ""
+    )
+    pitch_rule = "6. sales_pitch 口語化，像朋友在聊天，不要書面廣告腔" if needs_pitch else ""
+
+    prompt = f"""今天是 {today}，以下是【{category}】的真實新聞列表：
+
+{article_text}
+
+請選出對「土城區新成屋銷售團隊」最有參考價值的 5 則（不足 5 則則全選），輸出 JSON 陣列，直接輸出不加說明：
+
+[
+  {{
+    "title": "使用原文標題，不要修改",
+    "summary": "2-3句中文客觀摘要",
+    "source": "媒體名稱",
+    "url": "直接複製上方原始URL，不可修改或自行生成",
+    "credibility": "⭐⭐⭐⭐",
+    "analysis": "對房市或景氣的影響分析（2句）",{pitch_field}
+  }}
+]
+
+規則：
+1. url 必須直接複製上方的原始網址
+2. 必須選滿 5 則（不足則全選）
+3. {pitch_rule}"""
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            text = call_api(client, prompt, max_tokens=3000)
+            result = parse_json(text)
+            if isinstance(result, list):
+                return result
+        except (json.JSONDecodeError, RuntimeError) as e:
+            print(f"  [{category}] 失敗({attempt+1}): {e}")
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(2 ** attempt)
+    return []
 
 
 def generate_news():
@@ -121,85 +170,29 @@ def generate_news():
         articles = []
         for source_name, url in sources:
             articles.extend(fetch_rss(source_name, url))
-        all_articles[category] = articles[:20]
+        all_articles[category] = articles
 
-    # 組建提示詞
-    sections = []
+    # 每類別各自呼叫 AI
+    categories_result = {}
     for category, articles in all_articles.items():
-        if articles:
-            sections.append(f"## {category}\n{build_article_list(articles)}")
+        print(f"\n處理 {category}（{len(articles)} 篇輸入）...")
+        needs_pitch = NEEDS_PITCH.get(category, True)
+        selected = select_articles(client, today, category, articles, needs_pitch)
+        categories_result[category] = selected
+        print(f"  -> 選出 {len(selected)} 篇")
 
-    articles_text = "\n\n".join(sections) if sections else "（RSS 抓取失敗，無文章）"
-
-    prompt = f"""今天是 {today}。以下是從各大媒體 RSS 抓取的【真實新聞】列表：
-
-{articles_text}
-
-請從上方真實新聞中，為「土城區新成屋」銷售團隊選出最重要的新聞，輸出以下格式 JSON，直接輸出不加說明：
-
-{{
-  "fetched_at": "{fetched_at}",
-  "total": 0,
-  "categories": {{
-    "台灣財經新聞": [
-      {{
-        "title": "使用原文標題，不要修改",
-        "summary": "2-3句客觀摘要",
-        "source": "媒體名稱",
-        "url": "直接複製上方列表中的原始URL，不可修改或自行生成",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "對房市或景氣的影響分析",
-        "sales_pitch": "口語化銷售說詞（1-2句，連結土城青埔特區新成屋優勢，像朋友建議而非廣告）"
-      }}
-    ],
-    "房地產新聞": [
-      {{
-        "title": "...", "summary": "...", "source": "...", "url": "...",
-        "credibility": "...", "analysis": "...", "sales_pitch": "..."
-      }}
-    ],
-    "中國財經經濟新聞": [
-      {{
-        "title": "...", "summary": "...", "source": "...", "url": "...",
-        "credibility": "...", "analysis": "..."
-      }}
-    ],
-    "國際重大新聞": [
-      {{
-        "title": "...", "summary": "...", "source": "...", "url": "...",
-        "credibility": "...", "analysis": "...", "sales_pitch": "..."
-      }}
-    ]
-  }}
-}}
-
-重要規則：
-1. url 必須直接複製上方提供的原始網址，絕對不可自行生成、猜測或修改
-2. 若某類別沒有文章，填入空陣列 []
-3. 每類選 5 則（不足 5 則則全選）
-4. 中國財經新聞不需要 sales_pitch
-5. sales_pitch 口語化，像朋友在聊天，不要書面廣告腔
-6. total 填入所有類別文章總數"""
-
-    for attempt in range(MAX_RETRIES):
-        try:
-            text = call_api(client, prompt, max_tokens=6000)
-            data = parse_json(text)
-            break
-        except (json.JSONDecodeError, RuntimeError) as e:
-            print(f"Failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
-            if attempt < MAX_RETRIES - 1:
-                time.sleep(2 ** attempt)
-            else:
-                raise
-
-    data["total"] = sum(len(v) for v in data["categories"].values())
+    total = sum(len(v) for v in categories_result.values())
+    data = {
+        "fetched_at": fetched_at,
+        "total": total,
+        "categories": categories_result,
+    }
 
     os.makedirs("results", exist_ok=True)
     with open("results/daily_news.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    print(f"\ndaily_news.json updated: {today} ({data['total']} 篇，含真實 URL)")
+    print(f"\ndaily_news.json updated: {today} ({total} 篇，含真實 URL)")
 
 
 if __name__ == "__main__":
