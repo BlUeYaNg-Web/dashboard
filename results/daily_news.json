@@ -1,39 +1,189 @@
 {
-  "fetched_at": "2026/05/18 15:03",
-  "total": 3,
+  "fetched_at": "2026/05/18 15:08",
+  "total": 20,
   "categories": {
     "台灣財經新聞": [
       {
         "title": "每坪價差破50萬　台北市這兩區買新不如買舊",
-        "summary": "中信房屋研究報告顯示，台北市的中古屋與新成屋之間的單坪價差已達50萬元，讓許多買家選擇價格相對更靈活的中古屋。尤其中正區新成屋和老屋的差距尤為明顯。",
+        "summary": "報導指出，台北市兩個區域的新房屋與舊房屋之間的價差已突破50萬元，顯示出新建物的價格壓力。這使得許多買家在選擇上可能會傾向於購買舊房。",
         "source": "Yahoo財經",
         "url": "https://tw.news.yahoo.com/%E6%AF%8F%E5%9D%AA%E5%83%B9%E5%B7%AE%E7%A0%B450%E8%90%AC-%E5%8F%B0%E5%8C%97%E5%B8%82%E9%80%99%E5%85%A9%E5%8D%80%E8%B2%B7%E6%96%B0%E4%B8%8D%E5%A6%82%E8%B2%B7%E8%88%8A-065443792.html",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "在台北市新屋價格高漲的情況下，許多買家開始轉向性價比更高的中古屋，這可能會影響新成屋的銷售情況，不過對於土城區的青埔特區來說，依然擁有良好的發展潛力。",
-        "sales_pitch": "如果你在考慮投資，不妨看看青埔特區的新成屋，這裡的交通規劃和生活機能都在持續發展，讓你的投資更有保障。"
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "由於新屋價高，可能會影響整體房市熱度，尤其是在台北市這樣競爭激烈的區域。對於土城區新成屋的銷售而言，這或許是一個促銷的好機會。",
+        "sales_pitch": "土城的青埔特區新成屋性價比高，有助於吸引那些希望用合理價格置辦房屋的買家，值得來看看！"
       },
       {
         "title": "台股終場跌280點　「這些族群」逆勢走高",
-        "summary": "台北股市在18日明顯下跌，開盤就下滑76.54點，最終下跌280點，但有些特定族群表現出色，吸引投資者注意。",
+        "summary": "台股在市場震盪中收盤下跌280點，但仍有一些特定族群表現出色。這顯示出不同產業間的資金流動趨勢。",
         "source": "Yahoo財經",
         "url": "https://tw.news.yahoo.com/%E5%8F%B0%E8%82%A1%E7%B5%82%E5%A0%B4%E8%B7%8C280%E9%BB%9E-%E9%80%99%E4%BA%9B%E6%97%8F%E7%BE%A4-%E9%80%86%E5%8B%A2%E8%B5%B0%E9%AB%98-060037606.html",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "雖然股市整體下挫，但某些族群的強勢表現顯示出市場的多樣化，這可能會影響投資人的選擇，進而影響房地產市場的投資熱情。",
-        "sales_pitch": "市場波動之際，考慮在青埔特區的投資，可以助你抓住未來的增長機會！"
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "雖然大盤表現不如預期，但某些族群仍逆勢上揚，顯示市場的分化情況。這可能影響投資者對土城區新成屋市場的信心。",
+        "sales_pitch": "在這樣的市場情況下，青埔特區的新成屋仍有潛力，是個不錯的選擇，值得把握！"
+      },
+      {
+        "title": "台積電權重成緊箍咒？金管會推ETF多元加掛　「這2檔」排除條款掀內鬥",
+        "summary": "報導提到台積電在市場中的權重過大，影響了ETF的運作，金管會因此推動更多元的投資選擇。此舉可能涉及市場調整的需求。",
+        "source": "Yahoo財經",
+        "url": "https://tw.news.yahoo.com/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%AC%8A%E9%87%8D%E6%88%90%E7%B7%8A%E7%AE%8D%E5%92%92-%E9%87%91%E7%AE%A1%E6%9C%83%E6%8E%A8etf%E5%A4%9A%E5%85%83%E5%8A%A0%E6%8E%9B-%E9%80%992%E6%AA%94-%E6%8E%92%E9%99%A4%E6%A2%9D%E6%AC%BE%E6%8E%80%E5%85%A7%E9%AC%A5-065300413.html",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "這一政策可能會間接影響投資者的情緒，造成資金流向變化，進一步影響房市表現。土城區的購屋需求也可能受此波及。",
+        "sales_pitch": "在這樣的市場環境中，投資土城青埔的新成屋，可以享受潛在未來增值的好機會！"
+      },
+      {
+        "title": "鄉林看旺新莊紅利，下半年加碼推鴻福段新案",
+        "summary": "新莊的土地市場逐漸升溫，鄉林預計在下半年推出新的建案，顯示對於該地區的發展信心。這可能促進周邊地區的房市。",
+        "source": "Yahoo財經",
+        "url": "https://tw.stock.yahoo.com/news/%E9%84%89%E6%9E%97%E7%9C%8B%E6%97%BA%E6%96%B0%E8%8E%8A%E7%B4%85%E5%88%A9-%E4%B8%8B%E5%8D%8A%E5%B9%B4%E5%8A%A0%E7%A2%BC%E6%8E%A8%E9%B4%BB%E7%A6%8F%E6%AE%B5%E6%96%B0%E6%A1%88-065228825.html",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "這一舉措顯示開發商對當地市場的信心，加上全區域發展的影響，可能對土城的新成屋銷售形成助力。",
+        "sales_pitch": "如果新莊的建案都那麼熱，土城的青埔新成屋也不會相形見絀，快來了解一下吧！"
+      },
+      {
+        "title": "資產代幣化浪潮席捲全球 沙烏地阿拉伯、泰國積極轉型應對",
+        "summary": "全球範圍內出現資產代幣化的趨勢，沙烏地阿拉伯和泰國等國積極應對，這可能會影響未來的投資和房地產市場。",
+        "source": "Yahoo財經",
+        "url": "https://tw.stock.yahoo.com/news/%E8%B3%87%E7%94%A2%E4%BB%A3%E5%B9%A3%E5%8C%96%E6%B5%AA%E6%BD%AE%E5%B8%AD%E6%8D%B2%E5%85%A8%E7%90%83-%E6%B2%99%E7%83%8A%E5%9C%B0%E9%98%BF%E6%8B%89%E4%BC%AF-%E6%B3%B0%E5%9C%8B%E7%A9%8D%E6%A5%B5%E8%BD%89%E5%9E%8B%E6%87%89%E5%B0%8D-064819119.html",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "資產代幣化趨勢可能會為房地產市場帶來新的機會，影響投資者對未來市場的預期，進而影響新成屋購入意願。土城區也需密切注意此動向。",
+        "sales_pitch": "未來的房地產投資趨勢不容小覷，土城青埔新成屋值得你考慮，把握這波浪潮，讓投資更具前瞻性！"
       }
     ],
     "房地產新聞": [
       {
-        "title": "獨居時代來臨！全台一人宅占比達40.5%　室內格局設計轉向公共空間整合",
-        "summary": "隨著獨居人口的增多，台灣一人住宅的比例已達到40.5%。這一趨勢促使室內設計更注重公共空間的整合，適合現代人的生活需求。",
+        "title": "扶一把房市，有這麼難嗎？",
+        "summary": "目前房市面臨不少挑戰，針對如何協助房市恢復活力，不同專家有各自見解。討論中提到的政策及策略，或將影響未來新成屋的銷售情況。",
+        "source": "住展房屋網",
+        "url": "https://www.myhousing.com.tw/c/c01/274888/",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "該新聞深入探討了房市的現狀與可能的解決方案，或許為土城區新成屋銷售提供了方向。若能採取有效措施，將有助於提升購屋者信心。",
+        "sales_pitch": "聽說現在還有很多政策幫助房市，感覺土城青埔的新成屋剛好可以趁這波機會看看！"
+      },
+      {
+        "title": "全台一人宅占比達40.5%　室內格局設計轉向公共空間整合",
+        "summary": "調查顯示，獨居家庭的比例逐年增加，導致室內設計趨向公共空間的整合，這在新屋市場中正逐漸成為主流。",
         "source": "住展房屋網",
         "url": "https://www.myhousing.com.tw/p/p05/275801/",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "獨居人口增長可能會推動小型住房或共居設施的需求，進而影響土城區的房市格局，以及開發方向。",
-        "sales_pitch": "這樣的趨勢讓我們在青埔特區的新成屋中看到了更大的生活潛力，吸引單身族群的關注！"
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "隨著獨居人口增多，將影響買家的需求，尤其對於空間設計的偏好。對於土城區的新成屋，這意味著更需考慮公共空間的配置。",
+        "sales_pitch": "現在大家都愛大公共空間，土城青埔的設計剛好符合這樣的趨勢，提前參觀一下吧！"
+      },
+      {
+        "title": "上半年增逾800戶 業者看到鳳鳴通車題材",
+        "summary": "隨著鳳鳴線通車，新成屋市場在上半年表現亮眼，增售上千戶的業績顯示出強勁的市場回暖。業者正集中精力挖掘通車帶來的商機。",
+        "source": "住展房屋網",
+        "url": "https://www.myhousing.com.tw/n/n02/n0202/new-taipei-city/269699/",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "交通便利性提升直接影響新成屋的吸引力，業績回升反映潛在買家對未來發展的期望。土城區若能搭上這股交通熱潮，銷售將十分可觀。",
+        "sales_pitch": "鳳鳴線一通，土城青埔的新成屋一定會更受青睞，這機會可千萬不要錯過！"
+      },
+      {
+        "title": "美伊開戰、通膨來襲！資金悄悄卡位越南，這波你跟上了嗎？",
+        "summary": "國際局勢的變化，特別是戰爭與經濟影響了資金流向，越南成為投資新熱點。這或對台灣房市帶來長遠影響。",
+        "source": "住展房屋網",
+        "url": "https://www.myhousing.com.tw/magazine/274905/",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "國際資金的流動與地緣政治的影響，可能導致房市出現波動，需密切關注外部因素對台灣市場的影響。這或使土城區的成屋能更具吸引力，推動銷售。",
+        "sales_pitch": "如果市場有變化，土城青埔的新屋可能會成為更好的選擇，早一步了解未來可能的趨勢！"
+      },
+      {
+        "title": "無照駕駛新制上路　累犯將面臨加重罰鍰與扣車、扣牌處分",
+        "summary": "無照駕駛新制上路後，相關罰則更加嚴厲。這可能影響人們對自駕的需求變化，進而影響居住地的選擇。",
+        "source": "住展房屋網",
+        "url": "https://www.myhousing.com.tw/l/l04/275959/",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "新法上路進一步改變民眾的用車習慣，或使某些地區的交通需求上升，對交通便捷的新成屋將更具吸引力。",
+        "sales_pitch": "交通做足功課的土城青埔新成屋，面對新法則的變化，正好成為通勤的好選擇！"
       }
     ],
-    "中國財經經濟新聞": [],
-    "國際重大新聞": []
+    "中國財經經濟新聞": [
+      {
+        "title": "特朗普結束訪華後，中俄即宣佈普京下週二起對中國進行國事訪問",
+        "summary": "特朗普的訪華行程結束後，中國和俄羅斯迅速安排了普京的訪問，顯示兩國間的合作關係依然緊密。這一動態可能影響到兩國的經濟合作，對台灣和西方國家的政策也將產生影響。",
+        "source": "BBC中文",
+        "url": "https://www.bbc.com/zhongwen/articles/cr5pevzv76yo/trad?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "中俄的經濟合作可能帶動基礎建設需求，間接影響房地產市場。對台灣的緊張局勢可能抑制購房者的信心。"
+      },
+      {
+        "title": "特朗普訪華落幕：美中各取所需，台灣、關稅等未解之事走向何方？",
+        "summary": "隨著特朗普的訪華結束，美中雙方在貿易和關稅等問題上尚未達成共識，未來的政策走向仍充滿不確定性。此情況可能影響兩國的經濟環境。",
+        "source": "BBC中文",
+        "url": "https://www.bbc.com/zhongwen/articles/czr2pjdj8ypo/trad?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "貿易政策的不確定性可能影響投資者的信心，進而影響房地產市場的銷售情況。持續的關稅問題將影響建材成本，造成購房成本上升。"
+      },
+      {
+        "title": "特朗普發出警告後，台灣仍堅稱本身就是主權獨立的國家",
+        "summary": "在特朗普的警告後，台灣重申其主權獨立地位，這一立場無疑會在國際上引發不同的反應。台灣的內外部政策可能會受到影響。",
+        "source": "BBC中文",
+        "url": "https://www.bbc.com/zhongwen/articles/c0l271rg2j0o/trad?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "台灣的獨立立場可能影響外資對於當地房市的信心，尤其是在面對地緣政治的壓力時。潛在的市場不確定性對新建住宅需求造成影響。"
+      },
+      {
+        "title": "2026歐洲歌唱大賽：保加利亞奪冠，英國墊底",
+        "summary": "在2026年的歐洲歌唱大賽中，保加利亞贏得了冠軍，而英國則排名最後。這一事件在文化層面上受到關注，可能促進旅遊和相關市場的活動。",
+        "source": "BBC中文",
+        "url": "https://www.bbc.com/zhongwen/articles/cdjprlej820o/trad?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "大型國際活動增加的旅遊流量可能推動房地產市場的需求，特別是在熱門旅遊地點的房產。此事件也有助於提升當地文化和經濟形象。"
+      },
+      {
+        "title": "中國「文化大革命」爆發60周年：學界詳解被掩蓋的文革真相 ——「集體殺戮」",
+        "summary": "今年是文化大革命爆發60週年，學界對於文革期間的真相進行詳細剖析，揭示了許多歷史事件的隱蔽面。這一歷史事件仍然影響著當前的社會與政治形勢。",
+        "source": "BBC中文",
+        "url": "https://www.bbc.com/zhongwen/articles/c152l37yvyyo/trad?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "對於歷史的反思可能影響民眾的購房情緒，尤其是與地產舞弊相關的舊有回憶可能造成心理影響。此內容或引發對於當前社會穩定的廣泛討論。"
+      }
+    ],
+    "國際重大新聞": [
+      {
+        "title": "Trump warns 'clock is ticking' for Iran as peace progress stalls",
+        "summary": "特朗普警告伊朗，隨著和平進展停滯，時間正不斷逼近。相關情勢可能影響中東地區的穩定與經濟發展。",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/cd0p4y9y48xo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "中東局勢的緊張可能對全球經濟造成影響，讓投資者更加謹慎。尤其是房地產市場，影響潛在買家的信心。",
+        "sales_pitch": "嘿，最近國際局勢變化大，這可能影響投資風向，土城青埔特區的房產應該會是個不錯的選擇哦！"
+      },
+      {
+        "title": "WHO declares Ebola outbreak in DR Congo an international emergency",
+        "summary": "世衛組織宣佈剛果民主共和國的埃博拉疫情為國際緊急事件，這將引起全球對公共衛生的關注。",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/c2l2p0wwzzdo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "公共衛生危機可能影響經濟活動，進而影響房地產市場的信心及投資動機。尤其在疫後重建期間，可能會有新的需求出現。",
+        "sales_pitch": "在這樣不穩定的大環境中，土城青埔特區的新成屋能提供一個更安全的居住環境，是投資的好時機！"
+      },
+      {
+        "title": "'This may be the last time you hear my voice': Political executions surge in Iran since start of war",
+        "summary": "隨著戰爭的開始，伊朗的政治處決激增，這加劇了該國政治動盪的局勢，並影響國內外對該國的觀感。",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/cn8p392nl7yo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "這樣的政局穩定性降低，可能讓投資者避開風險較大的市場，轉向更穩定的地區如台灣的房地產市場。",
+        "sales_pitch": "你知道的，這時候有穩定的資產就很重要，土城青埔特區絕對是不錯的選擇，趕快來看看吧！"
+      },
+      {
+        "title": "UAE reports strike near Abu Dhabi nuclear power plant",
+        "summary": "阿聯酋報導在阿布扎比核電廠附近發生攻擊，這可能會對當地及周邊地區的穩定造成影響。",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/cwy27pkj1l1o?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "地區不安定可能影響投資及經濟情緒，讓買家重新考慮安置地點，台灣可能受益於資金轉移。",
+        "sales_pitch": "在這麼多不確定性之下，土城青埔特區的新成屋提供了一個安全且未來潛力的家，值得你考慮！"
+      },
+      {
+        "title": "Large-scale Ukrainian drone attack kills three in Moscow region, says Russia",
+        "summary": "俄羅斯報導烏克蘭的大規模無人機攻擊導致三人遇難，此事件加劇了兩國之間的緊張關係。",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/c5ye480kxpmo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "這種持續的緊張局勢可能導致國際市場的不穩定，讓更多投資者轉向相對穩定的市場如台灣房市。",
+        "sales_pitch": "在這樣的國際情勢中，土城青埔特區的新成屋提供了安全感，值得投資考慮！"
+      }
+    ]
   }
 }
