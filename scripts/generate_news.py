@@ -114,15 +114,32 @@ def select_articles(client, today, category, articles, needs_pitch):
 
     article_text = build_article_list(articles[:10])
 
+    # 建案背景資訊（用於生成正確的 sales_pitch）
+    project_context = """【建案資訊】
+- 建案名稱：家泰嘉潤丰藏（預售屋）
+- 地點：新北市土城區金城路
+- 坪數：20～33坪
+- 主要賣點：
+  1. 未來 LG 捷運線（萬人大站）帶動區域增值
+  2. 金城路地段稀缺——周邊未來 5 年不會再有地段比我們好的新建案
+  3. 20～33坪適合置產或首購，總價相對親民
+- 目標客群：置產客、有資產的首購族（非剛需低預算）
+- 注意：不要提「青埔特區」（那是桃園，跟土城不同城市）"""
+
     pitch_field = (
-        '\n        "sales_pitch": "口語化銷售說詞（1-2句，連結土城青埔特區新成屋，像朋友建議）",'
+        f'\n        "sales_pitch": "口語化銷售說詞（1-2句，結合上方建案優勢，像朋友建議而非廣告）",'
         if needs_pitch else ""
     )
-    pitch_rule = "6. sales_pitch 口語化，像朋友在聊天，不要書面廣告腔" if needs_pitch else ""
+    pitch_rule = """6. sales_pitch 要求：
+   - 只能連結【建案資訊】中的真實優勢（捷運增值、地段稀缺、坪數總價）
+   - 新聞若跟建案優勢沒有直接關聯，就不要硬扯，說「大環境如何，現在看土城這個案子更值得考慮」即可
+   - 口語自然，像朋友在聊，不要書面廣告腔""" if needs_pitch else ""
 
     prompt = f"""今天是 {today}，以下是【{category}】的真實新聞列表：
 
 {article_text}
+
+{project_context if needs_pitch else ""}
 
 請選出對「土城區新成屋銷售團隊」最有參考價值的 5 則（不足 5 則則全選），輸出 JSON 陣列，直接輸出不加說明：
 
