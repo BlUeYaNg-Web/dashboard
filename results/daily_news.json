@@ -1,37 +1,67 @@
 {
-  "fetched_at": "2026/05/18 13:57",
-  "total": 3,
+  "fetched_at": "2026/05/18 14:55",
+  "total": 6,
   "categories": {
     "台灣財經新聞": [
       {
-        "title": "馬斯克SpaceX IPO倒數！昇達科、敬鵬鎖漲停領軍台廠供應鏈逆勢突圍",
-        "summary": "馬斯克的SpaceX計畫最快於6月12日上市，引起台股的熱議與波動。雖然台股今日一度重挫，但SpaceX概念股卻逆勢上揚，顯示市場的韌性。",
+        "title": "台積電權重成緊箍咒？金管會推ETF多元加掛　「這2檔」排除條款掀內鬥",
+        "summary": "近期台股漲勢強勁，ETF市場掀起投資熱潮，然而金管會推出的多元加掛ETF計畫可能排除一些權重過大的股票，讓市場引發內鬥。尤其台積電的持股占比過高，可能會影響整體ETF規劃。",
         "source": "Yahoo財經",
-        "url": "https://tw.news.yahoo.com/%E9%A6%AC%E6%96%AF%E5%85%8Bspacex-ipo%E5%80%92%E6%95%B8-%E6%98%87%E9%81%94%E7%A7%91-%E6%95%AC%E9%B5%AC%E9%8E%96%E6%BC%B2%E5%81%9C%E9%A0%98%E8%BB%8D%E5%8F%B0%E5%BB%A0%E4%BE%9B%E6%87%89%E9%8F%88%E9%80%86%E5%8B%A2%E7%AA%81%E5%9C%8D-050920527.html",
+        "url": "https://tw.news.yahoo.com/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E6%AC%8A%E9%87%8D%E6%88%90%E7%B7%8A%E7%AE%8D%E5%92%92-%E9%87%91%E7%AE%A1%E6%9C%83%E6%8E%A8etf%E5%A4%9A%E5%85%83%E5%8A%A0%E6%8E%9B-%E9%80%992%E6%AA%94-%E6%8E%92%E9%99%A4%E6%A2%9D%E6%AC%BE%E6%8E%8D%E5%85%A7%E9%AC%A5-065300413.html",
         "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "SpaceX的上市將促進相關科技與供應鏈的發展，可能帶動房地產市場的投資意願，尤其是在土城青埔特區這類有潛力的區域。",
-        "sales_pitch": "想像一下，當太空科技不再是遙不可及的夢想，我們的生活與房市會有多大的變化！土城青埔特區是未來的熱點，值得深入了解喔！"
+        "analysis": "台積電在台股中的主導地位若受到限制，可能影響整體股市表現及投資者信心，進而影響房市。新成屋的銷售可能受到投資者資金流向的直接影響。",
+        "sales_pitch": "考慮到未來的投資環境不確定性，在土城青埔特區投資新成屋，無疑是一個穩健的選擇，讓你在市場波動中保持優勢。"
+      },
+      {
+        "title": "台股被AI推飛：基金績效全面爆表、最高破百％",
+        "summary": "受AI題材推動，台灣半導體及電子零組件產業表現強勁，基金績效全面上揚，部分基金獲利率達到百％。",
+        "source": "Yahoo財經",
+        "url": "https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%82%A1%E8%A2%ABai%E6%8E%A8%E9%A3%9B-%E5%9F%BA%E9%87%91%E7%B8%BE%E6%95%88%E5%85%A8%E9%9D%A2%E7%88%86%E8%A1%A8-%E6%9C%80%E9%AB%98%E7%A0%B4%E7%99%BE-064608456.html",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "當市場受AI發展推動時，資金面上有望流向與科技相關的產業，可能提升周邊房地產的需求，特別是新成屋銷售將迎來利好。",
+        "sales_pitch": "趁這波科技熱潮，趕緊把目光放在土城青埔特區的新成屋，這裡不僅是投資的機會，還是未來發展的潛力股！"
       }
     ],
     "房地產新聞": [
       {
-        "title": "上半年增逾800戶 業者看到鳳鳴通車題材",
-        "summary": "隨著芬鳳鳴捷運通車進一步推動房市，業者預測上半年將增建超過800戶，顯示出房市活絡的跡象。",
+        "title": "獨居時代來臨！全台一人宅占比達40.5%　室內格局設計轉向公共空間整合",
+        "summary": "隨著獨居人數增加，台灣一人戶的比例已達40.5%。這一趨勢促使開發商在室內設計中考慮公共空間的整合以適應新需求。",
         "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/n/n02/n0202/new-taipei-city/269699/",
+        "url": "https://www.myhousing.com.tw/p/p05/275801/",
         "credibility": "⭐⭐⭐⭐",
-        "analysis": "新建案的推出將直接影響土城區的需求，尤其是青埔特區，隨著公共交通的改善，居民的居住意願會持續上升。",
-        "sales_pitch": "如果你正在考慮置產，青埔特區絕對是個不錯的選擇！交通便利，未來發展潛力大，真的是買房子的好時機！"
-      }
-    ],
-    "中國財經經濟新聞": [
+        "analysis": "獨居人口比例上升，顯示出對新成屋設計及功能的需求變化，這為土城區的新建案增添了市場潛力。",
+        "sales_pitch": "土城青埔特區的新成屋完美契合這一需求，提供靈活的室內空間設計，無論是單身或者小家庭，都能找到理想的居所。"
+      },
       {
-        "title": "中國4月工業產出年增4.1%  創近3年新低",
-        "summary": "中國國家統計局公布4月的工業產出年增4.1%，為近三年來最低，顯示經濟增長放緩的風險加大。",
-        "source": "Yahoo財經",
-        "url": "https://tw.news.yahoo.com/%E4%B8%AD%E5%9C%8B4%E6%9C%88%E5%B7%A5%E6%A5%AD%E7%94%A2%E5%87%BA%E5%B9%B4%E5%A2%9E4-1-%E5%89%B5%E8%BF%913%E5%B9%B4%E6%96%B0%E4%BD%8E-052556437.html"
+        "title": "房市不再齊漲齊跌！K型經濟＋M型社會 台灣進入「分化時代」",
+        "summary": "隨著K型經濟和M型社會的發展，台灣房市出現分化趨勢，不同地區和房型的價值表現差異顯著。",
+        "source": "Google新聞-房地產",
+        "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1vbXVlYzMtdXNzazZXNHhiUzh0ZTRMUU51VDJYTWt0OElkd3BKRENzdGxqdU9aU3ZpdUtCZ24zOTRteEE5UmxjLVV6X0loX2FCVzZySXZaNTY5NnJrWG93?oc=5",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "房市的分化可能讓某些地區的房價受到市場青睞，而投資土城新成屋則可能成為相對安全的選擇，吸引投資者注意。",
+        "sales_pitch": "在這樣的分化時代，土城青埔特區的成屋成為值得關注的投資選擇，不僅具潛力，還是舒適生活的理想地點！"
       }
     ],
-    "國際重大新聞": []
+    "中國財經經濟新聞": [],
+    "國際重大新聞": [
+      {
+        "title": "WHO declares Ebola outbreak in DR Congo an international emergency",
+        "summary": "The outbreak in DR Congo has been declared a public health emergency by WHO due to the increasing number of suspected cases and deaths.",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/c2l2p0wwzzdo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "雖然此消息與台灣房市直接無關，但國際的公共健康問題可能影響全球資本流動，進而影響房市需求。",
+        "sales_pitch": "在當前的全球情勢下，選擇土城的新成屋作為穩定投資，或許是一個理智的選擇！"
+      },
+      {
+        "title": "Trump warns 'clock is ticking' for Iran as peace progress stalls",
+        "summary": "Trump emphasizes the urgency for negotiations with Iran as peace talks reach a standstill, coinciding with rising tensions in the region.",
+        "source": "BBC World",
+        "url": "https://www.bbc.com/news/articles/cd0p4y9y48xo?at_medium=RSS&at_campaign=rss",
+        "credibility": "⭐⭐⭐⭐",
+        "analysis": "中東的政治局勢不穩可能對全球經濟造成衝擊，影響投資者對台灣房市的態度。",
+        "sales_pitch": "在不確定的國際局勢中，選擇土城青埔的新成屋可以作為長遠的安全選擇，讓你在變化中保持拉開優勢！"
+      }
+    ]
   }
 }
