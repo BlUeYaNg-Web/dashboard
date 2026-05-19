@@ -1,12 +1,12 @@
 {
-  "fetched_at": "2026/05/18 17:39",
+  "fetched_at": "2026/05/19 01:02",
   "rates": {
     "USD_TWD": {
-      "rate": 31.62,
+      "rate": 31.6,
       "rate_buy": 31.4,
-      "rate_sell": 31.84,
-      "change": -0.05,
-      "change_pct": -0.16
+      "rate_sell": 31.8,
+      "change": -0.1,
+      "change_pct": -0.32
     },
     "CNY_TWD": {
       "rate": 4.64,
@@ -16,33 +16,33 @@
       "change_pct": 0.43
     },
     "USD_CNY": {
-      "rate": 6.82,
-      "change": -0.01,
-      "change_pct": -0.15
+      "rate": 6.81,
+      "change": 0.05,
+      "change_pct": 0.74
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣強勢回升",
-        "summary": "台幣對美元匯率回升，投資者信心恢復。",
+        "title": "台灣經濟持續增長",
+        "summary": "分析師指出，台灣的經濟表現穩健，吸引外資進入。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美聯儲利率政策分析",
-        "summary": "市場預期美聯儲將持續維持利率不變，影響美元走勢。",
-        "source": "財訊雙週刊",
+        "title": "美國貿易政策影響匯率",
+        "summary": "美國近期調整貿易政策，影響美元價值。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣小幅波動",
-        "summary": "人民幣對台幣小幅波動，需持續觀察國際市場情況。",
-        "source": "中時電子報",
+        "title": "人民幣匯率穩定",
+        "summary": "央行表示將維持人民幣匯率穩定。",
+        "source": "環球時報",
         "credibility": "⭐⭐⭐"
       }
     ]
