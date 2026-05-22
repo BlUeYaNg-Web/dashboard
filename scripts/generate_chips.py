@@ -159,12 +159,13 @@ def get_institutional():
         bil  = round(raw / 1e8, 1)   # 元 → 億元
         if "合計" in name:
             continue
-        if "自營商" in name:
-            res["dealer"] = round(res["dealer"] + bil, 1)
+        # 「外資」必須先判，因為「外資及陸資(不含外資自營商)」含有「自營商」字樣
+        if "外資" in name and "不含" in name:
+            res["foreign"] = bil
         elif "投信" in name:
             res["investment_trust"] = bil
-        elif "外資" in name and "不含" in name:
-            res["foreign"] = bil
+        elif "自營商" in name and "外資" not in name:
+            res["dealer"] = round(res["dealer"] + bil, 1)
     return res, api_date
 
 
