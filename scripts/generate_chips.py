@@ -109,41 +109,47 @@ def parse_json(text):
 # ── TWSE / TAIFEX 資料抓取 ────────────────────────────────────────────────────
 
 def get_taiex():
-    """大盤加權指數（openapi，仍有效）"""
+    """大盤加權指數：TWSE openapi 優先，失敗時 fallback Yahoo Finance"""
+    # 主要來源：TWSE openapi
     data = safe_get(f"{TWSE_API}/exchangeReport/MI_INDEX")
-    if not data:
-        return None
-    for row in data:
-        name = str(find(row, "名稱") or "")
-        if "加權" in name and "電" not in name and "OTC" not in name:
-            close = sf(find(row, "收盤"))
-            chg   = sf(find(row, "漲跌點"))
-            pct   = sf(find(row, "百分比", "漲跌(%)"))
-            vol   = sf(find(row, "成交金額"))
-            if close > 0:
-                return {"close": close, "change": chg, "pct": pct, "vol": vol}
-    return None
+    if data:
+        for row in data:
+            name = str(find(row, "名稱") or "")
+            if "加權" in name and "電" not in name and "OTC" not in name:
+                close = sf(find(row, "收盤"))
+                chg   = sf(find(row, "漲跌點"))
+                pct   = sf(find(row, "百分比", "漲跌(%)"))
+                vol   = sf(find(row, "成交金額"))
+                if close > 0:
+                    return {"close": close, "change": chg, "pct": pct, "vol": vol, "source": "TWSE"}
 
-
-def get_taiex_yahoo():
-    """Yahoo Finance 備援：大盤收盤（交叉驗證用）"""
+    # 備援：Yahoo Finance（當 TWSE openapi 被擋時）
     url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETWII?interval=1d&range=5d"
     try:
         r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
         d = r.json()
-        closes = d["chart"]["result"][0]["indicators"]["quote"][0]["close"]
+        result = d["chart"]["result"][0]
+        closes = result["indicators"]["quote"][0]["close"]
         valid = [c for c in closes if c is not None]
-        return round(valid[-1], 2) if valid else None
+        if len(valid) >= 2:
+            curr = round(valid[-1], 2)
+            prev = round(valid[-2], 2)
+            chg  = round(curr - prev, 2)
+            pct  = round(chg / prev * 100, 2)
+            print(f"  [TAIEX] TWSE 無資料，Yahoo 備援: {curr:.2f}")
+            return {"close": curr, "change": chg, "pct": pct, "vol": 0, "source": "Yahoo"}
     except Exception as e:
-        print(f"  [Yahoo] TAIEX 備援失敗: {e}")
-        return None
+        print(f"  [TAIEX] Yahoo 備援失敗: {e}")
+    return None
 
 
 def get_institutional():
-    """三大法人買賣超（億元）—— 改用 www.twse.com.tw/rwd BFI82U，單位：元"""
+    """三大法人買賣超（億元）—— www.twse.com.tw/rwd BFI82U，單位：元
+    回傳 (data_dict, api_date_str)，api_date_str 如 '20260521'"""
     d = get_raw_old_api(f"{TWSE_RWD}/fund/BFI82U?response=json")
     if not d:
-        return None
+        return None, None
+    api_date = d.get("date", "")  # e.g. "20260521"
     fields = d["fields"]
     rows = [dict(zip(fields, row)) for row in d["data"]]
     res = {"foreign": 0.0, "investment_trust": 0.0, "dealer": 0.0}
@@ -159,7 +165,7 @@ def get_institutional():
             res["investment_trust"] = bil
         elif "外資" in name and "不含" in name:
             res["foreign"] = bil
-    return res
+    return res, api_date
 
 
 def get_top_stocks():
@@ -236,33 +242,34 @@ def generate_chips():
     print(f"[{today}] 抓取台股籌碼...")
 
     taiex             = get_taiex()
-    yahoo_close       = get_taiex_yahoo()
-    inst              = get_institutional()
+    inst, api_date    = get_institutional()
     top_buy, top_sell = get_top_stocks()
     margin            = get_margin()
     fut_net           = get_futures_net()
 
     has_real = bool(taiex)
 
-    # 交叉驗證：TWSE vs Yahoo Finance
+    # 使用 BFI82U 回傳的日期作為報告日期（確保與資料對齊）
+    # api_date 格式 "20260521" → "2026/05/21"
+    if api_date and len(api_date) == 8:
+        data_date = f"{api_date[:4]}/{api_date[4:6]}/{api_date[6:]}"
+    else:
+        data_date = today
+
+    # 交叉驗證說明（僅當 TWSE 為主要來源時）
     cross_val_note = ""
-    if taiex and yahoo_close:
-        diff_pct = abs(taiex["close"] - yahoo_close) / yahoo_close * 100
-        icon = "✓" if diff_pct <= 2 else "⚠️"
-        print(f"  {icon} 大盤交叉驗證: TWSE={taiex['close']:.2f} / Yahoo={yahoo_close} / 差異{diff_pct:.2f}%")
-        if diff_pct <= 2:
-            cross_val_note = f"（Yahoo驗證: {yahoo_close:.0f}，差異{diff_pct:.2f}%，數據可信）"
-        else:
-            cross_val_note = f"（警告: Yahoo={yahoo_close:.0f}，差異{diff_pct:.2f}%，請注意）"
-    elif yahoo_close and not taiex:
-        print(f"  TWSE 無資料，Yahoo 備援: {yahoo_close}")
+    if taiex and taiex.get("source") == "TWSE":
+        # 已有 TWSE 真實值，Yahoo 僅供參考（get_taiex 內部有 fallback）
+        pass
+    elif taiex and taiex.get("source") == "Yahoo":
+        cross_val_note = "（資料來源：Yahoo Finance 備援）"
 
     print(f"  大盤:{'✓' if taiex else '✗'}  法人:{'✓' if inst else '✗'}  "
           f"個股:{'✓' if top_buy else '✗'}  融資券:{'✓' if margin else '✗'}  "
           f"期貨:{'✓' if fut_net is not None else '✗'}")
 
     if not has_real:
-        print("  資料尚未公布或非交易日，不更新。")
+        print("  大盤指數無法取得（TWSE + Yahoo 均失敗），不更新。")
         return
 
     close = taiex["close"]
@@ -270,7 +277,7 @@ def generate_chips():
     pct   = taiex["pct"]
     vol   = round(taiex["vol"])
     sign  = "+" if chg >= 0 else ""
-    taiex_str = f"{close:,.2f}（{sign}{chg:.0f} / {sign}{pct:.2f}%）"
+    taiex_str = f"{close:,.2f}（{sign}{chg:.0f} / {sign}{pct:.2f}%）{cross_val_note}"
 
     foreign = inst.get("foreign", 0) if inst else 0
     trust   = inst.get("investment_trust", 0) if inst else 0
@@ -287,7 +294,7 @@ def generate_chips():
                if fut_net is not None else "外資台指期：資料暫無")
 
     quant = (
-        f"加權指數：{taiex_str} {cross_val_note}\n"
+        f"加權指數：{taiex_str}\n"
         f"成交金額：{vol}億元\n"
         f"外資買賣超：{foreign:+.1f}億\n"
         f"投信買賣超：{trust:+.1f}億\n"
@@ -299,12 +306,12 @@ def generate_chips():
         f"外資大賣：{', '.join(s['stock'] for s in top_sell[:3]) if top_sell else 'N/A'}"
     )
 
-    prompt = f"""以下是 {today} 台股真實籌碼數據：
+    prompt = f"""以下是 {data_date} 台股真實籌碼數據：
 {quant}
 
 請根據以上數據輸出 JSON（不加說明）：
 {{
-  "date": "{today}",
+  "date": "{data_date}",
   "taiex": "{taiex_str}",
   "volume": "{vol}",
   "sentiment": "市場情緒一句話",
@@ -342,7 +349,7 @@ investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
 
     # 強制用真實量化數值覆蓋 AI 輸出（防止 AI 改數字）
     data.update({
-        "date": today, "taiex": taiex_str, "volume": str(vol),
+        "date": data_date, "taiex": taiex_str, "volume": str(vol),
         "foreign": foreign, "investment_trust": trust, "dealer": dealer,
         "top_buy": top_buy, "top_sell": top_sell,
     })
@@ -356,10 +363,8 @@ investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
     with open("results/chips_report.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    src = "TWSE 真實數據"
-    if yahoo_close:
-        src += " + Yahoo 交叉驗證"
-    print(f"  chips_report.json 已更新（{src}）")
+    src = f"TWSE 真實數據" if taiex.get("source") == "TWSE" else "Yahoo Finance 備援"
+    print(f"  chips_report.json 已更新（{data_date}，{src}）")
 
 
 if __name__ == "__main__":
