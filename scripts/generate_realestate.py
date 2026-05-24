@@ -8,10 +8,9 @@
 4. 更新 results/pptx_update.json（含 unit_keys，供下週比對）
 """
 
-import json, re, sys, urllib.request, urllib.parse
+import csv, json, re, sys, urllib.request, urllib.parse
 from collections import defaultdict
 from datetime import datetime, timezone
-from html.parser import HTMLParser
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -20,9 +19,9 @@ RESULTS_DIR = Path(__file__).parent.parent / "results"
 OUTPUT_PATH = RESULTS_DIR / "pptx_update.json"
 BASE_URL = "https://dualtaipei.datazen.info"
 GS_URL = (
-    "https://docs.google.com/spreadsheets/d/e/"
-    "2PACX-1vRvMScWNP5idpnmDApHAQvZIxMixZC4Y5-dYA1OjTf5sltG-83C_jF5EHKb2O3gcYr7gglpam6RWFai"
-    "/pubhtml/sheet?headers=false&gid=1957863253"
+    "https://docs.google.com/spreadsheets/d/"
+    "1obKJ7DT__0MeclJGJc7cNzQ8eYLz6T2kX5JdcrVsINs"
+    "/export?format=csv"
 )
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -64,37 +63,53 @@ def parse_price_float(p):
     m = re.search(r"([\d.]+)", str(p))
     return float(m.group(1)) if m else None
 
+ZH_FLOOR = {
+    '一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,
+    '十一':11,'十二':12,'十三':13,'十四':14,'十五':15,'十六':16,'十七':17,
+    '十八':18,'十九':19,'二十':20,'二十一':21,'二十二':22,'二十三':23,
+}
+
+def _parse_zh_floor(s):
+    s = re.sub(r'[層樓Ff\s]', '', str(s).strip())
+    return int(s) if s.isdigit() else ZH_FLOOR.get(s)
+
 def normalize_unit_key(unit_str):
     m = re.match(r"^([A-Za-z]+\d*)-0*(\d+)F?$", unit_str.strip())
     return f"{m.group(1).upper()}-{int(m.group(2))}" if m else unit_str.strip()
 
-def gs_unit_to_std(s):
-    s = s.strip()
-    if "/" not in s: return s
-    parts = s.split("/")
-    if len(parts)<2: return s
-    u, f = parts[0].strip(), parts[1].strip()
-    if re.match(r"^[A-Za-z]+\d*-0*\d+F?$", f): return f
-    fn = re.sub(r"^0*(\d+)F?$", r"\1F", f, flags=re.IGNORECASE)
-    return f"{u}-{fn}" if u else fn
+def parse_gs_unit(unit_str):
+    """
+    Google Sheet 戶別樓層欄（斜線分隔）→ (col, floor_int)
+    e.g. 'B6/7F/七樓'→('B6',7)  'B/5/十樓'→('B5',10)  'A/A6-3F/三樓'→('A6',3)
+    """
+    parts = [p.strip() for p in unit_str.split("/")]
+    if len(parts) < 2:
+        return None, None
+    prefix = parts[0].strip().upper()
+    middle = parts[1].strip()
+    zh_part = parts[2].strip() if len(parts) > 2 else ""
+    zh_floor = _parse_zh_floor(zh_part) if zh_part else None
+    # Case 1: middle is complete "A5-03F" form
+    m = re.match(r"^([A-Za-z]+\d+)-0*(\d+)[Ff]?$", middle, re.IGNORECASE)
+    if m:
+        return m.group(1).upper(), zh_floor or int(m.group(2))
+    # Case 2: middle has F suffix
+    m = re.match(r"^0*(\d+)[Ff]$", middle)
+    if m:
+        return (prefix if prefix else "?"), zh_floor or int(m.group(1))
+    # Case 3: middle is pure number
+    if re.match(r"^\d+$", middle):
+        num = int(middle)
+        floor = zh_floor or num
+        if prefix and re.search(r"\d", prefix):
+            return prefix, floor
+        col = (prefix + str(num)) if prefix else str(num)
+        return col, floor
+    return None, None
 
 def parse_dt(t):
     try: return datetime.fromisoformat(t.get("date","").replace("Z","+00:00"))
     except: return datetime.min.replace(tzinfo=timezone.utc)
-
-class TableParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.rows=[]; self.current_row=[]; self.in_td=False; self.current_text=""
-    def handle_starttag(self,tag,attrs):
-        if tag in("td","th"): self.in_td=True; self.current_text=""
-        elif tag=="tr": self.current_row=[]
-    def handle_endtag(self,tag):
-        if tag in("td","th"): self.current_row.append(self.current_text.strip()); self.in_td=False
-        elif tag=="tr":
-            if any(c.strip() for c in self.current_row): self.rows.append(self.current_row[:])
-    def handle_data(self,data):
-        if self.in_td: self.current_text+=data
 
 def fetch_dualtaipei():
     print("=== dualtaipei 抓取 ===")
@@ -121,31 +136,26 @@ def fetch_dualtaipei():
     return result
 
 def fetch_google_sheet():
-    print("\n=== Google Sheet 抓取 ===")
-    h={**HEADERS,"Accept":"text/html,*/*"}
-    req=urllib.request.Request(GS_URL,headers=h)
+    print("\n=== Google Sheet 抓取（CSV）===")
+    req=urllib.request.Request(GS_URL,headers={"User-Agent":"Mozilla/5.0"})
     with urllib.request.urlopen(req,timeout=30) as r:
-        html=r.read().decode("utf-8",errors="replace")
-    p=TableParser(); p.feed(html)
+        raw=r.read().decode("utf-8",errors="replace")
     ct=defaultdict(list)
-    for row in p.rows:
-        if len(row)<10 or not any("土城" in c for c in row): continue
-        ck=None; nc=None
-        for ci in [4,3]:
-            if ci>=len(row): continue
-            cv=row[ci].strip()
-            for gn,k in GS_CASE_MAP.items():
-                if cv==gn.strip(): ck=k; nc=ci; break
-            if ck: break
+    skipped=0
+    for row in csv.reader(raw.splitlines()):
+        if len(row)<6 or "土城" not in row[2]: continue
+        name=row[3].strip()
+        ck=GS_CASE_MAP.get(name) or GS_CASE_MAP.get(name.replace(" ",""))
         if not ck: continue
-        off=nc-3
         iso=roc_to_iso(row[1].strip())
-        unit=gs_unit_to_std(row[4+off].strip())
-        price=parse_price_float(row[5+off].strip())
-        if not iso or not unit or price is None: continue
+        col,floor=parse_gs_unit(row[4].strip())
+        price=parse_price_float(row[5].strip())
+        if not iso or not col or floor is None or price is None:
+            skipped+=1; continue
+        unit=f"{col}-{floor}F"
         ct[ck].append({"date":iso,"unit":unit,"unitPrice":price,"_source":"google_sheet"})
     total=sum(len(v) for v in ct.values())
-    print(f"  OK {total}筆（{len(ct)}個案名）")
+    print(f"  OK {total}筆（{len(ct)}個案名）" + (f"，略過{skipped}筆" if skipped else ""))
     return ct
 
 def cross_validate(dt_data,gs_data):
