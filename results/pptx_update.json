@@ -1,14 +1,14 @@
 {
-  "run_at": "2026/05/24 14:55",
-  "output_file": "I:\\我的雲端硬碟\\家泰嘉潤丰藏JANU\\03.建設公司\\01.業主回報\\週報\\土城區實價登錄明細260524自動更新.pptx",
+  "run_at": "2026/05/24 14:57",
+  "output_file": "GitHub Actions 雲端自動更新（無PPT）",
   "cases": [
     {
       "name": "丰藏",
-      "weekly_new": 0,
+      "weekly_new": 4,
       "total_records": 67,
-      "latest_price": 75.83,
-      "latest_area": 20.9,
-      "weeks_dry": 6,
+      "latest_price": 76.59,
+      "latest_area": 27.1,
+      "weeks_dry": 0,
       "unit_keys": [
         "A-10",
         "A-11",
@@ -19,7 +19,6 @@
         "B-14",
         "B-18",
         "B-19",
-        "B-2",
         "B-3",
         "B-4",
         "B-5",
@@ -63,7 +62,6 @@
         "G-19",
         "G-2",
         "G-3",
-        "G-4",
         "G-5",
         "G-6",
         "G-7",
@@ -72,11 +70,13 @@
         "H-10",
         "H-17",
         "H-2",
-        "H-3",
         "H-4",
         "H-5",
-        "H-7",
-        "H-8"
+        "H-8",
+        "Ｂ-02",
+        "Ｇ-04",
+        "Ｈ-03",
+        "Ｈ-０７"
       ]
     },
     {
@@ -131,11 +131,11 @@
     },
     {
       "name": "紅布朗花園",
-      "weekly_new": 0,
+      "weekly_new": 1,
       "total_records": 318,
       "latest_price": 66.03,
       "latest_area": 32.5,
-      "weeks_dry": 6,
+      "weeks_dry": 0,
       "unit_keys": [
         "A08-10",
         "A08-11",
@@ -443,6 +443,7 @@
         "C9-7",
         "C9-8",
         "C9-9",
+        "D1",
         "E1-1",
         "S1-1",
         "S2-1",
@@ -675,15 +676,6 @@
       ]
     },
     {
-      "name": "和耀美家雅居",
-      "weekly_new": 0,
-      "total_records": 0,
-      "latest_price": null,
-      "latest_area": null,
-      "weeks_dry": null,
-      "unit_keys": []
-    },
-    {
       "name": "迴東騰",
       "weekly_new": 0,
       "total_records": 11,
@@ -702,6 +694,19 @@
         "A7-3",
         "A7-4",
         "A7-8"
+      ]
+    },
+    {
+      "name": "天好運3",
+      "weekly_new": 3,
+      "total_records": 3,
+      "latest_price": 73.46,
+      "latest_area": 16.7,
+      "weeks_dry": 0,
+      "unit_keys": [
+        "A5-3",
+        "A5-5",
+        "A5-8"
       ]
     },
     {
@@ -729,6 +734,15 @@
         "A6-3",
         "A6-5"
       ]
+    },
+    {
+      "name": "和耀美家雅居",
+      "weekly_new": 0,
+      "total_records": 0,
+      "latest_price": null,
+      "latest_area": null,
+      "weeks_dry": null,
+      "unit_keys": []
     }
   ]
 }
