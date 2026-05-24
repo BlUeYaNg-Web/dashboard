@@ -167,23 +167,43 @@ def cross_validate(dt_data,gs_data):
             print(f"  [{key}] 僅GS，{len(gs)}筆")
     return merged
 
-def load_prev_unit_keys():
+def load_prev_data():
+    """
+    回傳 (unit_keys_map, totals_map)
+    unit_keys_map: {案名: set(unit_keys)}，只包含上週有記錄且非空的案名
+    totals_map:    {案名: total_records}，所有案名（作為 fallback）
+    空的 unit_keys 不放入 unit_keys_map → calc_stats fallback 以總筆數差估算，
+    避免首次執行時把所有歷史戶別全算成「本週新增」。
+    """
     try:
         prev=json.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
-        result={c["name"]:set(c.get("unit_keys",[])) for c in prev.get("cases",[])}
-        print(f"上週unit_keys載入（{len(result)}個案名）")
-        return result
+        unit_keys={}
+        totals={}
+        for c in prev.get("cases",[]):
+            name=c["name"]
+            keys=c.get("unit_keys",[])
+            totals[name]=c.get("total_records",0)
+            if keys:  # 空的不放入 → get() 回傳 None → fallback total_records diff
+                unit_keys[name]=set(keys)
+        filled=len(unit_keys)
+        total=len(prev.get("cases",[]))
+        print(f"上週unit_keys載入：{filled}/{total} 個案名有記錄")
+        return unit_keys,totals
     except:
-        print("無上週unit_keys，本週新增全以差值計")
-        return {}
+        print("無上週資料，本週新增全以差值計")
+        return {},{}
 
-def calc_stats(display,txns,prev_map):
+def calc_stats(display,txns,prev_map,prev_totals):
     if not txns: return 0,0,None,None,None,[]
     current_total=len(txns)
-    prev_units=prev_map.get(display,set())
     uk_list=sorted({normalize_unit_key(t.get("unit","")) for t in txns})
     # 本週新增 = 這週有、上週沒有（不論交易日期）
-    weekly_new=sum(1 for uk in uk_list if uk not in prev_units)
+    if display in prev_map:
+        # 上週有 unit_keys 記錄 → 精確比對
+        weekly_new=sum(1 for uk in uk_list if uk not in prev_map[display])
+    else:
+        # 無上週 unit_keys（首次執行或空記錄）→ 以總筆數差估算，避免全算成新增
+        weekly_new=max(0, current_total - prev_totals.get(display,0))
     s=sorted(txns,key=parse_dt)
     latest=s[-1]
     lp=round(latest.get("unitPrice") or 0,2) or None
@@ -195,7 +215,7 @@ def calc_stats(display,txns,prev_map):
 def main():
     ns=datetime.now().strftime("%Y/%m/%d %H:%M")
     print(f"[{ns}] 開始（GitHub Actions 雲端模式）...")
-    prev_map=load_prev_unit_keys()
+    prev_map,prev_totals=load_prev_data()
     dt_data=fetch_dualtaipei()
     try: gs_data=fetch_google_sheet()
     except Exception as e: print(f"  GS失敗:{e}"); gs_data={}
@@ -204,7 +224,7 @@ def main():
     cases=[]
     for d in ALL_DISPLAY_NAMES:
         info=merged.get(d,{"transactions":[]})
-        wn,tr,lp,la,wd,uk=calc_stats(d,info["transactions"],prev_map)
+        wn,tr,lp,la,wd,uk=calc_stats(d,info["transactions"],prev_map,prev_totals)
         parts=[f"本週新增{wn}戶",f"共{tr}筆"]
         if lp: parts.append(f"最新{lp}萬")
         if wd: parts.append(f"乾旱{wd}週")
