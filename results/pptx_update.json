@@ -1,10 +1,10 @@
 {
-  "run_at": "2026/05/24 14:43",
+  "run_at": "2026/05/24 14:55",
   "output_file": "I:\\我的雲端硬碟\\家泰嘉潤丰藏JANU\\03.建設公司\\01.業主回報\\週報\\土城區實價登錄明細260524自動更新.pptx",
   "cases": [
     {
       "name": "丰藏",
-      "weekly_new": 67,
+      "weekly_new": 0,
       "total_records": 67,
       "latest_price": 75.83,
       "latest_area": 20.9,
@@ -81,7 +81,7 @@
     },
     {
       "name": "台信琢岳",
-      "weekly_new": 40,
+      "weekly_new": 0,
       "total_records": 40,
       "latest_price": 82.04,
       "latest_area": 37.5,
@@ -131,7 +131,7 @@
     },
     {
       "name": "紅布朗花園",
-      "weekly_new": 293,
+      "weekly_new": 0,
       "total_records": 318,
       "latest_price": 66.03,
       "latest_area": 32.5,
@@ -571,7 +571,7 @@
     },
     {
       "name": "合康雙匯",
-      "weekly_new": 93,
+      "weekly_new": 0,
       "total_records": 95,
       "latest_price": 56.35,
       "latest_area": 45.7,
@@ -685,7 +685,7 @@
     },
     {
       "name": "迴東騰",
-      "weekly_new": 21,
+      "weekly_new": 0,
       "total_records": 11,
       "latest_price": 73.25,
       "latest_area": 36.1,
@@ -706,7 +706,7 @@
     },
     {
       "name": "若水秧翠",
-      "weekly_new": 16,
+      "weekly_new": 0,
       "total_records": 16,
       "latest_price": 68.19,
       "latest_area": 20.1,
