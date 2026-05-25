@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/05/25 01:04",
+  "fetched_at": "2026/05/25 08:36",
   "rates": {
     "USD_TWD": {
       "rate": 31.48,
       "rate_buy": 31.3,
       "rate_sell": 31.66,
-      "change": -0.02,
-      "change_pct": -0.06
+      "change": -0.05,
+      "change_pct": -0.16
     },
     "CNY_TWD": {
       "rate": 4.63,
       "rate_buy": 4.6,
       "rate_sell": 4.66,
-      "change": 0.01,
-      "change_pct": 0.22
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
       "rate": 6.8,
-      "change": 0.0,
-      "change_pct": 0.0
+      "change": -0.1,
+      "change_pct": -1.45
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣持穩，市場信心回升",
-        "summary": "台幣匯率今日持平，反映國內經濟穩定的信號。",
-        "source": "中央社",
+        "title": "台灣經濟前景持穩",
+        "summary": "專家分析台灣經濟增長率穩定，對台幣匯率形成支撐。",
+        "source": "台灣經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元指數下跌，影響外匯市場",
-        "summary": "美元指數下滑，導致全球匯率波動，投資者需持續關注。",
-        "source": "經濟日報",
+        "title": "美國通脹數據略有回升",
+        "summary": "最新數據顯示美國通脹率小幅上升，市場關注聯準會政策走向。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣小幅上漲，市場期待政策支持",
-        "summary": "人民幣相對於台幣小幅上升，市場期待政府的扶持政策。",
-        "source": "財訊雙周刊",
+        "title": "中國政府將推行新措施促經濟",
+        "summary": "為刺激經濟增長，中國將推出系列刺激政策，市場反應期待。",
+        "source": "新華社",
         "credibility": "⭐⭐⭐"
       }
     ]
