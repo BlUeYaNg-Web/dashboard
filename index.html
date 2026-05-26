@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
-    background: #1a1f35; color: #c8d0e8; min-height: 100vh;
+    background: #232120; color: #d8cec4; min-height: 100vh;
   }
 
   /* ── Navbar ── */
@@ -16,18 +16,18 @@
     padding: 24px 40px 0;
     display: flex; align-items: flex-end; justify-content: space-between;
   }
-  .navbar-eyebrow { width: 28px; height: 2px; background: linear-gradient(90deg,#4A90D9,#27AE60); border-radius: 2px; margin-bottom: 10px; }
-  .navbar h1 { font-size: 22px; font-weight: 700; color: #eef2ff; letter-spacing: 3px; }
+  .navbar-eyebrow { width: 28px; height: 2px; background: linear-gradient(90deg,#7a9db5,#7a9e87); border-radius: 2px; margin-bottom: 10px; }
+  .navbar h1 { font-size: 22px; font-weight: 700; color: #e0d4c8; letter-spacing: 3px; }
   .navbar-right { display: flex; align-items: center; gap: 14px; padding-bottom: 2px; }
-  .time { font-size: 12px; color: #4a5580; }
+  .time { font-size: 12px; color: #6a5e54; }
   .refresh-btn {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    color: #5a6590; padding: 5px 16px; border-radius: 20px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+    color: #8a7868; padding: 5px 16px; border-radius: 20px;
     cursor: pointer; font-size: 12px; transition: all 0.2s;
   }
-  .refresh-btn:hover { background: rgba(74,144,217,0.15); border-color: rgba(74,144,217,0.4); color: #7aaede; }
+  .refresh-btn:hover { background: rgba(122,157,181,0.12); border-color: rgba(122,157,181,0.35); color: #8ab8cc; }
 
-  /* ── 主格線 3欄 ── */
+  /* ── 主格線 4欄 ── */
   .main-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -42,194 +42,194 @@
   /* ── 卡片 ── */
   .portal-card {
     border-radius: 14px 14px 0 0; overflow: hidden;
-    background: #222844; border: 1px solid rgba(255,255,255,0.08);
+    background: #2d2a28; border: 1px solid rgba(255,255,255,0.07);
     border-bottom: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
   }
   .color-bar { height: 3px; }
   .card-cover {
     height: 155px; position: relative; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
   }
-  .card-cover::after { content:''; position:absolute; bottom:0; left:0; right:0; height:50px; background:linear-gradient(transparent,rgba(0,0,0,0.3)); }
+  .card-cover::after { content:''; position:absolute; bottom:0; left:0; right:0; height:50px; background:linear-gradient(transparent,rgba(0,0,0,0.25)); }
 
   /* 封面樣式 */
-  .cover-news { background: linear-gradient(135deg,#0c1828,#0f2040,#0a1830); }
-  .cover-bg-lines { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; justify-content:center; gap:9px; padding:20px; opacity:0.08; }
+  .cover-news { background: linear-gradient(135deg,#1a1816,#1e1c18,#181614); }
+  .cover-bg-lines { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; justify-content:center; gap:9px; padding:20px; opacity:0.07; }
   .cover-bg-lines span { height:7px; background:#fff; border-radius:4px; display:block; }
   .cover-center { position:relative; text-align:center; z-index:1; }
   .cover-icon { font-size:36px; display:block; margin-bottom:8px; }
   .cover-label { font-size:9px; letter-spacing:5px; font-weight:700; text-transform:uppercase; }
 
-  .cover-chips { background: linear-gradient(135deg,#081510,#0d2218,#091a10); flex-direction:column; padding-top:18px; }
+  .cover-chips { background: linear-gradient(135deg,#141814,#18201a,#121814); flex-direction:column; padding-top:18px; }
   .cover-bars-wrap { position:relative; }
-  .cover-taiex { position:absolute; top:-24px; right:0; font-size:18px; font-weight:800; color:#e74c3c; text-shadow:0 0 16px rgba(231,76,60,0.5); }
+  .cover-taiex { position:absolute; top:-24px; right:0; font-size:18px; font-weight:800; color:#b87878; text-shadow:0 0 14px rgba(184,120,120,0.4); }
   .cover-bars { display:flex; align-items:flex-end; gap:5px; height:70px; }
   .bar { width:14px; border-radius:3px 3px 0 0; }
-  .bar-up { background:linear-gradient(180deg,#e74c3c,#c0392b); }
-  .bar-down { background:linear-gradient(180deg,#27AE60,#1e8449); }
+  .bar-up { background:linear-gradient(180deg,#b87878,#9a6060); }
+  .bar-down { background:linear-gradient(180deg,#7a9e87,#5a8a6a); }
 
-  .cover-pptx { background:linear-gradient(135deg,#130e04,#1e1608,#15100504); }
+  .cover-pptx { background:linear-gradient(135deg,#1c1812,#201c14,#181610); }
   .cover-building { display:flex; flex-direction:column; align-items:center; position:relative; z-index:1; }
-  .building-glow { position:absolute; width:120px; height:80px; background:radial-gradient(circle,rgba(230,126,34,0.18) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-40%); }
-  .building-top { width:50px; height:6px; background:linear-gradient(90deg,#E67E22,#f39c12); border-radius:2px; margin-bottom:4px; }
-  .building-body { width:68px; height:68px; background:#1e1508; border:1px solid rgba(230,126,34,0.4); border-radius:4px; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:7px; }
-  .building-window { background:rgba(230,126,34,0.3); border-radius:1px; }
-  .building-window.lit { background:#f39c12; box-shadow:0 0 5px rgba(243,156,18,0.6); }
+  .building-glow { position:absolute; width:120px; height:80px; background:radial-gradient(circle,rgba(184,144,106,0.15) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-40%); }
+  .building-top { width:50px; height:6px; background:linear-gradient(90deg,#b8906a,#c8a070); border-radius:2px; margin-bottom:4px; }
+  .building-body { width:68px; height:68px; background:#1e1a12; border:1px solid rgba(184,144,106,0.35); border-radius:4px; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:7px; }
+  .building-window { background:rgba(184,144,106,0.2); border-radius:1px; }
+  .building-window.lit { background:#c8a070; box-shadow:0 0 5px rgba(200,160,112,0.5); }
 
   .card-body { padding:14px 18px 16px; }
-  .card-meta { font-size:10px; color:#3a4260; margin-bottom:5px; }
-  .card-title { font-size:14px; font-weight:700; color:#eef2ff; margin-bottom:4px; }
+  .card-meta { font-size:10px; color:#6a5e54; margin-bottom:5px; }
+  .card-title { font-size:14px; font-weight:700; color:#e0d4c8; margin-bottom:4px; }
   .card-status { margin-top:10px; display:flex; align-items:center; }
   .status-dot { width:5px; height:5px; border-radius:50%; display:inline-block; margin-right:6px; }
-  .dot-ok { background:#27AE60; box-shadow:0 0 6px rgba(39,174,96,0.6); }
-  .dot-empty { background:#2e3450; }
-  .status-text { font-size:10px; color:#3a4260; }
-  .status-text.ok { color:#3d8a55; }
+  .dot-ok { background:#7a9e87; box-shadow:0 0 6px rgba(122,158,135,0.5); }
+  .dot-empty { background:#3a3430; }
+  .status-text { font-size:10px; color:#6a5e54; }
+  .status-text.ok { color:#7a9e87; }
 
   /* ── 子分頁列 ── */
   .sub-tabs {
     display: flex; gap: 2px;
-    background: #1e2440; padding: 6px 8px;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #282420; padding: 6px 8px;
+    border: 1px solid rgba(255,255,255,0.07);
     border-top: none; border-bottom: none;
   }
   .sub-tab {
     flex: 1; text-align: center;
     padding: 6px 4px; border-radius: 6px;
-    font-size: 11px; font-weight: 600; color: #3a4260;
+    font-size: 11px; font-weight: 600; color: #6a5e54;
     cursor: pointer; transition: all 0.18s;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     user-select: none;
   }
-  .sub-tab:hover { background: rgba(255,255,255,0.05); color: #8a9ab5; }
+  .sub-tab:hover { background: rgba(255,255,255,0.05); color: #a09080; }
   .sub-tab.active { background: var(--col-color-bg); color: var(--col-color); }
 
   /* ── 詳細面板 ── */
   .detail-panel {
-    background: #222844; border: 1px solid rgba(255,255,255,0.08);
+    background: #2d2a28; border: 1px solid rgba(255,255,255,0.07);
     border-top: none; border-radius: 0 0 14px 14px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
   .detail-body {
     padding: 16px 18px;
     overflow-y: auto; max-height: 520px;
-    scrollbar-width: thin; scrollbar-color: #2a3050 transparent;
+    scrollbar-width: thin; scrollbar-color: #3a3430 transparent;
   }
   .detail-body::-webkit-scrollbar { width: 3px; }
-  .detail-body::-webkit-scrollbar-thumb { background: #2a3050; border-radius: 4px; }
+  .detail-body::-webkit-scrollbar-thumb { background: #3a3430; border-radius: 4px; }
 
   .sub-content { display: none; }
   .sub-content.active { display: block; }
 
   /* ── 資料元件 ── */
   .meta-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-  .meta-item { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:9px 12px; flex:1; min-width:80px; }
-  .meta-label { font-size:9px; color:#3a4260; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:3px; }
-  .meta-value { font-size:14px; color:#eef2ff; font-weight:700; }
+  .meta-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:9px 12px; flex:1; min-width:80px; }
+  .meta-label { font-size:9px; color:#6a5e54; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:3px; }
+  .meta-value { font-size:14px; color:#e0d4c8; font-weight:700; }
 
-  .news-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:11px 13px; margin-bottom:7px; transition:background 0.2s; }
-  .news-item:hover { background:rgba(255,255,255,0.06); }
+  .news-item { background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.055); border-radius:8px; padding:11px 13px; margin-bottom:7px; transition:background 0.2s; }
+  .news-item:hover { background:rgba(255,255,255,0.05); }
   /* ── 新聞字型系統 ── */
-  .news-title    { font-size:15px; font-weight:700; color:#f0f4ff; margin-bottom:5px; line-height:1.5; }
-  .news-summary  { font-size:12px; font-weight:400; color:#a0b0cc; line-height:1.7; margin-bottom:5px; }
+  .news-title    { font-size:15px; font-weight:700; color:#e0d4c8; margin-bottom:5px; line-height:1.5; }
+  .news-summary  { font-size:12px; font-weight:400; color:#a89880; line-height:1.7; margin-bottom:5px; }
   .news-meta-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  .news-source   { font-size:11px; font-weight:400; color:#7888a8; }
-  .news-analysis { font-size:12px; font-weight:400; color:#a0b0cc; margin-top:7px; padding-top:7px; border-top:1px solid rgba(255,255,255,0.08); line-height:1.6; }
+  .news-source   { font-size:11px; font-weight:400; color:#8a7868; }
+  .news-analysis { font-size:12px; font-weight:400; color:#a89880; margin-top:7px; padding-top:7px; border-top:1px solid rgba(255,255,255,0.07); line-height:1.6; }
   .news-links    { display:flex; gap:6px; margin-top:7px; flex-wrap:wrap; }
   .news-link     { font-size:11px; font-weight:600; padding:3px 10px; border-radius:10px; text-decoration:none; transition:all 0.2s; }
-  .news-pitch    { margin-top:8px; padding:8px 11px; background:rgba(230,126,34,0.08); border-left:3px solid rgba(230,126,34,0.5); border-radius:0 6px 6px 0; font-size:12px; color:#d4a060; line-height:1.6; }
-  .news-pitch-tag { font-size:10px; font-weight:700; color:#E67E22; letter-spacing:0.5px; margin-bottom:3px; }
-  .news-link-orig { background:rgba(74,144,217,0.15); color:#7aaede; border:1px solid rgba(74,144,217,0.3); }
-  .news-link-orig:hover { background:rgba(74,144,217,0.3); color:#aad4f5; }
-  .news-link-trans { background:rgba(39,174,96,0.12); color:#4dc890; border:1px solid rgba(39,174,96,0.28); }
-  .news-link-trans:hover { background:rgba(39,174,96,0.25); color:#7de8b0; }
+  .news-pitch    { margin-top:8px; padding:8px 11px; background:rgba(184,144,106,0.07); border-left:3px solid rgba(184,144,106,0.4); border-radius:0 6px 6px 0; font-size:12px; color:#c09870; line-height:1.6; }
+  .news-pitch-tag { font-size:10px; font-weight:700; color:#b8906a; letter-spacing:0.5px; margin-bottom:3px; }
+  .news-link-orig { background:rgba(122,157,181,0.12); color:#8ab8cc; border:1px solid rgba(122,157,181,0.28); }
+  .news-link-orig:hover { background:rgba(122,157,181,0.22); color:#a8cce0; }
+  .news-link-trans { background:rgba(122,158,135,0.10); color:#7aaa8a; border:1px solid rgba(122,158,135,0.25); }
+  .news-link-trans:hover { background:rgba(122,158,135,0.20); color:#90c8a0; }
 
-  .value-up { color:#e05c5c; font-weight:700; }
-  .value-down { color:#4dc880; font-weight:700; }
+  .value-up { color:#b87878; font-weight:700; }
+  .value-down { color:#7aaa8a; font-weight:700; }
 
   .pptx-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-  .pptx-case { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 12px; transition:background 0.2s; }
-  .pptx-case:hover { background:rgba(255,255,255,0.06); }
-  .case-row1 { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .pptx-case { background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.055); border-radius:8px; padding:10px 12px; transition:background 0.2s; }
+  .pptx-case:hover { background:rgba(255,255,255,0.05); }
+  .case-row1 { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.06); }
   /* ── 實登卡片字型系統 ── */
-  .case-name     { font-size:15px; font-weight:700; color:#f0f4ff; }           /* 主標 */
-  .case-price    { font-size:13px; font-weight:600; color:#7aaede; text-align:right; }  /* 副標・水藍 */
+  .case-name     { font-size:15px; font-weight:700; color:#e0d4c8; }
+  .case-price    { font-size:13px; font-weight:600; color:#8ab8cc; text-align:right; }
   .case-row2     { display:flex; justify-content:space-between; align-items:flex-end; }
   .case-new-block {}
-  .case-weekly   { font-size:20px; font-weight:800; color:#E67E22; line-height:1.2; }   /* 強調橘 */
-  .case-label    { font-size:11px; font-weight:400; color:#7888a8; margin-top:2px; }    /* 輔助 */
-  .case-weeks    { font-size:11px; font-weight:400; color:#7888a8; text-align:right; }  /* 輔助 */
+  .case-weekly   { font-size:20px; font-weight:800; color:#b8906a; line-height:1.2; }
+  .case-label    { font-size:11px; font-weight:400; color:#8a7868; margin-top:2px; }
+  .case-weeks    { font-size:11px; font-weight:400; color:#8a7868; text-align:right; }
   .case-weeks-line { display:flex; align-items:baseline; justify-content:flex-end; gap:2px; }
-  .weeks-num     { font-size:17px; font-weight:700; color:#8898c0; }                    /* 強調藍灰 */
-  .weeks-alert .weeks-num { font-size:22px; font-weight:800; color:#e74c3c; }           /* 強調紅（≥4週） */
-  .weeks-sub     { font-size:11px; font-weight:400; color:#7888a8; margin-top:1px; text-align:right; } /* 輔助 */
+  .weeks-num     { font-size:17px; font-weight:700; color:#9a9088; }
+  .weeks-alert .weeks-num { font-size:22px; font-weight:800; color:#b87878; }
+  .weeks-sub     { font-size:11px; font-weight:400; color:#8a7868; margin-top:1px; text-align:right; }
 
   .verdict-badge { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; white-space:nowrap; }
-  .verdict-ok { background:rgba(39,174,96,0.15); color:#4dc880; border:1px solid rgba(39,174,96,0.3); }
-  .verdict-warn { background:rgba(255,193,7,0.15); color:#d4a017; border:1px solid rgba(255,193,7,0.3); }
-  .verdict-no { background:rgba(231,76,60,0.15); color:#e05c5c; border:1px solid rgba(231,76,60,0.3); }
+  .verdict-ok { background:rgba(122,158,135,0.12); color:#7aaa8a; border:1px solid rgba(122,158,135,0.28); }
+  .verdict-warn { background:rgba(180,150,80,0.12); color:#c0a050; border:1px solid rgba(180,150,80,0.28); }
+  .verdict-no { background:rgba(184,120,120,0.12); color:#b87878; border:1px solid rgba(184,120,120,0.28); }
 
-  .disclaimer { margin-top:12px; padding:9px 12px; background:rgba(255,255,255,0.02); border-radius:6px; border-left:2px solid #2a3050; font-size:11px; color:#6878a0; line-height:1.7; }
+  .disclaimer { margin-top:12px; padding:9px 12px; background:rgba(255,255,255,0.02); border-radius:6px; border-left:2px solid #3a3430; font-size:11px; color:#7a6a60; line-height:1.7; }
 
   /* ── 籌碼面專用 ── */
   .chips-section { margin-bottom:12px; }
-  .chips-section-title { font-size:11px; font-weight:700; color:#7888a8; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .chips-section-title { font-size:11px; font-weight:700; color:#8a7868; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.06); }
   .chips-inst-row { display:flex; gap:6px; margin-bottom:6px; }
-  .chips-inst-card { flex:1; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:8px 10px; text-align:center; }
-  .chips-inst-label { font-size:11px; color:#7888a8; margin-bottom:3px; }
+  .chips-inst-card { flex:1; background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 10px; text-align:center; }
+  .chips-inst-label { font-size:11px; color:#8a7868; margin-bottom:3px; }
   .chips-inst-val { font-size:15px; font-weight:700; }
-  .chips-inst-note { font-size:10px; color:#6878a0; margin-top:2px; }
+  .chips-inst-note { font-size:10px; color:#7a6a60; margin-top:2px; }
   .chips-stat-row { display:flex; gap:6px; margin-bottom:6px; }
   .chips-stat { flex:1; background:rgba(255,255,255,0.02); border-radius:6px; padding:7px 10px; }
-  .chips-stat-label { font-size:10px; color:#7888a8; }
-  .chips-stat-val { font-size:13px; font-weight:600; color:#a0b0cc; margin-top:2px; }
+  .chips-stat-label { font-size:10px; color:#8a7868; }
+  .chips-stat-val { font-size:13px; font-weight:600; color:#a89880; margin-top:2px; }
   .chips-causality { margin-bottom:12px; }
-  .chips-cause-item { font-size:12px; color:#a0b0cc; line-height:1.7; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .chips-cause-item { font-size:12px; color:#a89880; line-height:1.7; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
   .chips-cause-item:last-child { border-bottom:none; }
-  .chips-cause-tag { font-size:10px; font-weight:700; color:#7888a8; margin-right:4px; }
+  .chips-cause-tag { font-size:10px; font-weight:700; color:#8a7868; margin-right:4px; }
   .stock-rank-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
-  .stock-rank-box { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:9px 11px; }
+  .stock-rank-box { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:9px 11px; }
   .stock-rank-title { font-size:11px; font-weight:700; margin-bottom:7px; }
-  .stock-rank-title.buy { color:#4dc880; }
-  .stock-rank-title.sell { color:#e05c5c; }
+  .stock-rank-title.buy { color:#7aaa8a; }
+  .stock-rank-title.sell { color:#b87878; }
   .stock-rank-item { display:flex; justify-content:space-between; align-items:baseline; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px; }
   .stock-rank-item:last-child { border-bottom:none; }
-  .stock-rank-name { color:#a0b0cc; }
+  .stock-rank-name { color:#a89880; }
   .stock-rank-shares { font-weight:700; }
-  .stock-rank-shares.buy { color:#4dc880; }
-  .stock-rank-shares.sell { color:#e05c5c; }
-  .stock-rank-who { font-size:10px; color:#6878a0; }
+  .stock-rank-shares.buy { color:#7aaa8a; }
+  .stock-rank-shares.sell { color:#b87878; }
+  .stock-rank-who { font-size:10px; color:#7a6a60; }
   .empty-state { text-align:center; padding:40px 10px; }
   .empty-state .icon { font-size:32px; margin-bottom:10px; opacity:0.2; }
-  .empty-state p { font-size:11px; color:#3a4260; }
-  .loading { text-align:center; padding:40px; color:#3a4260; font-size:11px; }
+  .empty-state p { font-size:11px; color:#6a5e54; }
+  .loading { text-align:center; padding:40px; color:#6a5e54; font-size:11px; }
 
   .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
   .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
   /* ── 匯率折線圖 ── */
-  .forex-chart-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
-  .forex-chart-title { font-size:10px; font-weight:700; color:#5a6a8e; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+  .forex-chart-wrap { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.055); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
+  .forex-chart-title { font-size:10px; font-weight:700; color:#8a7868; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
   .forex-chart-canvas { position:relative; height:130px; }
   /* ── 匯率換算工具 ── */
-  .forex-converter { background:rgba(155,89,182,0.08); border:1px solid rgba(155,89,182,0.25); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
-  .forex-converter-title { font-size:10px; font-weight:700; color:#9B59B6; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+  .forex-converter { background:rgba(154,136,168,0.07); border:1px solid rgba(154,136,168,0.22); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  .forex-converter-title { font-size:10px; font-weight:700; color:#9a88a8; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
   .forex-input-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-  .forex-input { flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(155,89,182,0.3); border-radius:8px; padding:8px 12px; color:#eef2ff; font-size:15px; font-weight:600; outline:none; width:100%; -moz-appearance:textfield; }
+  .forex-input { flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(154,136,168,0.28); border-radius:8px; padding:8px 12px; color:#e0d4c8; font-size:15px; font-weight:600; outline:none; width:100%; -moz-appearance:textfield; }
   .forex-input::-webkit-outer-spin-button, .forex-input::-webkit-inner-spin-button { -webkit-appearance:none; }
-  .forex-input:focus { border-color:rgba(155,89,182,0.65); background:rgba(255,255,255,0.09); }
-  .forex-input::placeholder { color:#3a4260; font-weight:400; }
-  .forex-input-unit { font-size:12px; font-weight:700; color:#9B59B6; white-space:nowrap; }
+  .forex-input:focus { border-color:rgba(154,136,168,0.55); background:rgba(255,255,255,0.08); }
+  .forex-input::placeholder { color:#6a5e54; font-weight:400; }
+  .forex-input-unit { font-size:12px; font-weight:700; color:#9a88a8; white-space:nowrap; }
   .forex-results { display:flex; gap:8px; }
-  .forex-result-item { flex:1; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:8px 10px; }
-  .forex-result-label { font-size:10px; color:#5a6a8e; display:block; margin-bottom:3px; }
-  .forex-result-val { font-size:18px; font-weight:800; color:#c8a8f0; display:block; }
-  .forex-result-note { font-size:9px; color:#3a4260; margin-top:8px; text-align:right; }
+  .forex-result-item { flex:1; background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 10px; }
+  .forex-result-label { font-size:10px; color:#8a7868; display:block; margin-bottom:3px; }
+  .forex-result-val { font-size:18px; font-weight:800; color:#b8a0c8; display:block; }
+  .forex-result-note { font-size:9px; color:#6a5e54; margin-top:8px; text-align:right; }
   /* ── 買入/賣出雙價 ── */
   .rate-buysell { display:flex; gap:12px; margin-top:4px; }
-  .rate-side-label { font-size:9px; color:#3a4260; margin-bottom:2px; }
-  .rate-side-val { font-size:13px; font-weight:700; color:#eef2ff; }
+  .rate-side-label { font-size:9px; color:#6a5e54; margin-bottom:2px; }
+  .rate-side-val { font-size:13px; font-weight:700; color:#e0d4c8; }
 
   /* ── 手機版 RWD ── */
   @media (max-width: 900px) {
@@ -263,9 +263,9 @@
 <div class="main-grid">
 
   <!-- ══ 欄1：每日財經新聞 ══ -->
-  <div class="column" style="--col-color:#4A90D9; --col-color-bg:rgba(74,144,217,0.15);">
+  <div class="column" style="--col-color:#7a9db5; --col-color-bg:rgba(122,157,181,0.12);">
     <div class="portal-card">
-      <div class="color-bar" style="background:#4A90D9;"></div>
+      <div class="color-bar" style="background:#7a9db5;"></div>
       <div class="card-cover cover-news">
         <div class="cover-bg-lines">
           <span style="width:88%"></span><span style="width:65%"></span><span style="width:78%"></span>
@@ -273,8 +273,8 @@
           <span style="width:82%"></span>
         </div>
         <div class="cover-center">
-          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(74,144,217,0.5));">📰</span>
-          <div class="cover-label" style="color:#5a8fc4;">Daily Briefing</div>
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(122,157,181,0.4));">📰</span>
+          <div class="cover-label" style="color:#8aacca;">Daily Briefing</div>
         </div>
       </div>
       <div class="card-body">
@@ -303,9 +303,9 @@
   </div>
 
   <!-- ══ 欄2：台股籌碼 ══ -->
-  <div class="column" style="--col-color:#27AE60; --col-color-bg:rgba(39,174,96,0.15);">
+  <div class="column" style="--col-color:#7a9e87; --col-color-bg:rgba(122,158,135,0.12);">
     <div class="portal-card">
-      <div class="color-bar" style="background:#27AE60;"></div>
+      <div class="color-bar" style="background:#7a9e87;"></div>
       <div class="card-cover cover-chips">
         <div class="cover-bars-wrap">
           <div class="cover-taiex">TAIEX</div>
@@ -320,7 +320,7 @@
             <div class="bar bar-up" style="height:48px"></div>
           </div>
         </div>
-        <div class="cover-label" style="color:#3d8a55;margin-top:10px;letter-spacing:4px;">Chips Report</div>
+        <div class="cover-label" style="color:#7a9e87;margin-top:10px;letter-spacing:4px;">Chips Report</div>
       </div>
       <div class="card-body">
         <div class="card-meta">⏰ 週一至週五 16:00</div>
@@ -346,9 +346,9 @@
   </div>
 
   <!-- ══ 欄3：土城週報 ══ -->
-  <div class="column" style="--col-color:#E67E22; --col-color-bg:rgba(230,126,34,0.15);">
+  <div class="column" style="--col-color:#b8906a; --col-color-bg:rgba(184,144,106,0.12);">
     <div class="portal-card">
-      <div class="color-bar" style="background:#E67E22;"></div>
+      <div class="color-bar" style="background:#b8906a;"></div>
       <div class="card-cover cover-pptx">
         <div class="building-glow"></div>
         <div class="cover-building">
@@ -358,7 +358,7 @@
             <div class="building-window"></div><div class="building-window lit"></div><div class="building-window lit"></div>
             <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
           </div>
-          <div class="cover-label" style="color:#8a5a1a;margin-top:10px;letter-spacing:4px;">Weekly Report</div>
+          <div class="cover-label" style="color:#a07848;margin-top:10px;letter-spacing:4px;">Weekly Report</div>
         </div>
       </div>
       <div class="card-body">
@@ -381,18 +381,18 @@
   </div>
 
   <!-- ══ 欄4：匯率面板 ══ -->
-  <div class="column" style="--col-color:#9B59B6; --col-color-bg:rgba(155,89,182,0.15);">
+  <div class="column" style="--col-color:#9a88a8; --col-color-bg:rgba(154,136,168,0.12);">
     <div class="portal-card">
-      <div class="color-bar" style="background:#9B59B6;"></div>
-      <div class="card-cover" style="background:linear-gradient(135deg,#120a1e,#1a0f2e,#120820);">
-        <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.07;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;">
+      <div class="color-bar" style="background:#9a88a8;"></div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#1c1818,#201c1c,#181618);">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.06;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;">
           <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / TWD</div>
           <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">CNY / TWD</div>
           <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / CNY</div>
         </div>
         <div class="cover-center">
-          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(155,89,182,0.5));">💱</span>
-          <div class="cover-label" style="color:#7a4fa0;">FX Report</div>
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(154,136,168,0.4));">💱</span>
+          <div class="cover-label" style="color:#9a88a8;">FX Report</div>
         </div>
       </div>
       <div class="card-body">
@@ -745,7 +745,7 @@ function _initForexChart(id, labels, data, label, color) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1e2440',
+          backgroundColor: '#282420',
           titleColor: '#7888a8',
           bodyColor: '#c8d0e8',
           borderColor: 'rgba(255,255,255,0.1)',
@@ -855,7 +855,7 @@ function renderForex(r, hist) {
     const usdCny = entries.map(e => e.USD_CNY);
     setTimeout(() => {
       _initForexChart('ch-usd-twd',  labels, usdTwd, 'USD/TWD', '#9B59B6');
-      _initForexChart('ch-usd-twd2', labels, usdTwd, 'USD/TWD', '#4A90D9');
+      _initForexChart('ch-usd-twd2', labels, usdTwd, 'USD/TWD', '#7a9db5');
       _initForexChart('ch-usd-cny',  labels, usdCny, 'USD/CNY', '#E67E22');
       _initForexChart('ch-cny-twd',  labels, cnyTwd, 'CNY/TWD', '#27AE60');
     }, 50);
