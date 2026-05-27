@@ -249,8 +249,14 @@
     .card-cover { height: 120px; }
     .card-body { padding: 10px 14px 12px; }
 
-    /* ── 分頁按鈕：4個分頁時縮小 ── */
-    .sub-tab { font-size: 10px; padding: 7px 2px; letter-spacing: -0.2px; }
+    /* ── 分頁欄：橫向滑動 + 44px 觸控熱區 ── */
+    .sub-tabs { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .sub-tabs::-webkit-scrollbar { display: none; }
+    .sub-tab {
+      flex: 1; min-width: 68px; min-height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; padding: 0 8px; letter-spacing: 0;
+    }
 
     /* ── 新聞 / 文字：防止長字串爆版 ── */
     .news-title    { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
@@ -292,6 +298,31 @@
     /* ── 判斷標籤 ── */
     .verdict-badge { font-size: 9px; padding: 2px 6px; }
   }
+
+  /* ── 骨架屏 Skeleton Screen ── */
+  @keyframes sk-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+  .sk {
+    background: rgba(60,40,24,0.09); border-radius: 4px;
+    animation: sk-pulse 1.6s ease-in-out infinite;
+    display: block;
+  }
+
+  /* ── 最後更新時間戳 ── */
+  .card-updated {
+    font-size: 10px; color: #b0a096;
+    text-align: right; margin-top: 4px; letter-spacing: 0.3px; min-height: 14px;
+  }
+
+  /* ── 桌面等高卡片（≥901px 生效；手機完全不受影響） ── */
+  @media (min-width: 901px) {
+    .main-grid    { align-items: stretch; }
+    .column       { height: 820px; }
+    .detail-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .detail-body  { flex: 1; min-height: 0; max-height: none; }
+  }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
@@ -332,6 +363,7 @@
           <span class="status-dot dot-empty" id="dot-news"></span>
           <span class="status-text" id="status-news">載入中...</span>
         </div>
+        <div class="card-updated" id="updated-news"></div>
       </div>
     </div>
     <div class="sub-tabs">
@@ -377,6 +409,7 @@
           <span class="status-dot dot-empty" id="dot-chips"></span>
           <span class="status-text" id="status-chips">載入中...</span>
         </div>
+        <div class="card-updated" id="updated-chips"></div>
       </div>
     </div>
     <div class="sub-tabs">
@@ -416,6 +449,7 @@
           <span class="status-dot dot-empty" id="dot-pptx"></span>
           <span class="status-text" id="status-pptx">載入中...</span>
         </div>
+        <div class="card-updated" id="updated-pptx"></div>
       </div>
     </div>
     <div class="sub-tabs">
@@ -450,6 +484,7 @@
           <span class="status-dot dot-empty" id="dot-forex"></span>
           <span class="status-text" id="status-forex">載入中...</span>
         </div>
+        <div class="card-updated" id="updated-forex"></div>
       </div>
     </div>
     <div class="sub-tabs">
@@ -523,6 +558,76 @@ function setStatus(id, hasData) {
 
 function empty() { return `<div class="empty-state"><div class="icon">⏳</div><p>尚未執行或無資料</p></div>`; }
 
+// ── 時間戳工具 ──
+function fmtUpdated(at) {
+  if (!at) return '';
+  const parts = String(at).trim().split(' ');
+  return '更新於 ' + (parts.length > 1 ? parts[parts.length - 1] : parts[0]);
+}
+function setUpdated(id, at) {
+  const el = document.getElementById('updated-' + id);
+  if (el) el.textContent = fmtUpdated(at);
+}
+
+// ── 骨架屏 Skeleton Screen ──
+function skeletonNews() {
+  const card = d => `<div style="background:rgba(60,40,24,0.03);border:1px solid rgba(60,40,24,0.08);border-radius:8px;padding:11px 13px;margin-bottom:7px;">
+    <div class="sk" style="height:13px;width:88%;margin-bottom:8px;animation-delay:${d}s"></div>
+    <div class="sk" style="height:10px;width:70%;margin-bottom:6px;animation-delay:${d+.08}s"></div>
+    <div class="sk" style="height:10px;width:80%;margin-bottom:10px;animation-delay:${d+.04}s"></div>
+    <div class="sk" style="height:8px;width:38%;animation-delay:${d+.12}s"></div>
+  </div>`;
+  return `<div><div style="display:flex;gap:8px;margin-bottom:12px;">
+    <div class="sk" style="height:26px;width:88px;border-radius:6px"></div>
+    <div class="sk" style="height:26px;width:60px;border-radius:6px;animation-delay:.1s"></div>
+  </div>${card(0)}${card(.1)}${card(.2)}</div>`;
+}
+function skeletonChips() {
+  return `<div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div class="sk" style="height:28px;flex:1;border-radius:6px"></div>
+      <div class="sk" style="height:28px;flex:2;border-radius:6px;animation-delay:.1s"></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <div class="sk" style="height:64px;flex:1;border-radius:8px"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.1s"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.2s"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.3s"></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <div class="sk" style="height:40px;flex:1;border-radius:6px;animation-delay:.05s"></div>
+      <div class="sk" style="height:40px;flex:1;border-radius:6px;animation-delay:.15s"></div>
+    </div>
+    <div style="height:1px;background:rgba(60,40,24,0.07);margin:10px 0"></div>
+    <div class="sk" style="height:10px;width:55%;margin-bottom:8px;animation-delay:.1s"></div>
+    <div class="sk" style="height:10px;width:85%;margin-bottom:6px;animation-delay:.18s"></div>
+    <div class="sk" style="height:10px;width:70%;animation-delay:.14s"></div>
+  </div>`;
+}
+function skeletonPptx() {
+  return `<div><div style="display:flex;gap:8px;margin-bottom:12px;">
+    <div class="sk" style="height:26px;width:88px;border-radius:6px"></div>
+    <div class="sk" style="height:26px;flex:1;border-radius:6px;animation-delay:.1s"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div class="sk" style="height:88px;border-radius:8px"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.12s"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.24s"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.36s"></div>
+  </div></div>`;
+}
+function skeletonForex() {
+  return `<div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div class="sk" style="height:68px;flex:1;border-radius:8px"></div>
+      <div class="sk" style="height:68px;flex:1;border-radius:8px;animation-delay:.12s"></div>
+      <div class="sk" style="height:68px;flex:1;border-radius:8px;animation-delay:.24s"></div>
+    </div>
+    <div class="sk" style="height:90px;border-radius:10px;margin-bottom:10px;animation-delay:.08s"></div>
+    <div class="sk" style="height:110px;border-radius:8px;animation-delay:.16s"></div>
+  </div>`;
+}
+
 function newsItems(items, isIntl, showPitch) {
   if (!items?.length) return empty();
   return items.map(item => {
@@ -579,6 +684,7 @@ function renderNews(r) {
   document.getElementById('news-intl').innerHTML = newsItems(map.intl, true, true);
   document.getElementById('news-realty').innerHTML = newsItems(map.realty, false, true);
   document.getElementById('news-china').innerHTML = newsItems(map.china, false, false);
+  setUpdated('news', r.fetched_at);
 }
 
 function renderChips(r) {
@@ -721,6 +827,7 @@ function renderChips(r) {
     if (r.disclaimer) recommend += `<div class="disclaimer">${r.disclaimer}</div>`;
   } else { recommend = empty(); }
   document.getElementById('chips-recommend').innerHTML = recommend;
+  setUpdated('chips', r.date);
 }
 
 function renderPptx(r) {
@@ -757,6 +864,7 @@ function renderPptx(r) {
   }
   html += '</div>';
   document.getElementById('pptx-tucheng').innerHTML = html;
+  setUpdated('pptx', r.run_at);
 }
 
 const _forexCharts = {};
@@ -897,6 +1005,7 @@ function renderForex(r, hist) {
     chartBlock('ch-cny-twd', 'CNY / TWD 走勢（近30日）') +
     newsItems(news['人民幣（CNY）']||[], false, false);
 
+  setUpdated('forex', r.fetched_at);
   if (hasHist) {
     const usdTwd = entries.map(e => e.USD_TWD);
     const cnyTwd = entries.map(e => e.CNY_TWD);
@@ -911,6 +1020,12 @@ function renderForex(r, hist) {
 }
 
 async function loadAll() {
+  // 先顯示骨架屏，取代靜態「載入中...」
+  document.getElementById('news-tw').innerHTML        = skeletonNews();
+  document.getElementById('chips-overview').innerHTML = skeletonChips();
+  document.getElementById('pptx-tucheng').innerHTML   = skeletonPptx();
+  document.getElementById('forex-twd').innerHTML      = skeletonForex();
+
   const [news, chips, pptx, forex, forexHist] = await Promise.all([
     fetchJSON(`${BASE}/daily_news.json`),
     fetchJSON(`${BASE}/chips_report.json`),
