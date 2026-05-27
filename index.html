@@ -78,9 +78,21 @@
   .building-window.lit { background:#c8a070; box-shadow:0 0 5px rgba(200,160,112,0.6); }
 
   .card-body { padding:14px 18px 16px; }
-  .card-meta { font-size:10px; color:#9a8a7e; margin-bottom:5px; }
-  .card-title { font-size:14px; font-weight:700; color:#2e2820; margin-bottom:4px; }
-  .card-status { margin-top:10px; display:flex; align-items:center; }
+  /* 標題列：手機垂直堆疊，桌面兩端對齊 */
+  .card-header-row {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 5px; margin-bottom: 8px;
+  }
+  /* 時間 Badge */
+  .card-meta {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: #8a7868;
+    background: rgba(60,40,24,0.05); border: 1px solid rgba(60,40,24,0.12);
+    padding: 2px 9px; border-radius: 20px; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .card-title { font-size:14px; font-weight:700; color:#2e2820; margin-bottom:0; }
+  .card-status { margin-top:8px; display:flex; align-items:center; }
   .status-dot { width:5px; height:5px; border-radius:50%; display:inline-block; margin-right:6px; }
   .dot-ok { background:#7a9e87; box-shadow:0 0 6px rgba(122,158,135,0.5); }
   .dot-empty { background:#c8c0b4; }
@@ -297,6 +309,11 @@
 
     /* ── 判斷標籤 ── */
     .verdict-badge { font-size: 9px; padding: 2px 6px; }
+    /* ── 卡片標題列：手機保持垂直，badge 縮小 ── */
+    .card-header-row { flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 6px; }
+    .card-meta { font-size: 10px; padding: 2px 7px; }
+    .card-title { font-size: 13px; }
+    .card-body { padding: 10px 12px 10px; }
   }
 
   /* ── 骨架屏 Skeleton Screen ── */
@@ -318,10 +335,12 @@
 
   /* ── 桌面等高卡片（≥901px 生效；手機完全不受影響） ── */
   @media (min-width: 901px) {
-    .main-grid    { align-items: stretch; }
-    .column       { height: 820px; }
-    .detail-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-    .detail-body  { flex: 1; min-height: 0; max-height: none; }
+    .main-grid      { align-items: stretch; }
+    .column         { height: 820px; }
+    .detail-panel   { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .detail-body    { flex: 1; min-height: 0; max-height: none; }
+    /* 桌面：標題列橫向兩端對齊 */
+    .card-header-row { flex-direction: row; justify-content: space-between; align-items: center; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -357,8 +376,10 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="card-meta">⏰ 每天早上 09:00</div>
-        <div class="card-title">每日財經新聞摘要</div>
+        <div class="card-header-row">
+          <div class="card-title">每日財經新聞摘要</div>
+          <div class="card-meta">⏰ 每日 09:00</div>
+        </div>
         <div class="card-status">
           <span class="status-dot dot-empty" id="dot-news"></span>
           <span class="status-text" id="status-news">載入中...</span>
@@ -403,8 +424,10 @@
         <div class="cover-label" style="color:#7a9e87;margin-top:10px;letter-spacing:4px;">Chips Report</div>
       </div>
       <div class="card-body">
-        <div class="card-meta">⏰ 週一至週五 16:00</div>
-        <div class="card-title">台股籌碼面報告</div>
+        <div class="card-header-row">
+          <div class="card-title">台股籌碼面報告</div>
+          <div class="card-meta">⏰ 週一至五 16:00</div>
+        </div>
         <div class="card-status">
           <span class="status-dot dot-empty" id="dot-chips"></span>
           <span class="status-text" id="status-chips">載入中...</span>
@@ -443,8 +466,10 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="card-meta">⏰ 每週日 13:06</div>
-        <div class="card-title">實價登錄</div>
+        <div class="card-header-row">
+          <div class="card-title">實價登錄</div>
+          <div class="card-meta">⏰ 每週日 13:06</div>
+        </div>
         <div class="card-status">
           <span class="status-dot dot-empty" id="dot-pptx"></span>
           <span class="status-text" id="status-pptx">載入中...</span>
@@ -478,8 +503,10 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="card-meta">⏰ 每天早上 09:05</div>
-        <div class="card-title">每日匯率動態</div>
+        <div class="card-header-row">
+          <div class="card-title">每日匯率動態</div>
+          <div class="card-meta">⏰ 每日 09:05</div>
+        </div>
         <div class="card-status">
           <span class="status-dot dot-empty" id="dot-forex"></span>
           <span class="status-text" id="status-forex">載入中...</span>
