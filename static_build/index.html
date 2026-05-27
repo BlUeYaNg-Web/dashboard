@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任務儀表板</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+    background: #ede8e2; color: #3a3028; min-height: 100vh;
+  }
+
+  /* ── Navbar ── */
+  .navbar {
+    padding: 24px 40px 0;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .navbar-eyebrow { width: 28px; height: 2px; background: linear-gradient(90deg,#7a9db5,#7a9e87); border-radius: 2px; margin-bottom: 10px; }
+  .navbar h1 { font-size: 22px; font-weight: 700; color: #2e2820; letter-spacing: 3px; }
+  .navbar-right { display: flex; align-items: center; gap: 14px; padding-bottom: 2px; }
+  .time { font-size: 12px; color: #9a8a7e; }
+  .refresh-btn {
+    background: rgba(60,40,24,0.05); border: 1px solid rgba(60,40,24,0.15);
+    color: #8a7868; padding: 5px 16px; border-radius: 20px;
+    cursor: pointer; font-size: 12px; transition: all 0.2s;
+  }
+  .refresh-btn:hover { background: rgba(122,157,181,0.15); border-color: rgba(122,157,181,0.45); color: #5a8aaa; }
+
+  /* ── 主格線 4欄 ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 24px 20px 48px;
+    align-items: start;
+  }
+
+  /* ── 每欄結構 ── */
+  .column { display: flex; flex-direction: column; gap: 0; }
+
+  /* ── 卡片 ── */
+  .portal-card {
+    border-radius: 14px 14px 0 0; overflow: hidden;
+    background: #f5f0ea; border: 1px solid rgba(60,40,24,0.10);
+    border-bottom: none;
+    box-shadow: 0 4px 16px rgba(60,40,24,0.08);
+  }
+  .color-bar { height: 3px; }
+  .card-cover {
+    height: 155px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-cover::after { content:''; position:absolute; bottom:0; left:0; right:0; height:50px; background:linear-gradient(transparent,rgba(0,0,0,0.2)); }
+
+  /* 封面樣式 */
+  .cover-news { background: linear-gradient(135deg,#2a2620,#322e28,#242018); }
+  .cover-bg-lines { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; justify-content:center; gap:9px; padding:20px; opacity:0.08; }
+  .cover-bg-lines span { height:7px; background:#fff; border-radius:4px; display:block; }
+  .cover-center { position:relative; text-align:center; z-index:1; }
+  .cover-icon { font-size:36px; display:block; margin-bottom:8px; }
+  .cover-label { font-size:9px; letter-spacing:5px; font-weight:700; text-transform:uppercase; }
+
+  .cover-chips { background: linear-gradient(135deg,#1e2a1e,#243024,#1a261a); flex-direction:column; padding-top:18px; }
+  .cover-bars-wrap { position:relative; }
+  .cover-taiex { position:absolute; top:-24px; right:0; font-size:18px; font-weight:800; color:#c07878; text-shadow:0 0 14px rgba(192,120,120,0.4); }
+  .cover-bars { display:flex; align-items:flex-end; gap:5px; height:70px; }
+  .bar { width:14px; border-radius:3px 3px 0 0; }
+  .bar-up { background:linear-gradient(180deg,#c07878,#a86060); }
+  .bar-down { background:linear-gradient(180deg,#7aaa8a,#5a8a6a); }
+
+  .cover-pptx { background:linear-gradient(135deg,#2a2018,#322818,#261e14); }
+  .cover-building { display:flex; flex-direction:column; align-items:center; position:relative; z-index:1; }
+  .building-glow { position:absolute; width:120px; height:80px; background:radial-gradient(circle,rgba(184,144,106,0.20) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-40%); }
+  .building-top { width:50px; height:6px; background:linear-gradient(90deg,#b8906a,#c8a070); border-radius:2px; margin-bottom:4px; }
+  .building-body { width:68px; height:68px; background:#2a2018; border:1px solid rgba(184,144,106,0.4); border-radius:4px; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:7px; }
+  .building-window { background:rgba(184,144,106,0.2); border-radius:1px; }
+  .building-window.lit { background:#c8a070; box-shadow:0 0 5px rgba(200,160,112,0.6); }
+
+  .card-body { padding:14px 18px 16px; }
+  /* 標題列：手機垂直堆疊，桌面兩端對齊 */
+  .card-header-row {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 5px; margin-bottom: 8px;
+  }
+  /* 時間 Badge */
+  .card-meta {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; color: #8a7868;
+    background: rgba(60,40,24,0.05); border: 1px solid rgba(60,40,24,0.12);
+    padding: 2px 9px; border-radius: 20px; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .card-title { font-size:14px; font-weight:700; color:#2e2820; margin-bottom:0; }
+  .card-status { margin-top:8px; display:flex; align-items:center; }
+  .status-dot { width:5px; height:5px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .dot-ok { background:#7a9e87; box-shadow:0 0 6px rgba(122,158,135,0.5); }
+  .dot-empty { background:#c8c0b4; }
+  .status-text { font-size:10px; color:#9a8a7e; }
+  .status-text.ok { color:#5a8a6a; }
+
+  /* ── 子分頁列 ── */
+  .sub-tabs {
+    display: flex; gap: 2px;
+    background: #e6e0da; padding: 6px 8px;
+    border: 1px solid rgba(60,40,24,0.10);
+    border-top: none; border-bottom: none;
+  }
+  .sub-tab {
+    flex: 1; text-align: center;
+    padding: 6px 4px; border-radius: 6px;
+    font-size: 11px; font-weight: 600; color: #9a8a7e;
+    cursor: pointer; transition: all 0.18s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    user-select: none;
+  }
+  .sub-tab:hover { background: rgba(60,40,24,0.06); color: #5a4e48; }
+  .sub-tab.active { background: var(--col-color-bg); color: var(--col-color); }
+
+  /* ── 詳細面板 ── */
+  .detail-panel {
+    background: #f5f0ea; border: 1px solid rgba(60,40,24,0.10);
+    border-top: none; border-radius: 0 0 14px 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(60,40,24,0.08);
+  }
+  .detail-body {
+    padding: 16px 18px;
+    overflow-y: auto; max-height: 520px;
+    scrollbar-width: thin; scrollbar-color: #c8c0b4 transparent;
+  }
+  .detail-body::-webkit-scrollbar { width: 3px; }
+  .detail-body::-webkit-scrollbar-thumb { background: #c8c0b4; border-radius: 4px; }
+
+  .sub-content { display: none; }
+  .sub-content.active { display: block; }
+
+  /* ── 資料元件 ── */
+  .meta-row { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .meta-item { background:rgba(60,40,24,0.04); border:1px solid rgba(60,40,24,0.09); border-radius:8px; padding:9px 12px; flex:1; min-width:80px; }
+  .meta-label { font-size:9px; color:#9a8a7e; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:3px; }
+  .meta-value { font-size:14px; color:#2e2820; font-weight:700; }
+
+  .news-item { background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:11px 13px; margin-bottom:7px; transition:background 0.2s; }
+  .news-item:hover { background:rgba(60,40,24,0.06); }
+  /* ── 新聞字型系統 ── */
+  .news-title    { font-size:15px; font-weight:700; color:#2e2820; margin-bottom:5px; line-height:1.5; }
+  .news-summary  { font-size:12px; font-weight:400; color:#6a5e54; line-height:1.7; margin-bottom:5px; }
+  .news-meta-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .news-source   { font-size:11px; font-weight:400; color:#9a8a7e; }
+  .news-analysis { font-size:12px; font-weight:400; color:#6a5e54; margin-top:7px; padding-top:7px; border-top:1px solid rgba(60,40,24,0.08); line-height:1.6; }
+  .news-links    { display:flex; gap:6px; margin-top:7px; flex-wrap:wrap; }
+  .news-link     { font-size:11px; font-weight:600; padding:3px 10px; border-radius:10px; text-decoration:none; transition:all 0.2s; }
+  .news-pitch    { margin-top:8px; padding:8px 11px; background:rgba(184,144,106,0.08); border-left:3px solid rgba(184,144,106,0.45); border-radius:0 6px 6px 0; font-size:12px; color:#8a6040; line-height:1.6; }
+  .news-pitch-tag { font-size:10px; font-weight:700; color:#a07050; letter-spacing:0.5px; margin-bottom:3px; }
+  .news-link-orig { background:rgba(122,157,181,0.12); color:#4a7a9a; border:1px solid rgba(122,157,181,0.35); }
+  .news-link-orig:hover { background:rgba(122,157,181,0.22); color:#3a6a8a; }
+  .news-link-trans { background:rgba(122,158,135,0.12); color:#4a7a60; border:1px solid rgba(122,158,135,0.30); }
+  .news-link-trans:hover { background:rgba(122,158,135,0.22); color:#3a6a50; }
+
+  .value-up { color:#c06060; font-weight:700; }
+  .value-down { color:#5a8a6a; font-weight:700; }
+
+  .pptx-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .pptx-case { background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:10px 12px; transition:background 0.2s; }
+  .pptx-case:hover { background:rgba(60,40,24,0.06); }
+  .case-row1 { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid rgba(60,40,24,0.08); }
+  /* ── 實登卡片字型系統 ── */
+  .case-name     { font-size:15px; font-weight:700; color:#2e2820; }
+  .case-price    { font-size:13px; font-weight:600; color:#4a7a9a; text-align:right; }
+  .case-row2     { display:flex; justify-content:space-between; align-items:flex-end; }
+  .case-new-block {}
+  .case-weekly   { font-size:20px; font-weight:800; color:#a07050; line-height:1.2; }
+  .case-label    { font-size:11px; font-weight:400; color:#9a8a7e; margin-top:2px; }
+  .case-weeks    { font-size:11px; font-weight:400; color:#9a8a7e; text-align:right; }
+  .case-weeks-line { display:flex; align-items:baseline; justify-content:flex-end; gap:2px; }
+  .weeks-num     { font-size:17px; font-weight:700; color:#8a7e78; }
+  .weeks-alert .weeks-num { font-size:22px; font-weight:800; color:#c06060; }
+  .weeks-sub     { font-size:11px; font-weight:400; color:#9a8a7e; margin-top:1px; text-align:right; }
+
+  .verdict-badge { font-size:10px; padding:2px 8px; border-radius:8px; font-weight:600; white-space:nowrap; }
+  .verdict-ok { background:rgba(122,158,135,0.14); color:#4a7a60; border:1px solid rgba(122,158,135,0.35); }
+  .verdict-warn { background:rgba(180,150,80,0.12); color:#9a7a30; border:1px solid rgba(180,150,80,0.32); }
+  .verdict-no { background:rgba(192,96,96,0.12); color:#a05050; border:1px solid rgba(192,96,96,0.32); }
+
+  .disclaimer { margin-top:12px; padding:9px 12px; background:rgba(60,40,24,0.03); border-radius:6px; border-left:2px solid #c8c0b4; font-size:11px; color:#8a7868; line-height:1.7; }
+
+  /* ── 籌碼面專用 ── */
+  .chips-section { margin-bottom:12px; }
+  .chips-section-title { font-size:11px; font-weight:700; color:#9a8a7e; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(60,40,24,0.08); }
+  .chips-inst-row { display:flex; gap:6px; margin-bottom:6px; }
+  .chips-inst-card { flex:1; background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:8px 10px; text-align:center; }
+  .chips-inst-label { font-size:11px; color:#9a8a7e; margin-bottom:3px; }
+  .chips-inst-val { font-size:15px; font-weight:700; }
+  .chips-inst-note { font-size:10px; color:#b0a096; margin-top:2px; }
+  .chips-stat-row { display:flex; gap:6px; margin-bottom:6px; }
+  .chips-stat { flex:1; background:rgba(60,40,24,0.03); border-radius:6px; padding:7px 10px; }
+  .chips-stat-label { font-size:10px; color:#9a8a7e; }
+  .chips-stat-val { font-size:13px; font-weight:600; color:#5a4e48; margin-top:2px; }
+  .chips-causality { margin-bottom:12px; }
+  .chips-cause-item { font-size:12px; color:#6a5e54; line-height:1.7; padding:5px 0; border-bottom:1px solid rgba(60,40,24,0.06); }
+  .chips-cause-item:last-child { border-bottom:none; }
+  .chips-cause-tag { font-size:10px; font-weight:700; color:#9a8a7e; margin-right:4px; }
+  .stock-rank-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+  .stock-rank-box { background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:9px 11px; }
+  .stock-rank-title { font-size:11px; font-weight:700; margin-bottom:7px; }
+  .stock-rank-title.buy { color:#4a7a60; }
+  .stock-rank-title.sell { color:#a05050; }
+  .stock-rank-item { display:flex; justify-content:space-between; align-items:baseline; padding:3px 0; border-bottom:1px solid rgba(60,40,24,0.05); font-size:11px; }
+  .stock-rank-item:last-child { border-bottom:none; }
+  .stock-rank-name { color:#6a5e54; }
+  .stock-rank-shares { font-weight:700; }
+  .stock-rank-shares.buy { color:#4a7a60; }
+  .stock-rank-shares.sell { color:#a05050; }
+  .stock-rank-who { font-size:10px; color:#b0a096; }
+  .empty-state { text-align:center; padding:40px 10px; }
+  .empty-state .icon { font-size:32px; margin-bottom:10px; opacity:0.25; }
+  .empty-state p { font-size:11px; color:#b0a096; }
+  .loading { text-align:center; padding:40px; color:#b0a096; font-size:11px; }
+
+  .section-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:12px 0 8px; display:flex; align-items:center; gap:6px; }
+  .section-label::before { content:''; display:block; width:3px; height:10px; background:currentColor; border-radius:2px; }
+  /* ── 匯率折線圖 ── */
+  .forex-chart-wrap { background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:12px 12px 8px; margin-bottom:10px; position:relative; }
+  .forex-chart-title { font-size:10px; font-weight:700; color:#9a8a7e; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+  .forex-chart-canvas { position:relative; height:130px; }
+  /* ── 匯率換算工具 ── */
+  .forex-converter { background:rgba(154,136,168,0.08); border:1px solid rgba(154,136,168,0.30); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  .forex-converter-title { font-size:10px; font-weight:700; color:#7a6890; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+  .forex-input-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .forex-input { flex:1; background:rgba(60,40,24,0.04); border:1px solid rgba(154,136,168,0.35); border-radius:8px; padding:8px 12px; color:#2e2820; font-size:15px; font-weight:600; outline:none; width:100%; -moz-appearance:textfield; }
+  .forex-input::-webkit-outer-spin-button, .forex-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+  .forex-input:focus { border-color:rgba(154,136,168,0.65); background:rgba(154,136,168,0.06); }
+  .forex-input::placeholder { color:#b0a096; font-weight:400; }
+  .forex-input-unit { font-size:12px; font-weight:700; color:#7a6890; white-space:nowrap; }
+  .forex-results { display:flex; gap:8px; }
+  .forex-result-item { flex:1; background:rgba(60,40,24,0.03); border:1px solid rgba(60,40,24,0.08); border-radius:8px; padding:8px 10px; }
+  .forex-result-label { font-size:10px; color:#9a8a7e; display:block; margin-bottom:3px; }
+  .forex-result-val { font-size:18px; font-weight:800; color:#7a6890; display:block; }
+  .forex-result-note { font-size:9px; color:#b0a096; margin-top:8px; text-align:right; }
+  /* ── 買入/賣出雙價 ── */
+  .rate-buysell { display:flex; gap:12px; margin-top:4px; }
+  .rate-side-label { font-size:9px; color:#9a8a7e; margin-bottom:2px; }
+  .rate-side-val { font-size:13px; font-weight:700; color:#2e2820; }
+
+  /* ── 手機版 RWD ── */
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 12px 48px; }
+    .navbar { padding: 16px 16px 0; }
+    .navbar h1 { font-size: 17px; letter-spacing: 2px; }
+  }
+  @media (max-width: 540px) {
+    /* ── 外層格線 ── */
+    .main-grid { grid-template-columns: 1fr; gap: 14px; padding: 12px 8px 48px; }
+    .navbar { padding: 12px 12px 0; }
+    .navbar h1 { font-size: 15px; letter-spacing: 1px; }
+    .refresh-btn { display: none; }
+
+    /* ── 卡片內文 ── */
+    .detail-body { padding: 12px 12px; max-height: 420px; }
+    .card-cover { height: 120px; }
+    .card-body { padding: 10px 14px 12px; }
+
+    /* ── 分頁欄：橫向滑動 + 44px 觸控熱區 ── */
+    .sub-tabs { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .sub-tabs::-webkit-scrollbar { display: none; }
+    .sub-tab {
+      flex: 1; min-width: 68px; min-height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; padding: 0 8px; letter-spacing: 0;
+    }
+
+    /* ── 新聞 / 文字：防止長字串爆版 ── */
+    .news-title    { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
+    .news-summary  { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-analysis { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-pitch    { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-source   { font-size: 10px; }
+
+    /* ── meta 卡片：2欄 ── */
+    .meta-row { gap: 6px; }
+    .meta-item { min-width: calc(50% - 3px); flex: 0 0 calc(50% - 3px); }
+
+    /* ── 籌碼：法人3格 → 2欄換行 ── */
+    .chips-inst-row { flex-wrap: wrap; gap: 5px; }
+    .chips-inst-card { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .chips-inst-val { font-size: 14px; }
+    .chips-stat-row { flex-wrap: wrap; gap: 5px; }
+    .chips-stat { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .chips-cause-item { font-size: 11px; word-break: break-word; }
+
+    /* ── 籌碼排行榜：2欄 → 1欄 ── */
+    .stock-rank-grid { grid-template-columns: 1fr; gap: 6px; }
+
+    /* ── 地產卡片：2欄 → 1欄 ── */
+    .pptx-grid { grid-template-columns: 1fr; gap: 8px; }
+    .case-name   { font-size: 14px; }
+    .case-price  { font-size: 12px; }
+    .case-weekly { font-size: 17px; }
+
+    /* ── 匯率換算結果：wrap換行 ── */
+    .forex-results { flex-wrap: wrap; gap: 6px; }
+    .forex-result-item { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .forex-result-val { font-size: 16px; }
+    .forex-input { font-size: 14px; }
+
+    /* ── 匯率買賣雙價 ── */
+    .rate-buysell { flex-wrap: wrap; gap: 8px; }
+
+    /* ── 判斷標籤 ── */
+    .verdict-badge { font-size: 9px; padding: 2px 6px; }
+    /* ── 卡片標題列：手機保持垂直，badge 縮小 ── */
+    .card-header-row { flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 6px; }
+    .card-meta { font-size: 10px; padding: 2px 7px; }
+    .card-title { font-size: 13px; }
+    .card-body { padding: 10px 12px 10px; }
+  }
+
+  /* ── 骨架屏 Skeleton Screen ── */
+  @keyframes sk-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+  .sk {
+    background: rgba(60,40,24,0.09); border-radius: 4px;
+    animation: sk-pulse 1.6s ease-in-out infinite;
+    display: block;
+  }
+
+  /* ── 最後更新時間戳 ── */
+  .card-updated {
+    font-size: 10px; color: #b0a096;
+    text-align: right; margin-top: 4px; letter-spacing: 0.3px; min-height: 14px;
+  }
+
+  /* ── 桌面等高卡片（≥901px 生效；手機完全不受影響） ── */
+  @media (min-width: 901px) {
+    .main-grid      { align-items: stretch; }
+    .column         { height: 820px; }
+    .detail-panel   { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .detail-body    { flex: 1; min-height: 0; max-height: none; }
+    /* 桌面：標題列橫向兩端對齊 */
+    .card-header-row { flex-direction: row; justify-content: space-between; align-items: center; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="navbar">
+  <div>
+    <div class="navbar-eyebrow"></div>
+    <h1>任務儀表板</h1>
+  </div>
+  <div class="navbar-right">
+    <span class="time" id="now-time"></span>
+    <button class="refresh-btn" onclick="location.reload()">⟳ 重新整理</button>
+  </div>
+</div>
+
+<div class="main-grid">
+
+  <!-- ══ 欄1：每日財經新聞 ══ -->
+  <div class="column" style="--col-color:#4a7a9a; --col-color-bg:rgba(122,157,181,0.14);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#7a9db5;"></div>
+      <div class="card-cover cover-news">
+        <div class="cover-bg-lines">
+          <span style="width:88%"></span><span style="width:65%"></span><span style="width:78%"></span>
+          <span style="width:55%"></span><span style="width:72%"></span><span style="width:48%"></span>
+          <span style="width:82%"></span>
+        </div>
+        <div class="cover-center">
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(122,157,181,0.4));">📰</span>
+          <div class="cover-label" style="color:#8aacca;">Daily Briefing</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-title">每日財經新聞摘要</div>
+          <div class="card-meta">⏰ 每日 09:00</div>
+        </div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-news"></span>
+          <span class="status-text" id="status-news">載入中...</span>
+        </div>
+        <div class="card-updated" id="updated-news"></div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('news','tw')">台灣財經</div>
+      <div class="sub-tab" onclick="switchSub('news','intl')">國際重大</div>
+      <div class="sub-tab" onclick="switchSub('news','realty')">房地產</div>
+      <div class="sub-tab" onclick="switchSub('news','tucheng')">土城房產</div>
+      <div class="sub-tab" onclick="switchSub('news','china')">中國財經</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div class="sub-content active" id="news-tw"><div class="loading">載入中...</div></div>
+        <div class="sub-content" id="news-intl"></div>
+        <div class="sub-content" id="news-realty"></div>
+        <div class="sub-content" id="news-tucheng"></div>
+        <div class="sub-content" id="news-china"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 欄2：台股籌碼 ══ -->
+  <div class="column" style="--col-color:#4a7a60; --col-color-bg:rgba(122,158,135,0.14);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#7a9e87;"></div>
+      <div class="card-cover cover-chips">
+        <div class="cover-bars-wrap">
+          <div class="cover-taiex">TAIEX</div>
+          <div class="cover-bars">
+            <div class="bar bar-up" style="height:38px"></div>
+            <div class="bar bar-down" style="height:24px"></div>
+            <div class="bar bar-up" style="height:58px"></div>
+            <div class="bar bar-up" style="height:42px"></div>
+            <div class="bar bar-down" style="height:16px"></div>
+            <div class="bar bar-up" style="height:66px"></div>
+            <div class="bar bar-down" style="height:28px"></div>
+            <div class="bar bar-up" style="height:48px"></div>
+          </div>
+        </div>
+        <div class="cover-label" style="color:#7a9e87;margin-top:10px;letter-spacing:4px;">Chips Report</div>
+      </div>
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-title">台股籌碼面報告</div>
+          <div class="card-meta">⏰ 週一至五 16:00</div>
+        </div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-chips"></span>
+          <span class="status-text" id="status-chips">載入中...</span>
+        </div>
+        <div class="card-updated" id="updated-chips"></div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('chips','overview')">大盤概況</div>
+      <div class="sub-tab" onclick="switchSub('chips','stocks')">熱門股票</div>
+      <div class="sub-tab" onclick="switchSub('chips','recommend')">推薦股票</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div class="sub-content active" id="chips-overview"><div class="loading">載入中...</div></div>
+        <div class="sub-content" id="chips-stocks"></div>
+        <div class="sub-content" id="chips-recommend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 欄3：土城週報 ══ -->
+  <div class="column" style="--col-color:#a07050; --col-color-bg:rgba(184,144,106,0.14);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#b8906a;"></div>
+      <div class="card-cover cover-pptx">
+        <div class="building-glow"></div>
+        <div class="cover-building">
+          <div class="building-top"></div>
+          <div class="building-body">
+            <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
+            <div class="building-window"></div><div class="building-window lit"></div><div class="building-window lit"></div>
+            <div class="building-window lit"></div><div class="building-window"></div><div class="building-window lit"></div>
+          </div>
+          <div class="cover-label" style="color:#a07848;margin-top:10px;letter-spacing:4px;">Weekly Report</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-title">實價登錄</div>
+          <div class="card-meta">⏰ 每週日 13:06</div>
+        </div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-pptx"></span>
+          <span class="status-text" id="status-pptx">載入中...</span>
+        </div>
+        <div class="card-updated" id="updated-pptx"></div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('pptx','tucheng')">土城區</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div class="sub-content active" id="pptx-tucheng"><div class="loading">載入中...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 欄4：匯率面板 ══ -->
+  <div class="column" style="--col-color:#7a6890; --col-color-bg:rgba(154,136,168,0.14);">
+    <div class="portal-card">
+      <div class="color-bar" style="background:#9a88a8;"></div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#1c1818,#201c1c,#181618);">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.06;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;">
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">CNY / TWD</div>
+          <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:6px;">USD / CNY</div>
+        </div>
+        <div class="cover-center">
+          <span class="cover-icon" style="filter:drop-shadow(0 4px 12px rgba(154,136,168,0.4));">💱</span>
+          <div class="cover-label" style="color:#9a88a8;">FX Report</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-title">每日匯率動態</div>
+          <div class="card-meta">⏰ 每日 09:05</div>
+        </div>
+        <div class="card-status">
+          <span class="status-dot dot-empty" id="dot-forex"></span>
+          <span class="status-text" id="status-forex">載入中...</span>
+        </div>
+        <div class="card-updated" id="updated-forex"></div>
+      </div>
+    </div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('forex','twd')">台幣 TWD</div>
+      <div class="sub-tab" onclick="switchSub('forex','usd')">美元 USD</div>
+      <div class="sub-tab" onclick="switchSub('forex','cny')">人民幣 CNY</div>
+    </div>
+    <div class="detail-panel">
+      <div class="detail-body">
+        <div id="forex-header"></div>
+        <div class="sub-content active" id="forex-twd"><div class="loading">載入中...</div></div>
+        <div class="sub-content" id="forex-usd"></div>
+        <div class="sub-content" id="forex-cny"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const REPO = 'BlUeYaNg-Web/dashboard';
+const BASE = `https://raw.githubusercontent.com/${REPO}/main/results`;
+
+document.getElementById('now-time').textContent = new Date().toLocaleString('zh-TW',{
+  year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'
+});
+
+// 子分頁切換
+const subGroups = {
+  news: ['tw','intl','realty','tucheng','china'],
+  chips: ['overview','stocks','recommend'],
+  pptx: ['tucheng'],
+  forex: ['twd','usd','cny'],
+};
+function switchSub(group, id) {
+  subGroups[group].forEach(s => {
+    const el = document.getElementById(`${group}-${s}`);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById(`${group}-${id}`);
+  if (target) target.classList.add('active');
+
+  // 更新 sub-tab 樣式
+  const col = target?.closest('.column');
+  if (col) {
+    col.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+    const tabs = col.querySelectorAll('.sub-tab');
+    const idx = subGroups[group].indexOf(id);
+    if (tabs[idx]) tabs[idx].classList.add('active');
+  }
+  // 匯率分頁切換時重算折線圖尺寸
+  if (group === 'forex') {
+    setTimeout(() => { Object.values(_forexCharts).forEach(c => c?.resize()); }, 20);
+  }
+}
+
+async function fetchJSON(url) {
+  try {
+    const r = await fetch(url + '?t=' + Date.now());
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { return null; }
+}
+
+function setStatus(id, hasData) {
+  const dot = document.getElementById('dot-' + id);
+  const txt = document.getElementById('status-' + id);
+  if (hasData) { dot.className='status-dot dot-ok'; txt.className='status-text ok'; txt.textContent='已有資料'; }
+  else { dot.className='status-dot dot-empty'; txt.className='status-text'; txt.textContent='尚無資料'; }
+}
+
+function empty() { return `<div class="empty-state"><div class="icon">⏳</div><p>尚未執行或無資料</p></div>`; }
+
+// ── 時間戳工具 ──
+function fmtUpdated(at) {
+  if (!at) return '';
+  const parts = String(at).trim().split(' ');
+  return '更新於 ' + (parts.length > 1 ? parts[parts.length - 1] : parts[0]);
+}
+function setUpdated(id, at) {
+  const el = document.getElementById('updated-' + id);
+  if (el) el.textContent = fmtUpdated(at);
+}
+
+// ── 骨架屏 Skeleton Screen ──
+function skeletonNews() {
+  const card = d => `<div style="background:rgba(60,40,24,0.03);border:1px solid rgba(60,40,24,0.08);border-radius:8px;padding:11px 13px;margin-bottom:7px;">
+    <div class="sk" style="height:13px;width:88%;margin-bottom:8px;animation-delay:${d}s"></div>
+    <div class="sk" style="height:10px;width:70%;margin-bottom:6px;animation-delay:${d+.08}s"></div>
+    <div class="sk" style="height:10px;width:80%;margin-bottom:10px;animation-delay:${d+.04}s"></div>
+    <div class="sk" style="height:8px;width:38%;animation-delay:${d+.12}s"></div>
+  </div>`;
+  return `<div><div style="display:flex;gap:8px;margin-bottom:12px;">
+    <div class="sk" style="height:26px;width:88px;border-radius:6px"></div>
+    <div class="sk" style="height:26px;width:60px;border-radius:6px;animation-delay:.1s"></div>
+  </div>${card(0)}${card(.1)}${card(.2)}</div>`;
+}
+function skeletonChips() {
+  return `<div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div class="sk" style="height:28px;flex:1;border-radius:6px"></div>
+      <div class="sk" style="height:28px;flex:2;border-radius:6px;animation-delay:.1s"></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <div class="sk" style="height:64px;flex:1;border-radius:8px"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.1s"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.2s"></div>
+      <div class="sk" style="height:64px;flex:1;border-radius:8px;animation-delay:.3s"></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <div class="sk" style="height:40px;flex:1;border-radius:6px;animation-delay:.05s"></div>
+      <div class="sk" style="height:40px;flex:1;border-radius:6px;animation-delay:.15s"></div>
+    </div>
+    <div style="height:1px;background:rgba(60,40,24,0.07);margin:10px 0"></div>
+    <div class="sk" style="height:10px;width:55%;margin-bottom:8px;animation-delay:.1s"></div>
+    <div class="sk" style="height:10px;width:85%;margin-bottom:6px;animation-delay:.18s"></div>
+    <div class="sk" style="height:10px;width:70%;animation-delay:.14s"></div>
+  </div>`;
+}
+function skeletonPptx() {
+  return `<div><div style="display:flex;gap:8px;margin-bottom:12px;">
+    <div class="sk" style="height:26px;width:88px;border-radius:6px"></div>
+    <div class="sk" style="height:26px;flex:1;border-radius:6px;animation-delay:.1s"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div class="sk" style="height:88px;border-radius:8px"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.12s"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.24s"></div>
+    <div class="sk" style="height:88px;border-radius:8px;animation-delay:.36s"></div>
+  </div></div>`;
+}
+function skeletonForex() {
+  return `<div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div class="sk" style="height:68px;flex:1;border-radius:8px"></div>
+      <div class="sk" style="height:68px;flex:1;border-radius:8px;animation-delay:.12s"></div>
+      <div class="sk" style="height:68px;flex:1;border-radius:8px;animation-delay:.24s"></div>
+    </div>
+    <div class="sk" style="height:90px;border-radius:10px;margin-bottom:10px;animation-delay:.08s"></div>
+    <div class="sk" style="height:110px;border-radius:8px;animation-delay:.16s"></div>
+  </div>`;
+}
+
+function newsItems(items, isIntl, showPitch) {
+  if (!items?.length) return empty();
+  return items.map(item => {
+    // 原文連結
+    const searchQ = encodeURIComponent((item.title||'') + ' ' + (item.source||''));
+    const origUrl = item.url || `https://www.google.com/search?q=${searchQ}&tbs=qdr:d`;
+    const origLabel = item.url ? '看原文 ↗' : '搜尋原文 🔍';
+
+    // 翻譯（僅國外新聞）
+    let transBtn = '';
+    if (isIntl) {
+      const transUrl = item.url
+        ? `https://translate.google.com/translate?sl=auto&tl=zh-TW&u=${encodeURIComponent(item.url)}`
+        : `https://translate.google.com/?sl=auto&tl=zh-TW&text=${encodeURIComponent(item.title||'')}`;
+      transBtn = `<a class="news-link news-link-trans" href="${transUrl}" target="_blank" rel="noopener">中文翻譯 🌐</a>`;
+    }
+
+    // 銷售說詞（台灣財經、房地產、國際才顯示）
+    const pitchHtml = (showPitch && item.sales_pitch)
+      ? `<div class="news-pitch"><div class="news-pitch-tag">🏠 銷售說詞</div>${item.sales_pitch}</div>`
+      : '';
+
+    return `<div class="news-item">
+    <div class="news-title">${item.title||''}</div>
+    <div class="news-summary">${item.summary||''}</div>
+    <div class="news-meta-row">
+      <span class="news-source">📌 ${item.source||''}</span>
+      <span style="font-size:11px;color:#7888a8;">${item.credibility||''}</span>
+    </div>
+    ${item.analysis?`<div class="news-analysis">💡 ${item.analysis}</div>`:''}
+    ${pitchHtml}
+    <div class="news-links">
+      <a class="news-link news-link-orig" href="${origUrl}" target="_blank" rel="noopener">${origLabel}</a>
+      ${transBtn}
+    </div>
+  </div>`;
+  }).join('');
+}
+
+function renderNews(r) {
+  if (!r) { ['tw','intl','realty','tucheng','china'].forEach(s=>{ document.getElementById('news-'+s).innerHTML=empty(); }); return; }
+  const cats = r.categories||{};
+  const map = {
+    tw:       cats['台灣財經新聞']||[],
+    intl:     cats['國際重大新聞']||[],
+    realty:   cats['房地產新聞']||[],
+    tucheng:  cats['土城房產']||[],
+    china:    cats['中國財經經濟新聞']||[],
+  };
+  const meta = `<div class="meta-row">
+    <div class="meta-item"><div class="meta-label">更新時間</div><div class="meta-value" style="font-size:12px;">${r.fetched_at||'N/A'}</div></div>
+    <div class="meta-item"><div class="meta-label">總則數</div><div class="meta-value">${r.total||0} 則</div></div>
+  </div>`;
+  document.getElementById('news-tw').innerHTML = meta + newsItems(map.tw, false, true);
+  document.getElementById('news-intl').innerHTML = newsItems(map.intl, true, true);
+  document.getElementById('news-realty').innerHTML = newsItems(map.realty, false, true);
+  document.getElementById('news-tucheng').innerHTML = newsItems(map.tucheng, false, true);
+  document.getElementById('news-china').innerHTML = newsItems(map.china, false, false);
+  setUpdated('news', r.fetched_at);
+}
+
+function renderChips(r) {
+  if (!r) { ['overview','stocks','recommend'].forEach(s=>{ document.getElementById('chips-'+s).innerHTML=empty(); }); return; }
+
+  const fv = v => {
+    const n = parseFloat(v);
+    const cls = n >= 0 ? 'value-up' : 'value-down';
+    const sign = n >= 0 ? '+' : '';
+    return `<span class="${cls}">${sign}${v} 億</span>`;
+  };
+  const total = ((r.foreign||0) + (r.investment_trust||0) + (r.dealer||0)).toFixed(2);
+
+  // ── overview：大盤 + 三大法人 + 融資期貨 + 因果 + 摘要 ──
+  let overview = '';
+
+  // 大盤基本資訊
+  overview += `<div class="meta-row">
+    <div class="meta-item"><div class="meta-label">日期</div><div class="meta-value">${r.date||'N/A'}</div></div>
+    <div class="meta-item" style="flex:2"><div class="meta-label">加權指數</div><div class="meta-value">${r.taiex||'N/A'}</div></div>
+    ${r.volume?`<div class="meta-item"><div class="meta-label">成交額</div><div class="meta-value">${r.volume} 億</div></div>`:''}
+  </div>`;
+  if (r.sentiment) overview += `<div style="margin-bottom:10px;font-size:12px;color:#a0b0cc;">市場氣氛：<strong>${r.sentiment}</strong></div>`;
+
+  // 三大法人
+  overview += `<div class="chips-section">
+    <div class="chips-section-title">三大法人</div>
+    <div class="chips-inst-row">
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">外資</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.foreign)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.foreign)>=0?'+':''}${r.foreign} 億</div>
+        ${r.foreign_streak?`<div class="chips-inst-note">${r.foreign_streak}</div>`:''}
+      </div>
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">投信</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.investment_trust)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.investment_trust)>=0?'+':''}${r.investment_trust} 億</div>
+        ${r.trust_streak?`<div class="chips-inst-note">${r.trust_streak}</div>`:''}
+      </div>
+      <div class="chips-inst-card">
+        <div class="chips-inst-label">自營商</div>
+        <div class="chips-inst-val" style="color:${parseFloat(r.dealer)>=0?'#4dc880':'#e05c5c'}">${parseFloat(r.dealer)>=0?'+':''}${r.dealer} 億</div>
+      </div>
+      <div class="chips-inst-card" style="border-color:rgba(255,255,255,0.15)">
+        <div class="chips-inst-label">合計</div>
+        <div class="chips-inst-val" style="color:${parseFloat(total)>=0?'#4dc880':'#e05c5c'}">${parseFloat(total)>=0?'+':''}${total} 億</div>
+      </div>
+    </div>
+  </div>`;
+
+  // 融資 + 期貨
+  if (r.margin || r.futures) {
+    overview += `<div class="chips-section"><div class="chips-section-title">融資・期貨</div><div class="chips-stat-row">`;
+    if (r.margin) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">融資餘額</div><div class="chips-stat-val">${r.margin.balance} 億（${r.margin.change} 億）</div></div>
+      <div class="chips-stat"><div class="chips-stat-label">融資使用率</div><div class="chips-stat-val">${r.margin.usage_rate}</div></div>`;
+    }
+    if (r.short) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">融券餘額</div><div class="chips-stat-val">${r.short.balance} 萬張（${r.short.change}）</div></div>`;
+    }
+    if (r.futures) {
+      overview += `<div class="chips-stat"><div class="chips-stat-label">外資台指期</div><div class="chips-stat-val" style="color:${r.futures.direction==='多單'?'#4dc880':'#e05c5c'}">${r.futures.direction} ${Math.abs(r.futures.foreign_net).toLocaleString()} 口</div></div>
+      <div class="chips-stat"><div class="chips-stat-label">P/C Ratio</div><div class="chips-stat-val">${r.futures.put_call_ratio}（${r.futures.pc_bias}）</div></div>`;
+    }
+    overview += `</div></div>`;
+  }
+
+  // 籌碼因果
+  if (r.causality?.length) {
+    overview += `<div class="chips-section chips-causality"><div class="chips-section-title">籌碼因果解讀</div>`;
+    overview += r.causality.map(c => {
+      const parts = c.split('→');
+      if (parts.length === 2) {
+        return `<div class="chips-cause-item"><span class="chips-cause-tag">因</span>${parts[0].replace('【因】','').trim()} <span style="color:#5a6a8e;">→</span> <span class="chips-cause-tag">果</span>${parts[1].replace('【果】','').trim()}</div>`;
+      }
+      return `<div class="chips-cause-item">${c}</div>`;
+    }).join('');
+    overview += `</div>`;
+  }
+
+  // 摘要
+  if (r.summary) overview += `<div class="news-item" style="margin-top:4px"><div class="news-title" style="font-size:13px;margin-bottom:4px;">今日籌碼總結</div><div class="news-summary">${r.summary}</div></div>`;
+
+  document.getElementById('chips-overview').innerHTML = overview;
+
+  // ── stocks：多空排行 + 投資建議 ──
+  let stocks = '';
+
+  if (r.top_buy?.length || r.top_sell?.length) {
+    stocks += `<div class="stock-rank-grid">`;
+    if (r.top_buy?.length) {
+      stocks += `<div class="stock-rank-box"><div class="stock-rank-title buy">🔼 法人大買</div>`;
+      stocks += r.top_buy.map(s => `<div class="stock-rank-item">
+        <span class="stock-rank-name">${s.stock}</span>
+        <span>
+          <span class="stock-rank-shares buy">${s.shares}</span>
+          <span class="stock-rank-who"> ${s.who}</span>
+        </span>
+      </div>`).join('');
+      stocks += `</div>`;
+    }
+    if (r.top_sell?.length) {
+      stocks += `<div class="stock-rank-box"><div class="stock-rank-title sell">🔽 法人大賣</div>`;
+      stocks += r.top_sell.map(s => `<div class="stock-rank-item">
+        <span class="stock-rank-name">${s.stock}</span>
+        <span>
+          <span class="stock-rank-shares sell">${s.shares}</span>
+          <span class="stock-rank-who"> ${s.who}</span>
+        </span>
+      </div>`).join('');
+      stocks += `</div>`;
+    }
+    stocks += `</div>`;
+  }
+
+  if (r.investment_advice?.length) {
+    stocks += `<div class="chips-section-title" style="margin-top:4px">投資建議分析</div>`;
+    stocks += r.investment_advice.map(item => {
+      const vc = item.verdict==='適合'?'verdict-ok':item.verdict==='謹慎'?'verdict-warn':'verdict-no';
+      return `<div class="news-item">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+          <div class="news-title" style="font-size:14px;margin:0;">${item.stock}</div>
+          <span class="verdict-badge ${vc}">${item.verdict}</span>
+        </div>
+        <div class="news-summary">${item.reason}</div>
+        ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
+      </div>`;
+    }).join('');
+  } else if (!r.top_buy?.length) { stocks = empty(); }
+
+  document.getElementById('chips-stocks').innerHTML = stocks;
+
+  // ── recommend：額外推薦 ──
+  let recommend = '';
+  if (r.recommendations?.length) {
+    recommend = r.recommendations.map(item => `<div class="news-item">
+      <div class="news-title" style="font-size:14px;">${item.stock}</div>
+      <div class="news-summary">${item.reason}</div>
+      ${item.risk?`<div class="news-analysis">⚠️ ${item.risk}</div>`:''}
+    </div>`).join('');
+    if (r.disclaimer) recommend += `<div class="disclaimer">${r.disclaimer}</div>`;
+  } else { recommend = empty(); }
+  document.getElementById('chips-recommend').innerHTML = recommend;
+  setUpdated('chips', r.date);
+}
+
+function renderPptx(r) {
+  if (!r) { document.getElementById('pptx-tucheng').innerHTML=empty(); return; }
+  let html = `<div class="meta-row">
+    <div class="meta-item"><div class="meta-label">執行時間</div><div class="meta-value" style="font-size:12px;">${r.run_at||'N/A'}</div></div>
+    <div class="meta-item" style="flex:2"><div class="meta-label">檔案</div><div class="meta-value" style="font-size:11px;">${(r.output_file||'N/A').split('\\').pop()}</div></div>
+  </div><div class="pptx-grid">`;
+  for (const c of (r.cases||[])) {
+    const priceStr = (c.latest_price != null && c.latest_area != null)
+      ? `${c.latest_price}萬／坪・${c.latest_area}坪`
+      : (c.latest_price != null ? `${c.latest_price}萬／坪` : '—');
+    const wd = c.weeks_dry ?? null;
+    const isAlert = wd != null && wd >= 4;
+    const weeksHtml = wd != null
+      ? `<div class="case-weeks${isAlert?' weeks-alert':''}">
+           <div class="case-weeks-line">連續<span class="weeks-num">${wd}</span>週</div>
+           <div class="weeks-sub">無實價登錄</div>
+         </div>`
+      : '';
+    html += `<div class="pptx-case">
+      <div class="case-row1">
+        <div class="case-name">${c.name}</div>
+        <div class="case-price">${priceStr}</div>
+      </div>
+      <div class="case-row2">
+        <div class="case-new-block">
+          <div class="case-weekly">+${c.weekly_new}</div>
+          <div class="case-label">本週新增（戶）</div>
+        </div>
+        ${weeksHtml}
+      </div>
+    </div>`;
+  }
+  html += '</div>';
+  document.getElementById('pptx-tucheng').innerHTML = html;
+  setUpdated('pptx', r.run_at);
+}
+
+const _forexCharts = {};
+let _fxRates = {};
+
+function _hexRgba(hex, a) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+function _initForexChart(id, labels, data, label, color) {
+  const canvas = document.getElementById(id);
+  if (!canvas || !labels.length) return;
+  if (_forexCharts[id]) { _forexCharts[id].destroy(); delete _forexCharts[id]; }
+  _forexCharts[id] = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: _hexRgba(color, 0.08),
+        borderWidth: 1.8,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        tension: 0.35,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#282420',
+          titleColor: '#7888a8',
+          bodyColor: '#c8d0e8',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(3)}` }
+        }
+      },
+      scales: {
+        x: { ticks:{color:'#4a5580',font:{size:9},maxTicksLimit:7,maxRotation:0}, grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.06)'} },
+        y: { ticks:{color:'#4a5580',font:{size:9},maxTicksLimit:5}, grid:{color:'rgba(255,255,255,0.06)'}, border:{color:'rgba(255,255,255,0.06)'} }
+      }
+    }
+  });
+}
+
+function calcForex() {
+  const twd = parseFloat(document.getElementById('forex-twd-input')?.value);
+  const usdEl = document.getElementById('forex-result-usd');
+  const cnyEl = document.getElementById('forex-result-cny');
+  if (!usdEl || !cnyEl) return;
+  if (!twd || isNaN(twd) || twd <= 0) { usdEl.textContent = '—'; cnyEl.textContent = '—'; return; }
+  const usdSell = _fxRates.USD_TWD?.rate_sell ?? _fxRates.USD_TWD?.rate;
+  const cnySell = _fxRates.CNY_TWD?.rate_sell ?? _fxRates.CNY_TWD?.rate;
+  if (usdSell) usdEl.textContent = (twd / usdSell).toFixed(2);
+  if (cnySell) cnyEl.textContent = (twd / cnySell).toFixed(2);
+}
+
+function renderForex(r, hist) {
+  const hdr = document.getElementById('forex-header');
+  if (!r) {
+    ['twd','usd','cny'].forEach(s => { document.getElementById('forex-'+s).innerHTML = empty(); });
+    if (hdr) hdr.innerHTML = '';
+    return;
+  }
+  const rates = r.rates||{};
+  const news  = r.news||{};
+  _fxRates = rates;
+
+  const entries = (hist?.entries||[]).slice(-30);
+  const labels  = entries.map(e => e.date);
+  const hasHist = entries.length > 1;
+
+  function rateCard(key, label) {
+    const d = rates[key];
+    if (!d) return '';
+    const n    = parseFloat(d.change||0);
+    const cls  = n >= 0 ? 'value-up' : 'value-down';
+    const sign = n > 0 ? '+' : '';
+    const icon = n > 0 ? '▲' : n < 0 ? '▼' : '─';
+    const hasBuySell = d.rate_buy != null && d.rate_sell != null;
+    const priceHtml = hasBuySell
+      ? `<div class="rate-buysell">
+           <div><div class="rate-side-label">買入</div><div class="rate-side-val">${d.rate_buy}</div></div>
+           <div><div class="rate-side-label">賣出</div><div class="rate-side-val">${d.rate_sell}</div></div>
+         </div>`
+      : `<div class="meta-value" style="margin-top:4px;">${d.rate_sell??d.rate??'—'}</div>`;
+    return `<div class="meta-item">
+      <div class="meta-label">${label}</div>
+      ${priceHtml}
+      <div style="font-size:11px;margin-top:4px;" class="${cls}">${icon} ${sign}${d.change} (${sign}${d.change_pct}%)</div>
+    </div>`;
+  }
+
+  if (hdr) hdr.innerHTML = `
+    <div class="meta-row">${rateCard('USD_TWD','USD / TWD')}${rateCard('CNY_TWD','CNY / TWD')}${rateCard('USD_CNY','USD / CNY')}</div>
+    <div style="font-size:10px;color:#3a4260;margin:-4px 0 12px;">更新：${r.fetched_at||'N/A'} ・ 台灣銀行即期匯率</div>
+    <div class="forex-converter">
+      <div class="forex-converter-title">💱 新台幣換算</div>
+      <div class="forex-input-row">
+        <input type="number" id="forex-twd-input" class="forex-input" placeholder="輸入新台幣金額…" min="0" oninput="calcForex()">
+        <span class="forex-input-unit">TWD</span>
+      </div>
+      <div class="forex-results">
+        <div class="forex-result-item">
+          <span class="forex-result-label">美元 USD</span>
+          <span class="forex-result-val" id="forex-result-usd">—</span>
+        </div>
+        <div class="forex-result-item">
+          <span class="forex-result-label">人民幣 CNY</span>
+          <span class="forex-result-val" id="forex-result-cny">—</span>
+        </div>
+      </div>
+      <div class="forex-result-note">以即期賣出匯率計算</div>
+    </div>`;
+
+  function chartBlock(id, title) {
+    if (!hasHist) return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="empty-state" style="padding:16px 0"><p>資料累積中</p></div></div>`;
+    return `<div class="forex-chart-wrap"><div class="forex-chart-title">${title}</div><div class="forex-chart-canvas"><canvas id="${id}"></canvas></div></div>`;
+  }
+
+  document.getElementById('forex-twd').innerHTML =
+    chartBlock('ch-usd-twd', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['台幣（TWD）']||[], false, false);
+
+  document.getElementById('forex-usd').innerHTML =
+    chartBlock('ch-usd-twd2', 'USD / TWD 走勢（近30日）') +
+    newsItems(news['美元（USD）']||[], true, false);
+
+  document.getElementById('forex-cny').innerHTML =
+    chartBlock('ch-usd-cny', 'USD / CNY 走勢（近30日）') +
+    chartBlock('ch-cny-twd', 'CNY / TWD 走勢（近30日）') +
+    newsItems(news['人民幣（CNY）']||[], false, false);
+
+  setUpdated('forex', r.fetched_at);
+  if (hasHist) {
+    const usdTwd = entries.map(e => e.USD_TWD);
+    const cnyTwd = entries.map(e => e.CNY_TWD);
+    const usdCny = entries.map(e => e.USD_CNY);
+    setTimeout(() => {
+      _initForexChart('ch-usd-twd',  labels, usdTwd, 'USD/TWD', '#9B59B6');
+      _initForexChart('ch-usd-twd2', labels, usdTwd, 'USD/TWD', '#7a9db5');
+      _initForexChart('ch-usd-cny',  labels, usdCny, 'USD/CNY', '#E67E22');
+      _initForexChart('ch-cny-twd',  labels, cnyTwd, 'CNY/TWD', '#27AE60');
+    }, 50);
+  }
+}
+
+async function loadAll() {
+  // 先顯示骨架屏，取代靜態「載入中...」
+  document.getElementById('news-tw').innerHTML        = skeletonNews();
+  document.getElementById('chips-overview').innerHTML = skeletonChips();
+  document.getElementById('pptx-tucheng').innerHTML   = skeletonPptx();
+  document.getElementById('forex-twd').innerHTML      = skeletonForex();
+
+  const [news, chips, pptx, forex, forexHist] = await Promise.all([
+    fetchJSON(`${BASE}/daily_news.json`),
+    fetchJSON(`${BASE}/chips_report.json`),
+    fetchJSON(`${BASE}/pptx_update.json`),
+    fetchJSON(`${BASE}/forex_report.json`),
+    fetchJSON(`${BASE}/forex_history.json`),
+  ]);
+  setStatus('news', !!news); renderNews(news);
+  setStatus('chips', !!chips); renderChips(chips);
+  setStatus('pptx', !!pptx); renderPptx(pptx);
+  setStatus('forex', !!forex); renderForex(forex, forexHist);
+}
+
+loadAll();
+</script>
+</body>
+</html>
