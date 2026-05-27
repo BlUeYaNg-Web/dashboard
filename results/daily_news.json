@@ -1,188 +1,65 @@
 {
-  "fetched_at": "2026/05/27 09:00",
-  "total": 20,
+  "fetched_at": "2026/05/27 手動核稿更新",
+  "total": 6,
   "categories": {
     "台灣財經新聞": [
       {
-        "title": "輝達、台積電股價勁揚 AI算力與先進晶片需求成主要推手",
-        "summary": "隨著AI算力和先進晶片的需求上升，輝達和台積電的股價表現出色，顯示出科技產業的強勁復甦。這對相關企業和投資者而言是個利好訊號，預示著市場的增值潛力。",
-        "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E8%BC%9D%E9%81%94-%E5%8F%B0%E7%A9%8D%E9%9B%BB%E8%82%A1%E5%83%B9%E5%8B%81%E6%8F%9A-ai%E7%AE%97%E5%8A%9B%E8%88%87%E5%85%88%E9%80%B2%E6%99%B6%E7%89%87%E9%9C%80%E6%B1%82%E6%88%90%E4%B8%BB%E8%A6%81%E6%8E%A8%E6%89%8B-004304436.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "科技股的強勁表現可能促進周邊產業的投資和需求，尤其是在高科技地段的房地產發展。買房者可以把握這一風潮，未來價值將會提升。",
-        "sales_pitch": "現在這個市場上，真正有價值的產品會讓買家審慎選擇，咱們的區位未來會更搶手，值得擁有。"
+        "title": "台股盤中衝上44,097點歷史新高 收盤43,525點 三大法人合計買超473億",
+        "summary": "加權指數2026/05/26盤中觸及44,097.63點寫下歷史紀錄，惟美伊衝突消息面干擾與電子股短線漲多獲利了結，收盤跌119點至43,525.37點，成交值達1.4732兆元。三大法人同向買超：外資355.49億、投信69.34億、自營商49.09億，合計473.94億元。",
+        "source": "鉅亨網",
+        "url": "https://m.cnyes.com/news/id/6470783",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "【可信度B+】來源為鉅亨網（財經一線媒體），三大法人數字可與TWSE官網交叉核實。【事實】成交值1.4732兆、44,097.63點高點為客觀數據；「美伊衝突干擾」為分析觀點，非確定因果。",
+        "sales_pitch": "三大法人連買逾470億，顯示外資持續看好台灣資產。台股高檔區正是將部分股票獲利轉移到房地產的合理時機，不動產抗通膨、現金流穩定，有效分散集中在科技股的風險。"
       },
       {
-        "title": "中國減產疑慮與中東擾動推升，倫敦鋁價週二創四年多新高",
-        "summary": "受中國減產和中東地區不穩定影響，倫敦鋁價創下四年多以來的最高紀錄，顯示全球資源市場的動盪。這些變化將影響生產成本並可能推升其他商品價格。",
-        "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E4%B8%AD%E5%9C%8B%E6%B8%9B%E7%94%A2%E7%96%91%E6%85%AE%E8%88%87%E4%B8%AD%E6%9D%B1%E6%93%BE%E5%8B%95%E6%8E%A8%E5%8D%87-%E5%80%AB%E6%95%A6%E9%8B%81%E5%83%B9%E9%80%B1%E4%BA%8C%E5%89%B5%E5%9B%9B%E5%B9%B4%E5%A4%9A%E6%96%B0%E9%AB%98-003958421.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "原材料價格上升可能導致建築成本上漲，進而影響房價。投資者應提前布局，抓住未來價格上漲的機會。",
-        "sales_pitch": "所以現在的選擇會影響未來的生活品質，咱們尋找的不是便宜，而是強大的價值，可以放心住下去。"
+        "title": "台積電2026年Q1每股配息調升至7元 9月16日除息",
+        "summary": "台積電（2330）董事會決議2026年第一季每股現金股利由6.5元提升至7元，盈餘配發率升至31.7%，除息日訂於9月16日。分析師指出配息提升反映公司對CoWoS先進封裝訂單能見度高。",
+        "source": "工商時報",
+        "url": "https://www.ctee.com.tw/news/20260513700505-430201",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "【可信度A】配息7元、除息9月16日為台積電董事會公告事實，可查閱公開資訊觀測站（mops.twse.com.tw）核實。盈餘配發率31.7%為計算數字。",
+        "sales_pitch": "台積電大幅提高配息，科技業獲利能力持續強化，股市財富效果明顯。股息落袋後分配至不動產，形成股利+租金雙軌收益，讓資產結構更穩固。"
       },
       {
-        "title": "傳遭阿布達比主權基金拋售套現逾19億美元，格羅方德盤後大跌近6%",
-        "summary": "格羅方德遭遇阿布達比主權基金的拋售，股價在盤後交易中大幅下跌，顯示出市場對於不穩定資金流動的敏感性。投資者需注意這一動態對於相關產業的影響。",
-        "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E5%82%B3%E9%81%AD%E9%98%BF%E5%B8%83%E9%81%94%E6%AF%94%E4%B8%BB%E6%AC%8A%E5%9F%BA%E9%87%91%E6%8B%43%5D%E7%8F%BE%E9%80%BE19%E5%84%84%E7%BE%8E%E5%85%83-%E6%A0%BC%E7%BE%85%E6%96%B9%E5%BE%B7%E7%9B%A4%E5%BE%8C%E5%A4%A7%E8%B7%8C%E8%BF%916-003856021.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "這種市場動盪可能影響投資者的信心，進而影響房地產的需求。如何選擇穩定地段的房產將是重要的投資策略。",
-        "sales_pitch": "挑選一個未來能夠帶來安心生活的地方，這才是真正的好投資，而不是跟風買入短期熱門產品。"
-      },
-      {
-        "title": "三星與SK海力士2倍槓桿及反向產品上市，單日漲跌幅放大至60%引波動擔憂",
-        "summary": "三星和SK海力士的槓桿產品上市，單日漲跌幅達60%，引發市場對波動性的擔憂。這顯示出市場對於科技股的敏感度及其潛在風險。",
-        "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E4%B8%89%E6%98%9F%E8%88%87sk%E6%B5%B7%E5%8A%9B%E5%A3%AB2%E5%80%8D%E6%A7%93%E6%A1%BF%E5%8F%8A%E5%8F%8D%E5%90%91%E7%94%A2%E5%93%81%E4%B8%8A%E5%B8%82-%E5%96%AE%E6%97%A5%E6%BC%B2%E8%B7%8C%E5%B9%85%E6%94%BE%E5%A4%A7%E8%87%B360-%E5%BC%95%E6%B3%A2%E5%8B%95%E6%93%94%E6%86%82-004259753.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "科技股的極度波動可能讓市場不穩定，這時期投入房地產是更具防護性的選擇。選擇優質地段的房產將有助於降低投資風險。",
-        "sales_pitch": "市場的浮動越大，越能證明穩定資產的價值。能選擇的好地段，未來必定會成為少數人的選擇。"
-      },
-      {
-        "title": "字節跳動AI晶片大單點火，高通股價週二大漲4.48%續破頂",
-        "summary": "字節跳動的AI晶片大單洽談成功，高通股價因而大幅上漲，這顯示出AI和高科技產業的潛力吸引投資者關注。未來科技發展將可能加速經濟增長。",
-        "source": "Yahoo財經",
-        "url": "https://tw.stock.yahoo.com/news/%E5%AD%97%E7%AF%80%E8%B7%B3%E5%8B%95ai%E6%99%B6%E7%89%87%E5%A4%A7%E5%96%AE%E9%BB%9E%E7%81%AB-%E9%AB%98%E9%80%9A%E8%82%A1%E5%83%B9%E9%80%B0%E4%BA%8C%E5%A4%A7%E6%BC%B24-48-%E7%BA%8C%E7%A0%B4%E9%A0%82-004118726.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "隨著科技產業的發展，未來對高科技相關地段的需求將持續增強，帶動房市的增值潛力。投資於優質地段將是明智之舉。",
-        "sales_pitch": "選擇的地段和產品會讓你在未來無論市場如何變化，都可以自信地擁有。深思熟慮的選擇會帶來長遠的好處。"
+        "title": "外資多家上調台積電目標價 最高里昂喊3,030元",
+        "summary": "近期多家國際外資券商上調台積電目標價：里昂3,030元、花旗2,875元、野村2,820元、滙豐2,800元。主因AI伺服器需求強勁且先進封裝產能滿載，外資整體維持買入評等。",
+        "source": "經濟日報",
+        "url": "https://money.udn.com/money/story/5607/9449064",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "【可信度B+】各外資目標價為研究報告中的明確數字，屬可追溯事實。目標價係主觀預測，非保證，不同機構分歧應視為參考而非確定。",
+        "sales_pitch": "外資持續加碼台灣科技資產，台幣計價財富效果顯著。市場高溫時，將部分股票獲利移轉至房地產，是穩住總資產基盤、降低單一市場波動的正確配置邏輯。"
       }
     ],
-    "房地產新聞": [
-      {
-        "title": "藍帶首席靜謐宅　巨霖建設「禾田沐」以河堤景觀與低密度生活　重塑宜蘭五結宜居價值",
-        "summary": "巨霖建設推出的新案強調低密度生活與美麗的河堤景觀，為宜蘭五結地區帶來新的宜居選擇。",
-        "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/p/p01/277367/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "低密度與自然景觀的結合將吸引高端客群，提升宜居價值。類似理念可以應用於土城區的銷售邏輯中，強調生活品質。",
-        "sales_pitch": "在選擇家時，景觀與環境才是核心價值，真正值得擁有的產品，未來絕對會超越當前的價格。"
-      },
-      {
-        "title": "自住宅曾出租別急賣！稅務局提醒：停業滿1年才適用土增稅10%優惠",
-        "summary": "稅務局提醒自住宅若曾出租，必須停業滿一年才有稅務優惠，對於二手房市場造成影響。",
-        "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/p/p04/277427/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "稅務政策可能影響二手房供給，促使潛在買家更考慮新建案的優勢。這也可能引發對預售屋的需求上升。",
-        "sales_pitch": "眼光是門檻，稅務政策變動更讓我們看到新房的長期價值。別急著賣，真正值得持有的才會讓你受益更多！"
-      },
-      {
-        "title": "新北三重、蘆洲社宅再推進！停車場與青年住宅同步開發　市府「跨機關合作」加速工程",
-        "summary": "新北市市府推進社會住宅計劃，以停車場與青年住宅同步開發，加速改善居住環境。",
-        "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/n/n01/north-taiwan/new-taipei-estate/277420/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "社會住宅計劃的推進將提高區域的居住密度與生活便利性，潛在將來提升周邊房價。這為新建案帶來更多機會。",
-        "sales_pitch": "投資在未來生活品質上，這些新住宅計劃提供了更好的生活便利性，值得考慮！"
-      },
-      {
-        "title": "千萬預算買房空間差很大！北市只能買13坪　中南部2房輕鬆入手",
-        "summary": "報導指在北市千萬預算僅能購得小坪數住宅，而中南部則可輕鬆購入兩房，反映兩地房市差異。",
-        "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/n/n01/277401/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "區域房價差異促使買家尋找性價比高的產品，影響土城區的潛在客群選擇。也提醒我們提供優質選擇以吸引客戶。",
-        "sales_pitch": "在考慮預算時，尋找性價比高的住宅才是王道，對未來價值的想像更有可能超越花費！"
-      },
-      {
-        "title": "修法後的包租代管：出事誰負責?",
-        "summary": "隨著包租代管法律的修法，相關責任界定成為熱議話題，影響房東與租客的權益。",
-        "source": "住展房屋網",
-        "url": "https://www.myhousing.com.tw/magazine/276656/",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "法律修訂和責任界定對租賃市場影響深遠，可能迫使投資者重新評估市場選擇。這提醒潛在买家了解合規性重要性。",
-        "sales_pitch": "對於現有或潛在投資者來看，合規性越來越重要，選擇堅固的產品將未來有更多保障！"
-      }
-    ],
-    "中國財經經濟新聞": [
-      {
-        "title": "美軍稱已對伊朗南部發動新一輪空襲",
-        "summary": "美軍對伊朗南部進行新一輪空襲，情勢再度緊張。此舉可能影響全球能源供應及市場情緒。",
-        "source": "BBC中文",
-        "url": "https://www.bbc.com/zhongwen/articles/cwy22pde88po/trad?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "國際局勢動盪可能對原物料市場及建材成本造成影響，進而影響新成屋的銷售情況。房市投資需謹慎評估相關風險。"
-      },
-      {
-        "title": "特朗普指示談判代表「不要急於與伊朗達成協議」 油價大幅下跌",
-        "summary": "特朗普指示其談判人員在與伊朗的協議上要保持耐心，這導致油價出現大幅下跌。",
-        "source": "BBC中文",
-        "url": "https://www.bbc.com/zhongwen/articles/ckgpxkg35kwo/trad?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "油價下跌可降低建築成本，對新成屋銷售形成正面影響，但市場情緒仍需觀察。"
-      },
-      {
-        "title": "分析：美中新建貿易、投資委員會，能否為關稅戰「加裝防撞欄」？",
-        "summary": "美中貿易與投資的新委員會或有助於減輕雙方的關稅摩擦，對全球貿易環境産生影響。",
-        "source": "BBC中文",
-        "url": "https://www.bbc.com/zhongwen/articles/cm2prj02pdgo/trad?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "若貿易關係改善，可能提升市場信心，刺激房地產需求。新成屋銷售將受益於經濟穩定的正面預期。"
-      },
-      {
-        "title": "女性比男性長壽不限於人類  科學家將研究延伸到其他物種",
-        "summary": "科學家發現女性在多種物種中普遍比男性長壽，這一發現將擴展到更廣泛的生物研究。",
-        "source": "BBC中文",
-        "url": "https://www.bbc.com/zhongwen/articles/ceqppvxvrn5o/trad?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "雖然這則新聞與房地產直接相關性不大，但可引發對家庭結構變化的關注，或許影響住宅需求的類型。"
-      },
-      {
-        "title": "中國15年來最嚴重煤礦事故後，民眾怒火升溫",
-        "summary": "中國發生15年來最嚴重的煤礦事故，引發民眾的強烈不滿，社會穩定性受到影響。",
-        "source": "BBC中文",
-        "url": "https://www.bbc.com/zhongwen/articles/c8jvvywlmezo/trad?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "事故的發生可能引起政府對安全生產的加強監管，這也可能影響建築產業的進一步發展。新成屋銷售策略需因應政策變動。"
-      }
-    ],
+    "房地產新聞": [],
+    "中國財經經濟新聞": [],
     "國際重大新聞": [
       {
-        "title": "Iran condemns US strikes as 'gross violation' of ceasefire",
-        "summary": "伊朗譴責美國的攻擊行為，稱其為明顯違反停火協議，局勢緊張可能影響中東地區的穩定與經濟發展。",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c4g44yl7q70o?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "國際局勢的不穩定可能對投資與房地產市場造成影響，特別是在地緣政治風險增大的情況下。隨著環境變化，對於安全可靠的居住區域需求應會提升。",
-        "sales_pitch": "現在，面對不確定的國際情勢，人們更會尋找安全且升值潛力大的居住環境。我們提供的產品，不僅僅是房子，而是未來生活的保障。"
+        "title": "Fed新任主席Warsh就任 維持利率3.50-3.75% 暫停降息循環",
+        "summary": "美國聯準會新任主席Kevin Warsh於2026年5月22日正式就任，接替Powell。Fed在4月FOMC會議決議暫停降息，聯邦基金利率目標區間維持3.50-3.75%。理事Waller指出能源價格持續偏高，通膨方向尚未明確改善，後續政策動向取決於通膨與就業數據。",
+        "source": "iShares / Federal Reserve H.15",
+        "url": "https://www.federalreserve.gov/releases/h15/",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "analysis": "【可信度A】Warsh就任日期及利率3.50-3.75%為Fed官方確認事實。後續降息時間點為市場預測，非確定事項，應與FOMC議事紀錄交叉確認。",
+        "sales_pitch": "Fed暫停降息、利率高位維持，資金成本偏高讓熱錢傾向流向實體資產。台灣房貸利率仍較美國低，現在鎖定房地產，等於在高利率時代提前建立防禦型資產部位。"
       },
       {
-        "title": "Russia threatens more Kyiv strikes and tells foreign nationals to leave",
-        "summary": "俄羅斯威脅將進一步打擊基輔，並要求外國國民撤離，戰事持續對地區安全構成挑戰。",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c1e22n55zn4o?at_medium=RSS&at_campaign=rss",
+        "title": "美股S&P500創歷史新高7,519點 Nasdaq漲1.19%至26,656點",
+        "summary": "美股2026年5月26日收盤：S&P500上漲0.61%至7,519.12點創歷史新高，Nasdaq大漲1.19%至26,656.18點亦創新高，科技股持續引領上攻；道瓊下跌0.23%至50,461.68點。AI相關題材仍為主要驅動力。",
+        "source": "CNBC Market Data",
+        "url": "https://www.cnbc.com/2026/05/25/stock-futures-today-live-updates.html",
         "credibility": "⭐⭐⭐⭐",
-        "analysis": "地緣政治的動盪將推動投資者尋找更安全的資產，台灣的房市可能受益於外資的長期需求。客戶對未來市值的考量將使得稀缺的優質產品更加受到青睞。",
-        "sales_pitch": "在這種不確定性下，找到一個長期、安全的居所是很多人的首選。我們的產品不只是房子，而是你在未來的更高生活品質的保證。"
+        "analysis": "【可信度B】數據來自CNBC，為一線財經媒體；惟直接訪問頁面受限，係以搜尋引擎結構化資料摘要確認，建議以Yahoo Finance或Bloomberg交叉核實。收盤點位數字一致性高，可信。",
+        "sales_pitch": "美股連創新高，全球資金持續追逐風險資產。股市高點區間，是將部分獲利轉配置到台灣實體不動產的合理時機，房地產波動低、租金收益穩定，強化資產組合的抗跌韌性。"
       },
       {
-        "title": "Dozens killed in Lebanon as Israel intensifies strikes",
-        "summary": "以色列加大對黎巴嫩的攻擊力度，造成多人死傷，持續的衝突可能影響到周邊經濟穩定。",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/cx211rgngp0o?at_medium=RSS&at_campaign=rss",
+        "title": "中東美伊衝突持續 霍爾木茲海峽受阻 油價維持近四年高位",
+        "summary": "美伊軍事衝突尚未緩解，霍爾木茲海峽通行未恢復正常，美國油價維持近四年高位，Memorial Day假期前汽油價格創高。Fed官員擔憂能源通膨將持久化，美國GDP年化成長率放緩至約1%，通膨維持4-5%，停滯性通膨壓力升溫。",
+        "source": "iShares 2026 Fed Outlook / Seeking Alpha",
+        "url": "https://www.ishares.com/us/insights/fed-outlook-2026-interest-rate-forecast",
         "credibility": "⭐⭐⭐⭐",
-        "analysis": "中東的動盪可能吸引資本流向更安全的市場，台灣地產的波動減少反而形成了吸引力，長期增值潛力更受重視。",
-        "sales_pitch": "在不穩定的世界中，能擁有一個安定的家變得尤為重要。我們的房子不是簡單的住處，而是未來的小確幸和穩定的資產。"
-      },
-      {
-        "title": "Nasa unveils next steps to build permanent Moon base",
-        "summary": "美國宇航局公布建立永久月球基地的下一步計劃，展現了對太空探索的長期承諾和科技的進步。",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c39228nxyr4o?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "太空探索的進展可能激發科技與創新的熱潮，進而對相關產業和市場形成正向推動，帶動資本流動及對高價值居住環境的需求。",
-        "sales_pitch": "在科技日新月異的今天，人們對未來生活品質的渴求更加強烈。我們的住宅不僅代表了居住，更是提升生活品味與價值的選擇。"
-      },
-      {
-        "title": "Internet starts coming back in Iran after months-long blackout",
-        "summary": "在經歷數月的網絡黑暗後，伊朗的網絡逐步恢復，這將對當地經濟和社會互動帶來影響。",
-        "source": "BBC World",
-        "url": "https://www.bbc.com/news/articles/c1w22y1n74do?at_medium=RSS&at_campaign=rss",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "網絡恢復意味著經濟活動可能會重新啟動，這對地區不穩定的影響也可能減緩，台灣的安穩市場將提升其吸引力。",
-        "sales_pitch": "隨著全球互聯網的恢復，人們對於生活質量的追求變得愈加重要。我們提供的產品，不只是房產的選擇，而是你穩定生活的未來投資。"
+        "analysis": "【可信度B】GDP 1%、通膨4-5%來自官方統計引用，屬可核實數字。「停滯性通膨」定性判斷為市場評論觀點，非官方結論，需與BLS/BEA官方數據交叉確認。",
+        "sales_pitch": "全球通膨持續、能源成本上升，實體資產保值邏輯更加凸顯。在貨幣購買力持續侵蝕的環境下，台灣不動產作為硬資產，是抗通膨最直接的配置工具之一。"
       }
     ]
   }
