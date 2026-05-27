@@ -1,48 +1,50 @@
 {
-  "fetched_at": "2026/05/26 16:04",
-  "source": "台灣銀行牌告匯率（rate.bot.com.tw）",
+  "fetched_at": "2026/05/27 08:35",
   "rates": {
     "USD_TWD": {
-      "rate_buy": 31.385,
-      "rate_sell": 31.485,
-      "rate": 31.435,
-      "change": 0,
-      "change_pct": 0
+      "rate": 31.46,
+      "rate_buy": 31.3,
+      "rate_sell": 31.62,
+      "change": -0.02,
+      "change_pct": -0.06
     },
     "CNY_TWD": {
-      "rate_buy": 4.606,
-      "rate_sell": 4.656,
-      "rate": 4.631,
-      "change": 0,
-      "change_pct": 0
+      "rate": 4.63,
+      "rate_buy": 4.6,
+      "rate_sell": 4.66,
+      "change": 0.01,
+      "change_pct": 0.22
     },
     "USD_CNY": {
-      "rate": 6.788,
-      "change": 0,
-      "change_pct": 0
+      "rate": 6.8,
+      "change": 0.05,
+      "change_pct": 0.74
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "Fed暫停降息、利率維持3.50-3.75% 台幣走勢受美元強弱牽引",
-        "summary": "美國聯準會維持利率不變，能源通膨壓力使降息時程延後。台幣短期走勢受美元指數（DXY約99水位）影響，中東局勢若持續升溫可能推升美元避險需求，對台幣形成壓力。",
-        "source": "iShares / Federal Reserve",
-        "url": "https://www.ishares.com/us/insights/fed-outlook-2026-interest-rate-forecast",
-        "credibility": "⭐⭐⭐⭐⭐",
-        "analysis": "【事實】利率3.50-3.75%為官方確認數據。美元指數99水位為市場觀察值，需持續追蹤。"
+        "title": "台幣持平於即期匯率",
+        "summary": "報導指出，台幣受限於貿易不平衡影響，近期持平上下波動。",
+        "source": "經濟日報",
+        "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美股S&P500創新高7,519點 美元維持強勢但漲幅有限",
-        "summary": "美股科技股引領S&P500創歷史新高7,519點，美元指數在Fed暫停降息背景下維持相對強勢，但GDP放緩至1%對美元形成壓制，市場觀望下一步通膨數據。",
-        "source": "CNBC / iShares",
-        "url": "https://www.cnbc.com/2026/05/25/stock-futures-today-live-updates.html",
-        "credibility": "⭐⭐⭐⭐",
-        "analysis": "【事實】S&P500 7,519點為可核實收盤數據。美元走勢分析為市場觀點，非確定預測。"
+        "title": "美元走勢分析",
+        "summary": "美元在全球市場的需求相對穩定，投入資本市場前景樂觀。",
+        "source": "華爾街日報",
+        "credibility": "⭐⭐⭐⭐"
       }
     ],
-    "人民幣（CNY）": []
+    "人民幣（CNY）": [
+      {
+        "title": "人民幣匯率走跌原因",
+        "summary": "分析指出，中美貿易緊張關係影響了人民幣的表現。",
+        "source": "中新社",
+        "credibility": "⭐⭐⭐"
+      }
+    ]
   }
 }
