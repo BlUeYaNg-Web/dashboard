@@ -238,11 +238,59 @@
     .navbar h1 { font-size: 17px; letter-spacing: 2px; }
   }
   @media (max-width: 540px) {
-    .main-grid { grid-template-columns: 1fr; gap: 16px; padding: 14px 10px 48px; }
-    .sub-tab { font-size: 12px; padding: 8px 4px; }
-    .detail-body { max-height: 400px; }
-    .navbar { padding: 14px 12px 0; }
+    /* ── 外層格線 ── */
+    .main-grid { grid-template-columns: 1fr; gap: 14px; padding: 12px 8px 48px; }
+    .navbar { padding: 12px 12px 0; }
+    .navbar h1 { font-size: 15px; letter-spacing: 1px; }
     .refresh-btn { display: none; }
+
+    /* ── 卡片內文 ── */
+    .detail-body { padding: 12px 12px; max-height: 420px; }
+    .card-cover { height: 120px; }
+    .card-body { padding: 10px 14px 12px; }
+
+    /* ── 分頁按鈕：4個分頁時縮小 ── */
+    .sub-tab { font-size: 10px; padding: 7px 2px; letter-spacing: -0.2px; }
+
+    /* ── 新聞 / 文字：防止長字串爆版 ── */
+    .news-title    { font-size: 14px; word-break: break-word; overflow-wrap: break-word; }
+    .news-summary  { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-analysis { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-pitch    { font-size: 11px; word-break: break-word; overflow-wrap: break-word; }
+    .news-source   { font-size: 10px; }
+
+    /* ── meta 卡片：2欄 ── */
+    .meta-row { gap: 6px; }
+    .meta-item { min-width: calc(50% - 3px); flex: 0 0 calc(50% - 3px); }
+
+    /* ── 籌碼：法人3格 → 2欄換行 ── */
+    .chips-inst-row { flex-wrap: wrap; gap: 5px; }
+    .chips-inst-card { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .chips-inst-val { font-size: 14px; }
+    .chips-stat-row { flex-wrap: wrap; gap: 5px; }
+    .chips-stat { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .chips-cause-item { font-size: 11px; word-break: break-word; }
+
+    /* ── 籌碼排行榜：2欄 → 1欄 ── */
+    .stock-rank-grid { grid-template-columns: 1fr; gap: 6px; }
+
+    /* ── 地產卡片：2欄 → 1欄 ── */
+    .pptx-grid { grid-template-columns: 1fr; gap: 8px; }
+    .case-name   { font-size: 14px; }
+    .case-price  { font-size: 12px; }
+    .case-weekly { font-size: 17px; }
+
+    /* ── 匯率換算結果：wrap換行 ── */
+    .forex-results { flex-wrap: wrap; gap: 6px; }
+    .forex-result-item { flex: 0 0 calc(50% - 3px); min-width: 0; }
+    .forex-result-val { font-size: 16px; }
+    .forex-input { font-size: 14px; }
+
+    /* ── 匯率買賣雙價 ── */
+    .rate-buysell { flex-wrap: wrap; gap: 8px; }
+
+    /* ── 判斷標籤 ── */
+    .verdict-badge { font-size: 9px; padding: 2px 6px; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
