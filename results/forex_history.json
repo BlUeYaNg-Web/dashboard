@@ -2,12 +2,6 @@
   "updated_at": "2026/05/11 09:38",
   "entries": [
     {
-      "date": "03/02",
-      "USD_TWD": 31.5,
-      "CNY_TWD": 4.594,
-      "USD_CNY": 6.857
-    },
-    {
       "date": "03/03",
       "USD_TWD": 31.68,
       "CNY_TWD": 4.609,
@@ -360,6 +354,12 @@
       "USD_TWD": 31.46,
       "CNY_TWD": 4.63,
       "USD_CNY": 6.8
+    },
+    {
+      "date": "2026/05/28",
+      "USD_TWD": 31.43,
+      "CNY_TWD": 4.63,
+      "USD_CNY": 6.79
     }
   ]
 }
