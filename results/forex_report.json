@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026/05/29 01:02",
+  "fetched_at": "2026/05/29 08:33",
   "rates": {
     "USD_TWD": {
       "rate": 31.43,
@@ -17,32 +17,32 @@
     },
     "USD_CNY": {
       "rate": 6.79,
-      "change": -0.02,
-      "change_pct": -0.29
+      "change": 0.02,
+      "change_pct": 0.3
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣匯率略微波動",
-        "summary": "今日台幣對美元匯率小幅變動，市場持平穩信心。",
+        "title": "台幣強勢回升",
+        "summary": "台幣今日表現強勁，因為市況回暖。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元強勢回歸",
-        "summary": "美元指數再次上漲，投資者信心增強。",
-        "source": "財訊快報",
+        "title": "美元走勢穩定",
+        "summary": "美元在全球市場中的表現穩定，投資者持觀望態度。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣表現平穩",
-        "summary": "人民幣兌台幣匯率保持穩定，無大幅波動。",
-        "source": "中央社",
+        "title": "人民幣小幅波動",
+        "summary": "人民幣兌其他貨幣小幅波動，市場等待政策訊號。",
+        "source": "財訊快報",
         "credibility": "⭐⭐⭐"
       }
     ]
