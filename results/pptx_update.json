@@ -1,13 +1,13 @@
 {
-  "run_at": "2026/05/31 14:07",
+  "run_at": "2026/05/31 14:17",
   "output_file": "I:\\我的雲端硬碟\\家泰嘉潤丰藏JANU\\03.建設公司\\01.業主回報\\週報\\土城區實價登錄明細260531自動更新.pptx",
   "cases": [
     {
       "name": "丰藏",
-      "weekly_new": 0,
+      "weekly_new": 10,
       "total_records": 64,
       "latest_price": 75.83,
-      "latest_area": 20.88,
+      "latest_area": null,
       "weeks_dry": 6
     },
     {
@@ -15,7 +15,7 @@
       "weekly_new": 0,
       "total_records": 2,
       "latest_price": 82.04,
-      "latest_area": 25.67,
+      "latest_area": null,
       "weeks_dry": 45
     },
     {
@@ -23,7 +23,7 @@
       "weekly_new": 0,
       "total_records": 23,
       "latest_price": 66.03,
-      "latest_area": 25.14,
+      "latest_area": null,
       "weeks_dry": 4
     },
     {
@@ -31,7 +31,7 @@
       "weekly_new": 0,
       "total_records": 20,
       "latest_price": 56.01,
-      "latest_area": 25.44,
+      "latest_area": null,
       "weeks_dry": 3
     },
     {
@@ -39,7 +39,7 @@
       "weekly_new": 0,
       "total_records": 54,
       "latest_price": 73.58,
-      "latest_area": 24.87,
+      "latest_area": null,
       "weeks_dry": 3
     },
     {
@@ -47,15 +47,15 @@
       "weekly_new": 0,
       "total_records": 105,
       "latest_price": 76.01,
-      "latest_area": 26.79,
+      "latest_area": null,
       "weeks_dry": 2
     },
     {
       "name": "朗沐",
-      "weekly_new": 0,
+      "weekly_new": 8,
       "total_records": 55,
       "latest_price": 71.0,
-      "latest_area": 37.28,
+      "latest_area": null,
       "weeks_dry": 5
     },
     {
@@ -63,15 +63,15 @@
       "weekly_new": 0,
       "total_records": 68,
       "latest_price": 61.4,
-      "latest_area": 27.0,
+      "latest_area": null,
       "weeks_dry": 5
     },
     {
       "name": "和耀美家雅居",
-      "weekly_new": 0,
+      "weekly_new": 22,
       "total_records": 36,
       "latest_price": 61.61,
-      "latest_area": 26.6,
+      "latest_area": null,
       "weeks_dry": 5
     },
     {
@@ -79,23 +79,23 @@
       "weekly_new": 0,
       "total_records": 9,
       "latest_price": 75.85,
-      "latest_area": 25.58,
+      "latest_area": null,
       "weeks_dry": 7
     },
     {
       "name": "天好運",
-      "weekly_new": 0,
+      "weekly_new": 3,
       "total_records": 7,
       "latest_price": 74.36,
-      "latest_area": 16.74,
+      "latest_area": null,
       "weeks_dry": 9
     },
     {
       "name": "若水秧翠",
-      "weekly_new": 0,
+      "weekly_new": 4,
       "total_records": 16,
       "latest_price": 73.1,
-      "latest_area": 28.86,
+      "latest_area": null,
       "weeks_dry": 5
     }
   ]
