@@ -4,6 +4,10 @@ generate_chips.py
 量化數據：TWSE（主要）+ Yahoo Finance（交叉驗證）
 質化分析：GitHub Models AI（summary / causality / advice）
 非交易日：全部跳過，不更新
+
+修正 2026-05-31：
+  - get_taiex() Yahoo 備援時，補抓 TWSE FMTQIK 取得成交量（原本寫死 vol=0）
+  - get_margin() 失敗時，data.update 步驟補寫 "N/A" 防止 AI 生成 0
 """
 import json
 import os
@@ -12,8 +16,8 @@ import requests
 from datetime import datetime
 from openai import OpenAI
 
-TWSE_API = "https://openapi.twse.com.tw/v1"   # OpenAPI：MI_INDEX, MI_MARGN 仍可用
-TWSE_RWD = "https://www.twse.com.tw/rwd/zh"    # 舊路徑：BFI82U, TWT38U
+TWSE_API = "https://openapi.twse.com.tw/v1"
+TWSE_RWD = "https://www.twse.com.tw/rwd/zh"
 TAIFEX   = "https://openapi.taifex.com.tw/v1"
 MAX_RETRIES = 3
 
@@ -22,8 +26,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
 }
 
-
-# ── 工具 ─────────────────────────────────────────────────────────────────────
 
 def sf(val, default=0.0):
     try:
@@ -41,7 +43,6 @@ def find(row, *keywords):
 
 
 def safe_get(url):
-    """抓 JSON array（openapi 格式）"""
     for i in range(MAX_RETRIES):
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
@@ -57,7 +58,6 @@ def safe_get(url):
 
 
 def get_raw_old_api(url):
-    """抓 {stat, fields, data} 格式（TWSE 舊路徑）"""
     for i in range(MAX_RETRIES):
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
@@ -106,11 +106,43 @@ def parse_json(text):
         return None
 
 
-# ── TWSE / TAIFEX 資料抓取 ────────────────────────────────────────────────────
+def _get_vol_from_fmtqik():
+    """備援：從 TWSE FMTQIK 取得最新一日成交金額（億元）"""
+    try:
+        r = requests.get(
+            f"{TWSE_RWD}/afterTrading/FMTQIK?response=json",
+            headers=HEADERS, timeout=12,
+        )
+        d = r.json()
+        if d.get("stat") == "OK" and d.get("data"):
+            fields = d.get("fields", [])
+            last_row = d["data"][-1]
+            vol_idx = next(
+                (i for i, f in enumerate(fields) if "成交金額" in str(f)), None
+            )
+            if vol_idx is None:
+                vol_idx = 2
+            if vol_idx < len(last_row):
+                raw_val = sf(last_row[vol_idx])
+                if raw_val > 1e10:
+                    vol = round(raw_val / 1e8)
+                elif raw_val > 1e7:
+                    vol = round(raw_val / 1e5)
+                else:
+                    vol = 0
+                if vol > 0:
+                    print(f"  [VOL] FMTQIK 補成交量: {vol}億 (raw={raw_val})")
+                    return vol
+    except Exception as e:
+        print(f"  [VOL] FMTQIK 失敗: {e}")
+    return 0
+
 
 def get_taiex():
-    """大盤加權指數：TWSE openapi 優先，失敗時 fallback Yahoo Finance"""
-    # 主要來源：TWSE openapi
+    """
+    大盤加權指數：TWSE openapi 優先，失敗時 fallback Yahoo Finance。
+    ★ 修正：Yahoo 備援時補抓 TWSE FMTQIK 取得成交量，不再寫死 vol=0。
+    """
     data = safe_get(f"{TWSE_API}/exchangeReport/MI_INDEX")
     if data:
         for row in data:
@@ -123,7 +155,6 @@ def get_taiex():
                 if close > 0:
                     return {"close": close, "change": chg, "pct": pct, "vol": vol, "source": "TWSE"}
 
-    # 備援：Yahoo Finance（當 TWSE openapi 被擋時）
     url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETWII?interval=1d&range=5d"
     try:
         r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
@@ -136,30 +167,46 @@ def get_taiex():
             prev = round(valid[-2], 2)
             chg  = round(curr - prev, 2)
             pct  = round(chg / prev * 100, 2)
-            print(f"  [TAIEX] TWSE 無資料，Yahoo 備援: {curr:.2f}")
-            return {"close": curr, "change": chg, "pct": pct, "vol": 0, "source": "Yahoo"}
+
+            # ★ 嘗試從 Yahoo volume 欄取成交量
+            vol = 0
+            try:
+                vols = result["indicators"]["quote"][0].get("volume", [])
+                valid_vols = [v for v in vols if v is not None]
+                if valid_vols and valid_vols[-1]:
+                    raw_vol = valid_vols[-1]
+                    if raw_vol > 1e10:
+                        vol = round(raw_vol / 1e8)
+                    elif raw_vol > 1e7:
+                        vol = round(raw_vol / 1e5)
+            except Exception:
+                pass
+
+            # ★ Yahoo volume 仍為 0，改用 TWSE FMTQIK 補抓
+            if vol == 0:
+                vol = _get_vol_from_fmtqik()
+
+            print(f"  [TAIEX] TWSE 無資料，Yahoo 備援: {curr:.2f}，成交量: {vol}億")
+            return {"close": curr, "change": chg, "pct": pct, "vol": vol, "source": "Yahoo"}
     except Exception as e:
         print(f"  [TAIEX] Yahoo 備援失敗: {e}")
     return None
 
 
 def get_institutional():
-    """三大法人買賣超（億元）—— www.twse.com.tw/rwd BFI82U，單位：元
-    回傳 (data_dict, api_date_str)，api_date_str 如 '20260521'"""
     d = get_raw_old_api(f"{TWSE_RWD}/fund/BFI82U?response=json")
     if not d:
         return None, None
-    api_date = d.get("date", "")  # e.g. "20260521"
+    api_date = d.get("date", "")
     fields = d["fields"]
     rows = [dict(zip(fields, row)) for row in d["data"]]
     res = {"foreign": 0.0, "investment_trust": 0.0, "dealer": 0.0}
     for row in rows:
         name = str(row.get("單位名稱", ""))
         raw  = sf(row.get("買賣差額", 0))
-        bil  = round(raw / 1e8, 1)   # 元 → 億元
+        bil  = round(raw / 1e8, 1)
         if "合計" in name:
             continue
-        # 「外資」必須先判，因為「外資及陸資(不含外資自營商)」含有「自營商」字樣
         if "外資" in name and "不含" in name:
             res["foreign"] = bil
         elif "投信" in name:
@@ -170,18 +217,16 @@ def get_institutional():
 
 
 def get_top_stocks():
-    """外資個股買賣超 top5 買 / top5 賣 —— 改用 www.twse.com.tw/rwd TWT38U"""
     d = get_raw_old_api(f"{TWSE_RWD}/fund/TWT38U?response=json")
     if not d:
         return [], []
 
-    # 欄位順序：[flag, 證券代號, 證券名稱, 外資買, 外資賣, 外資超, 陸資買, 陸資賣, 陸資超, 合計買, 合計賣, 合計超]
     parsed = []
     for row in d["data"]:
         try:
             code = str(row[1]).strip()
             name = str(row[2]).strip()
-            net_shares = sf(row[11])  # 合計買賣超股數
+            net_shares = sf(row[11])
             if code and name:
                 parsed.append({"code": code, "name": name, "net": net_shares})
         except Exception:
@@ -193,7 +238,7 @@ def get_top_stocks():
     srt = sorted(parsed, key=lambda x: x["net"], reverse=True)
 
     def fmt(p, sign):
-        lots = abs(int(p["net"])) // 1000   # 股 → 張
+        lots = abs(int(p["net"])) // 1000
         return {"stock": f"{p['name']} {p['code']}", "shares": f"{sign}{lots:,}", "who": "外資"}
 
     buy  = [fmt(p, "+") for p in srt[:5]           if p["net"] > 0]
@@ -202,7 +247,6 @@ def get_top_stocks():
 
 
 def get_margin():
-    """融資融券（openapi MI_MARGN，仍有效）"""
     data = safe_get(f"{TWSE_API}/exchangeReport/MI_MARGN")
     if not data:
         return None
@@ -219,7 +263,6 @@ def get_margin():
 
 
 def get_futures_net():
-    """外資台指期淨部位（TAIFEX，失敗時返回 None）"""
     data = safe_get(f"{TAIFEX}/DailyForeignInstitutionalInvestorsFuturesAndOptions")
     if not data:
         return None
@@ -230,8 +273,6 @@ def get_futures_net():
             return int(sf(find(row, "NetPosition", "淨部位") or 0))
     return None
 
-
-# ── 主流程 ────────────────────────────────────────────────────────────────────
 
 def generate_chips():
     today = datetime.now().strftime("%Y/%m/%d")
@@ -250,19 +291,13 @@ def generate_chips():
 
     has_real = bool(taiex)
 
-    # 使用 BFI82U 回傳的日期作為報告日期（確保與資料對齊）
-    # api_date 格式 "20260521" → "2026/05/21"
     if api_date and len(api_date) == 8:
         data_date = f"{api_date[:4]}/{api_date[4:6]}/{api_date[6:]}"
     else:
         data_date = today
 
-    # 交叉驗證說明（僅當 TWSE 為主要來源時）
     cross_val_note = ""
-    if taiex and taiex.get("source") == "TWSE":
-        # 已有 TWSE 真實值，Yahoo 僅供參考（get_taiex 內部有 fallback）
-        pass
-    elif taiex and taiex.get("source") == "Yahoo":
+    if taiex and taiex.get("source") == "Yahoo":
         cross_val_note = "（資料來源：Yahoo Finance 備援）"
 
     print(f"  大盤:{'✓' if taiex else '✗'}  法人:{'✓' if inst else '✗'}  "
@@ -284,19 +319,22 @@ def generate_chips():
     trust   = inst.get("investment_trust", 0) if inst else 0
     dealer  = inst.get("dealer", 0) if inst else 0
 
-    m_bal_s = f"{margin['m_bal']}" if margin else "N/A"
-    m_chg_s = f"{margin['m_chg']:+}" if margin else "N/A"
-    s_bal_s = f"{margin['s_bal']}" if margin else "N/A"
-    s_chg_s = f"{margin['s_chg']:+}" if margin else "N/A"
+    m_bal_s  = f"{margin['m_bal']}" if margin else "N/A"
+    m_chg_s  = f"{margin['m_chg']:+}" if margin else "N/A"
+    m_rate_s = "N/A"
+    s_bal_s  = f"{margin['s_bal']}" if margin else "N/A"
+    s_chg_s  = f"{margin['s_chg']:+}" if margin else "N/A"
 
     fut_val = fut_net if fut_net is not None else 0
     fut_dir = "多單" if fut_val >= 0 else "空單"
     fut_str = (f"外資台指期淨部位：{fut_val:+,}口（{fut_dir}）"
                if fut_net is not None else "外資台指期：資料暫無")
 
+    vol_display = str(vol) if vol > 0 else "N/A"
+
     quant = (
         f"加權指數：{taiex_str}\n"
-        f"成交金額：{vol}億元\n"
+        f"成交金額：{vol_display}億元\n"
         f"外資買賣超：{foreign:+.1f}億\n"
         f"投信買賣超：{trust:+.1f}億\n"
         f"自營商買賣超：{dealer:+.1f}億\n"
@@ -314,14 +352,14 @@ def generate_chips():
 {{
   "date": "{data_date}",
   "taiex": "{taiex_str}",
-  "volume": "{vol}",
+  "volume": "{vol_display}",
   "sentiment": "市場情緒一句話",
   "foreign": {foreign},
   "investment_trust": {trust},
   "dealer": {dealer},
   "foreign_streak": "根據外資數值推斷連續買超或賣超描述",
   "trust_streak": "投信連續買超描述",
-  "margin": {{"balance": "{m_bal_s}", "change": "{m_chg_s}", "usage_rate": "使用率%"}},
+  "margin": {{"balance": "{m_bal_s}", "change": "{m_chg_s}", "usage_rate": "{m_rate_s}"}},
   "short": {{"balance": "{s_bal_s}", "change": "{s_chg_s}"}},
   "futures": {{
     "foreign_net": {fut_val},
@@ -348,15 +386,25 @@ investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
         print("  ✗ AI 無法生成報告")
         return
 
-    # 強制用真實量化數值覆蓋 AI 輸出（防止 AI 改數字）
+    # 強制用真實量化數值覆蓋 AI 輸出
     data.update({
-        "date": data_date, "taiex": taiex_str, "volume": str(vol),
-        "foreign": foreign, "investment_trust": trust, "dealer": dealer,
-        "top_buy": top_buy, "top_sell": top_sell,
+        "date": data_date,
+        "taiex": taiex_str,
+        "volume": vol_display,
+        "foreign": foreign,
+        "investment_trust": trust,
+        "dealer": dealer,
+        "top_buy": top_buy,
+        "top_sell": top_sell,
     })
+    # margin / short：API 成功時覆蓋；失敗時強制填 N/A，杜絕 AI 生成假 0
     if margin:
         data["margin"].update({"balance": m_bal_s, "change": m_chg_s})
         data["short"].update({"balance": s_bal_s, "change": s_chg_s})
+    else:
+        data["margin"] = {"balance": "N/A", "change": "N/A", "usage_rate": "N/A"}
+        data["short"]  = {"balance": "N/A", "change": "N/A"}
+
     if fut_net is not None:
         data["futures"].update({"foreign_net": fut_val, "direction": fut_dir})
 
@@ -364,8 +412,10 @@ investment_advice 3-5檔，recommendations 3檔，causality 3條。"""
     with open("results/chips_report.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    src = f"TWSE 真實數據" if taiex.get("source") == "TWSE" else "Yahoo Finance 備援"
+    src = "TWSE 真實數據" if taiex.get("source") == "TWSE" else "Yahoo Finance 備援"
     print(f"  chips_report.json 已更新（{data_date}，{src}）")
+    print(f"  volume={data['volume']}  margin={data['margin']['balance']}  "
+          f"short={data['short']['balance']}")
 
 
 if __name__ == "__main__":
