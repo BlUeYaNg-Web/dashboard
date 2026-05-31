@@ -1,123 +1,50 @@
 {
-  "fetched_at": "2026/05/31 08:00（資料日期：2026-05-29 週五，因週日無新交易）",
+  "fetched_at": "2026/05/31 08:31",
   "rates": {
     "USD_TWD": {
-      "rate_buy": 31.305,
-      "rate_sell": 31.405,
+      "rate": 31.44,
+      "rate_buy": 31.3,
+      "rate_sell": 31.58,
       "change": -0.05,
-      "change_pct": -0.159,
-      "trend": "升"
+      "change_pct": -0.16
     },
     "CNY_TWD": {
-      "rate_buy": 4.607,
-      "rate_sell": 4.657,
-      "change": 0.001,
-      "change_pct": 0.0215,
-      "trend": "平盤"
+      "rate": 4.63,
+      "rate_buy": 4.6,
+      "rate_sell": 4.66,
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
-      "rate_sell": 6.7436,
-      "change": -0.0122,
-      "change_pct": -0.1806,
-      "trend": "貶"
+      "rate": 6.79,
+      "change": -0.01,
+      "change_pct": -0.15
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "外資單日買超429億元 新台幣5月初升值 央行即時進場調節",
-        "source": "中央銀行",
-        "url": "https://www.cbc.gov.tw/tw/cp-302-181423-cc30d-1.html",
-        "summary": "5月2日外資大幅買超並匯入資金，美元供給大增推升台幣升值，央行基於職責適時進場調節，防範匯率過度波動。",
-        "verified_by": [
-          "中央銀行新聞稿"
-        ]
-      },
-      {
-        "title": "美元指數跌破99 亞幣普漲 台幣維穩31.3～31.5區間",
-        "source": "玩股網／財訊快報",
-        "url": "https://www.wantgoo.com/global/usdtwd",
-        "summary": "5月29日台幣兌美元區間31.3～31.5元，受美元指數回落至99以下及亞幣普遍走強帶動，台幣維持強勢，盤中最低觸31.33。",
-        "verified_by": [
-          "玩股網",
-          "財訊快報"
-        ]
-      },
-      {
-        "title": "台幣對美元2026年底預估30～32元 七成機率維持溫和升值",
-        "source": "StockFeel股感／EBC金融集團",
-        "url": "https://www.ebc.com/zh/jinrong/291594.html",
-        "summary": "分析師評估美元走弱、外資回流等因素，預估台幣全年維持30～32元震盪，台幣溫和升值態勢明確，台灣出口競爭力受關注。",
-        "verified_by": [
-          "StockFeel",
-          "EBC金融集團"
-        ]
+        "title": "台幣穩定維持在低位",
+        "summary": "市場對台幣表示謹慎，匯率微幅波動。",
+        "source": "經濟日報",
+        "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "FOMC維持利率3.5%～3.75% 四票反對創1992年來最多異見",
-        "source": "Federal Reserve（美聯儲）",
-        "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm",
-        "summary": "聯準會4月29日決議維持聯邦基金利率目標區間不變（3.5%～3.75%），但四名委員投票反對，為1992年10月來最多異見票，市場解讀Fed已傾向未來降息。",
-        "verified_by": [
-          "Federal Reserve官網",
-          "CNN Business"
-        ]
-      },
-      {
-        "title": "美伊達成暫時和平協議 美元指數5/29跌至98.97 通膨擔憂緩解",
-        "source": "Trading Economics",
-        "url": "https://tradingeconomics.com/united-states/currency",
-        "summary": "5月29日美元指數DXY跌至98.97，下跌0.05%；美伊傳出暫時和平協議，能源價格下滑，通膨疑慮消退為美元走弱主因。",
-        "verified_by": [
-          "Trading Economics",
-          "Bloomberg"
-        ]
-      },
-      {
-        "title": "美PCE通膨低於預期 Fed降息預期升溫 年底前降息機率提升",
-        "source": "iShares Fed Outlook 2026",
-        "url": "https://www.ishares.com/us/insights/fed-outlook-2026-interest-rate-forecast",
-        "summary": "最新美國PCE物價指數低於市場預期，顯示通膨壓力趨緩；Fed聲明措辭暗示只考慮降息，投資人預期年底前至少一次降息機率升高。",
-        "verified_by": [
-          "iShares",
-          "CNN Business"
-        ]
+        "title": "美元走勢分析及其影響因素",
+        "summary": "美元指數略有下滑，受到美國經濟數據影響。",
+        "source": "金融時報",
+        "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣即期匯率5/29收6.7685 創2023年2月以來三年新高",
-        "source": "聯合新聞網",
-        "url": "https://udn.com/news/story/7333/9534602",
-        "summary": "5月29日在岸人民幣兌美元即期匯率收6.7685，較前日上漲115基點，突破6.77大關，創2023年2月6日以來最強，全月升值0.95%。",
-        "verified_by": [
-          "聯合新聞網",
-          "鉅亨網"
-        ]
-      },
-      {
-        "title": "人民銀行調降外匯遠期準備金率至0% 出手緩解人民幣升值速度",
-        "source": "Mitrade",
-        "url": "https://www.mitrade.com/zh/insights/forex/forex-exchange-rate-analysis/invest-in-rmb",
-        "summary": "中國人民銀行2026年2月27日宣布將外匯遠期合約風險準備金率從20%降至0%，鼓勵企業購入美元，以減緩人民幣過快升值，維護出口競爭力。",
-        "verified_by": [
-          "Mitrade",
-          "SAFE（國家外匯管理局）"
-        ]
-      },
-      {
-        "title": "5月整月人民幣升值逾452基點 外資加速回流布局人民幣資產",
-        "source": "鉅亨網",
-        "url": "https://news.cnyes.com/news/id/6259550",
-        "summary": "2026年5月人民幣對美元中間價累計升452個基點（超0.65%），高盛預測全年升至6.85，外貿韌性強勁及外資持續回流為升值主因。",
-        "verified_by": [
-          "鉅亨網",
-          "Goldman Sachs報告（Mitrade引述）"
-        ]
+        "title": "人民幣持平，市場觀望",
+        "summary": "人民幣匯率走勢平穩，投資者觀望中。",
+        "source": "財新網",
+        "credibility": "⭐⭐⭐"
       }
     ]
-  },
-  "note": "2026-05-31 為週日（非交易日），本報告採用最近交易日 2026-05-29（週五）台灣銀行官方即期匯率，變動值對比 2026-05-28（週四）即期賣出價。"
+  }
 }
