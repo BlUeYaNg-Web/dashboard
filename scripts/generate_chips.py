@@ -168,23 +168,10 @@ def get_taiex():
             chg  = round(curr - prev, 2)
             pct  = round(chg / prev * 100, 2)
 
-            # ★ 嘗試從 Yahoo volume 欄取成交量
-            vol = 0
-            try:
-                vols = result["indicators"]["quote"][0].get("volume", [])
-                valid_vols = [v for v in vols if v is not None]
-                if valid_vols and valid_vols[-1]:
-                    raw_vol = valid_vols[-1]
-                    if raw_vol > 1e10:
-                        vol = round(raw_vol / 1e8)
-                    elif raw_vol > 1e7:
-                        vol = round(raw_vol / 1e5)
-            except Exception:
-                pass
-
-            # ★ Yahoo volume 仍為 0，改用 TWSE FMTQIK 補抓
-            if vol == 0:
-                vol = _get_vol_from_fmtqik()
+            # ★ Yahoo 備援時，永遠使用 TWSE FMTQIK 取成交金額（億元）
+            # 原因：Yahoo Finance 對 ^TWII 回傳的是「成交股數」而非「成交金額」，
+            # 單位不同（股數 ≠ NTD），直接轉換會得到錯誤數值。
+            vol = _get_vol_from_fmtqik()
 
             print(f"  [TAIEX] TWSE 無資料，Yahoo 備援: {curr:.2f}，成交量: {vol}億")
             return {"close": curr, "change": chg, "pct": pct, "vol": vol, "source": "Yahoo"}
