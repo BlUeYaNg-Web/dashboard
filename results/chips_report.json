@@ -1,26 +1,26 @@
 {
-  "date": "2026/06/04",
-  "taiex": "46,459.16（+902 / +1.98%）（資料來源：Yahoo Finance 備援）",
-  "volume": "13256",
-  "sentiment": "市場情緒偏向樂觀",
-  "foreign": -756.9,
-  "investment_trust": 41.7,
-  "dealer": -213.6,
+  "date": "2026/06/05",
+  "taiex": "45,070.94（-607 / -1.33%）（資料來源：Yahoo Finance 備援）",
+  "volume": "12898",
+  "sentiment": "市場情緒偏空",
+  "foreign": -826.3,
+  "investment_trust": 9.6,
+  "dealer": -284.3,
   "foreign_streak": "外資連續賣超",
-  "trust_streak": "投信持續買超",
+  "trust_streak": "投信持平",
   "margin": {
-    "balance": "0",
-    "change": "+0",
+    "balance": "N/A",
+    "change": "N/A",
     "usage_rate": "N/A"
   },
   "short": {
-    "balance": "0.0",
-    "change": "+0.0"
+    "balance": "N/A",
+    "change": "N/A"
   },
   "futures": {
     "foreign_net": 0,
     "direction": "多單",
-    "put_call_ratio": "N/A",
+    "put_call_ratio": "0.75",
     "pc_bias": "偏空"
   },
   "top_buy": [
@@ -77,47 +77,47 @@
       "who": "外資"
     }
   ],
-  "summary": "今日台股表現強勁，加權指數上漲1.98%。雖然外資持續賣超，但投信的買超顯示出市場的多元力量。成交金額達13256億元，反映出市場交易活躍。",
+  "summary": "今日台股加權指數下跌1.33%，成交金額達12898億元，外資持續賣超836.3億元。雖然投信小幅買超，但市場情緒仍然偏向空頭。投資人需謹慎操作以避免風險。",
   "causality": [
-    "外資賣超凱基金 → 價格壓力增加",
-    "投信買超第一金 → 提振市場信心",
-    "外資持續賣超背景下，投信買入量增加 → 市場情緒改善"
+    "外資持續賣超 → 股市下跌壓力增加",
+    "成交金額減少 → 投資熱情下降",
+    "投信買超 → 部分股票受到市場支持"
   ],
   "investment_advice": [
     {
-      "stock": "聯電 2303",
-      "verdict": "可留意",
-      "reason": "外資持續買入",
-      "risk": "市場可能出現波動"
-    },
-    {
-      "stock": "臺企銀 2834",
-      "verdict": "觀察",
-      "reason": "流動性回升",
-      "risk": "外資賣壓仍存在"
-    },
-    {
-      "stock": "第一金 2892",
+      "stock": "友達 2409",
       "verdict": "謹慎",
-      "reason": "投信買超助攻",
-      "risk": "整體市場情緒尚未穩定"
+      "reason": "外資大賣影響",
+      "risk": "市場情況不穩定"
+    },
+    {
+      "stock": "群創 3481",
+      "verdict": "觀察",
+      "reason": "近期籌碼回流",
+      "risk": "需求疲弱"
+    },
+    {
+      "stock": "大立光 3008",
+      "verdict": "可留意",
+      "reason": "技術面有轉機",
+      "risk": "市場波動性高"
     }
   ],
   "recommendations": [
     {
-      "stock": "宏碁 2353",
-      "reason": "外資大賣顯示出賣壓",
-      "risk": "潛在的價格下行風險"
+      "stock": "台積電 2330",
+      "reason": "股價回檔後有回升潛力",
+      "risk": "外資流出可能惡化"
     },
     {
-      "stock": "仁寶 2324",
-      "reason": "外資持續賣超，關注未來走勢",
-      "risk": "市場情緒可變性"
+      "stock": "鴻海 2317",
+      "reason": "下游需求回暖，表現穩定",
+      "risk": "全球經濟仍需觀察"
     },
     {
-      "stock": "凱基金 2883",
-      "reason": "外資大幅賣出，可能影響股價",
-      "risk": "短期波動加大"
+      "stock": "南亞科 2408",
+      "reason": "受惠於5G需求，潛在成長",
+      "risk": "技術創新需跟上"
     }
   ],
   "disclaimer": "⚠️ 以上僅為籌碼面分析參考，不構成投資建議，投資人須自行判斷風險。"
