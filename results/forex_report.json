@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026/06/06 08:31",
+  "fetched_at": "2026/06/06 09:31",
   "rates": {
     "USD_TWD": {
       "rate": 31.6,
@@ -17,32 +17,32 @@
     },
     "USD_CNY": {
       "rate": 6.79,
-      "change": -0.04,
-      "change_pct": -0.59
+      "change": -0.05,
+      "change_pct": -0.73
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣繼續穩定",
-        "summary": "台灣銀行匯率穩定，未見重大變動。",
-        "source": "經濟日報",
+        "title": "台幣走勢分析",
+        "summary": "分析預測台幣走勢，探討影響因素。",
+        "source": "金融新聞網",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元指數回落",
-        "summary": "近期美元指數小幅回落，影響匯率走勢。",
-        "source": "金融時報",
+        "title": "美元強勢回暖",
+        "summary": "美元對其他貨幣走強，經濟指標表現良好。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣波動加劇",
-        "summary": "人民幣對其他貨幣出現小幅波動。",
-        "source": "新浪財經",
+        "title": "人民幣小幅波動",
+        "summary": "人民幣因多重因素影響而小幅波動。",
+        "source": "財經雜誌",
         "credibility": "⭐⭐⭐"
       }
     ]
