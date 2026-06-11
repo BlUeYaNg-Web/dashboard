@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/06/11 01:02",
+  "fetched_at": "2026/06/11 05:19",
   "rates": {
     "USD_TWD": {
       "rate": 31.65,
       "rate_buy": 31.5,
       "rate_sell": 31.8,
-      "change": 0.05,
-      "change_pct": 0.16
+      "change": -0.05,
+      "change_pct": -0.16
     },
     "CNY_TWD": {
       "rate": 4.66,
-      "rate_buy": 4.63,
-      "rate_sell": 4.69,
-      "change": -0.01,
-      "change_pct": -0.21
+      "rate_buy": 4.64,
+      "rate_sell": 4.68,
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
       "rate": 6.79,
-      "change": -0.02,
-      "change_pct": -0.29
+      "change": -0.01,
+      "change_pct": -0.15
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣小幅升值",
-        "summary": "受外資流入影響，台幣對美元小幅升值。",
+        "title": "台幣小幅走強",
+        "summary": "今日台幣對美元小幅走強，市場受益於美國經濟數據疲軟。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美國經濟增長緩慢",
-        "summary": "近期經濟數據顯示美國經濟增長放緩，導致美元承壓。",
-        "source": "華爾街日報",
+        "title": "美元走勢平穩",
+        "summary": "美元兌多數貨幣表現穩定，投資者靜待即將來臨的經濟指標。",
+        "source": "中央社",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣貶值壓力",
-        "summary": "面對全球經濟不確定性，人民幣承受貶值壓力。",
-        "source": "中新網",
+        "title": "人民幣貶值趨勢",
+        "summary": "人民幣延續貶值趨勢，市場擔憂中國經濟增長放緩。",
+        "source": "財訊快報",
         "credibility": "⭐⭐⭐"
       }
     ]
