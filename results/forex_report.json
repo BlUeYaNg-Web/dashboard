@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/06/15 14:53",
+  "fetched_at": "2026/06/16 01:02",
   "rates": {
     "USD_TWD": {
-      "rate": 31.6,
-      "rate_buy": 31.5,
-      "rate_sell": 31.7,
-      "change": -0.1,
-      "change_pct": -0.32
+      "rate": 31.54,
+      "rate_buy": 31.49,
+      "rate_sell": 31.59,
+      "change": -0.02,
+      "change_pct": -0.06
     },
     "CNY_TWD": {
-      "rate": 4.67,
+      "rate": 4.66,
       "rate_buy": 4.65,
-      "rate_sell": 4.69,
-      "change": 0.02,
-      "change_pct": 0.43
+      "rate_sell": 4.67,
+      "change": 0.01,
+      "change_pct": 0.22
     },
     "USD_CNY": {
       "rate": 6.77,
-      "change": -0.05,
-      "change_pct": -0.74
+      "change": -0.01,
+      "change_pct": -0.15
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣升值趨勢持續",
-        "summary": "國際市場上台幣持續穩定，分析師預測未來幾個月將保持強勢。",
-        "source": "金融時報",
+        "title": "台灣經濟持平 增長緩慢",
+        "summary": "專家建議多元化投資策略以抵禦風險。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元指數小幅回落",
-        "summary": "隨著經濟數據的釋放，美元指數出現小幅回調。",
-        "source": "路透社",
+        "title": "美聯儲政策影響匯率走向",
+        "summary": "市場預測未來利率走勢將影響美元強弱。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣穩定走勢分析",
-        "summary": "隨著貿易數據向好，人民幣對美元的走勢保持穩定。",
-        "source": "華爾街日報",
+        "title": "人民幣升值壓力加大",
+        "summary": "分析指出人民幣在外部環境中的表現趨於穩定。",
+        "source": "中新社",
         "credibility": "⭐⭐⭐"
       }
     ]
