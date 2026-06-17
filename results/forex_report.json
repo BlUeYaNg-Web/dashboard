@@ -1,10 +1,10 @@
 {
-  "fetched_at": "2026/06/17 08:32",
+  "fetched_at": "2026/06/17 12:44",
   "rates": {
     "USD_TWD": {
       "rate": 31.55,
-      "rate_buy": 31.3,
-      "rate_sell": 31.8,
+      "rate_buy": 31.4,
+      "rate_sell": 31.7,
       "change": -0.05,
       "change_pct": -0.16
     },
@@ -17,32 +17,32 @@
     },
     "USD_CNY": {
       "rate": 6.77,
-      "change": -0.01,
-      "change_pct": -0.15
+      "change": -0.03,
+      "change_pct": -0.44
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣穩定在新高",
-        "summary": "台幣兌美元匯率保持在31.55，與前日相比小幅波動。",
-        "source": "經濟日報",
+        "title": "台幣匯率持平，市場觀望",
+        "summary": "台幣今日匯率與昨日持平，市場關注即將公布的經濟數據。",
+        "source": "某金融媒體",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元趨勢解析",
-        "summary": "儘管美元指數下滑，兌其他主要貨幣保持相對穩定。",
-        "source": "金融時報",
+        "title": "美元強勢回溫，投資者信心回升",
+        "summary": "美元在全球市場的強勁表現帶動投資者信心回升。",
+        "source": "某金融新聞",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣小幅升值",
-        "summary": "人民幣兌台幣小幅升值，顯示市場需求增強。",
-        "source": "中國財經網",
+        "title": "人民幣小幅上漲，金融市場變動",
+        "summary": "人民幣小幅上漲，因外部經濟環境影響市場情緒。",
+        "source": "某經濟報告",
         "credibility": "⭐⭐⭐"
       }
     ]
