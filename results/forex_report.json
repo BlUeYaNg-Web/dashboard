@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/06/22 05:39",
+  "fetched_at": "2026/06/22 08:33",
   "rates": {
     "USD_TWD": {
       "rate": 31.65,
       "rate_buy": 31.5,
       "rate_sell": 31.8,
-      "change": -0.02,
-      "change_pct": -0.06
+      "change": -0.15,
+      "change_pct": -0.47
     },
     "CNY_TWD": {
       "rate": 4.66,
-      "rate_buy": 4.63,
-      "rate_sell": 4.69,
-      "change": 0.01,
-      "change_pct": 0.22
+      "rate_buy": 4.64,
+      "rate_sell": 4.68,
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
       "rate": 6.79,
-      "change": -0.03,
-      "change_pct": -0.44
+      "change": -0.05,
+      "change_pct": -0.74
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣穩定,",
-        "summary": "在最新的經濟報告中，台幣表現穩定，受外部因素影響有限。",
-        "source": "中央新聞",
+        "title": "台幣小幅回升",
+        "summary": "台幣相對美元小幅回升，受惠於經濟數據改善",
+        "source": "中央社",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走勢分析",
-        "summary": "隨著美國經濟數據的改善，美元走強的可能性增加。",
-        "source": "財經時報",
+        "title": "美元走勢異常波動",
+        "summary": "美元指數受到全球經濟數據影響，短期內波動加劇",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣遭遇波動",
-        "summary": "由於貿易緊張，中國人民幣近期波動加劇。",
-        "source": "經濟日報",
+        "title": "人民幣持穩在4.66",
+        "summary": "人民幣兌台幣維持在4.66，上下波動有限",
+        "source": "財訊快報",
         "credibility": "⭐⭐⭐"
       }
     ]
