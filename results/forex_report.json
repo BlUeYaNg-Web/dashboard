@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/06/25 04:40",
+  "fetched_at": "2026/06/25 08:33",
   "rates": {
     "USD_TWD": {
       "rate": 31.82,
-      "rate_buy": 31.5,
-      "rate_sell": 32.1,
-      "change": -0.1,
-      "change_pct": -0.31
+      "rate_buy": 31.7,
+      "rate_sell": 31.94,
+      "change": -0.05,
+      "change_pct": -0.16
     },
     "CNY_TWD": {
       "rate": 4.67,
       "rate_buy": 4.65,
-      "rate_sell": 4.7,
-      "change": 0.02,
-      "change_pct": 0.43
+      "rate_sell": 4.69,
+      "change": 0.01,
+      "change_pct": 0.22
     },
     "USD_CNY": {
       "rate": 6.82,
-      "change": -0.05,
-      "change_pct": -0.73
+      "change": -0.03,
+      "change_pct": -0.44
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣汇率小幅波动",
-        "summary": "今日台幣对美元汇率小幅下跌，市场关注国际经济形势变化。",
+        "title": "台幣走勢分析",
+        "summary": "近期台幣兌美元持平，反映出市場穩定性。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走势受关注",
-        "summary": "美元在全球市场中的强势表现吸引投资者目光。",
-        "source": "金融时报",
+        "title": "美元受壓，未來走勢不明",
+        "summary": "隨著經濟數據公布，美元似乎受到壓力。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民币稳定走势分析",
-        "summary": "人民幣汇率近期保持稳定，受到政策支持。",
-        "source": "中新社",
+        "title": "人民幣匯率變化",
+        "summary": "人民幣上漲趨勢可能受多種因素影響。",
+        "source": "新華網",
         "credibility": "⭐⭐⭐"
       }
     ]
