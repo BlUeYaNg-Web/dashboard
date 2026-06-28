@@ -1,10 +1,10 @@
 {
-  "fetched_at": "2026/06/28 04:58",
+  "fetched_at": "2026/06/28 08:31",
   "rates": {
     "USD_TWD": {
       "rate": 31.87,
-      "rate_buy": 31.75,
-      "rate_sell": 31.99,
+      "rate_buy": 31.7,
+      "rate_sell": 32.04,
       "change": -0.02,
       "change_pct": -0.06
     },
@@ -17,32 +17,32 @@
     },
     "USD_CNY": {
       "rate": 6.81,
-      "change": -0.03,
-      "change_pct": -0.44
+      "change": 0.03,
+      "change_pct": 0.44
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台灣經濟展望",
-        "summary": "專家分析未來經濟趨勢將影響台幣走向。",
+        "title": "台幣匯率穩定",
+        "summary": "台幣對美元匯率波動小，市場情緒持平。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "全球市場動盪對美元影響",
-        "summary": "分析指出，市場動盪會讓美元再次上升。",
+        "title": "美元走勢回穩",
+        "summary": "美元指數近期有所回升，預期再次加息機率上升。",
         "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣貶值壓力增加",
-        "summary": "專家認為經濟數據可能引發人民幣貶值。",
-        "source": "中新網",
+        "title": "人民幣小幅波動",
+        "summary": "中國經濟數據不佳令人民幣承壓，波動幅度有限。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐"
       }
     ]
