@@ -1,71 +1,71 @@
 {
-  "date": "2026/07/02",
-  "taiex": "46,436.04（-308 / -0.66%）（資料來源：Yahoo Finance 備援）",
-  "volume": "10836",
-  "sentiment": "市場情緒偏向悲觀",
-  "foreign": -890.5,
-  "investment_trust": 99.6,
-  "dealer": -43.3,
-  "foreign_streak": "外資連續賣超，需警惕市場動向",
-  "trust_streak": "投信小幅買超，觀察後續變化",
+  "date": "2026/07/03",
+  "taiex": "46,780.62（+36 / +0.08%）（資料來源：Yahoo Finance 備援）",
+  "volume": "10595",
+  "sentiment": "市場情緒持平，觀望居多。",
+  "foreign": -777.8,
+  "investment_trust": 76.0,
+  "dealer": -32.6,
+  "foreign_streak": "外資持續賣超，顯示看空情緒。",
+  "trust_streak": "投信則小幅買超，表現出相對樂觀的態度。",
   "margin": {
-    "balance": "N/A",
-    "change": "N/A",
+    "balance": "0",
+    "change": "+0",
     "usage_rate": "N/A"
   },
   "short": {
-    "balance": "N/A",
-    "change": "N/A"
+    "balance": "0.0",
+    "change": "+0.0"
   },
   "futures": {
     "foreign_net": 0,
     "direction": "多單",
-    "put_call_ratio": "0.8",
+    "put_call_ratio": "1.2",
     "pc_bias": "偏空"
   },
   "top_buy": [],
   "top_sell": [],
-  "summary": "今日台股受外資賣超影響，指數小幅下跌。投信雖有買超，但總體市場情緒仍顯偏向悲觀。投資人應謹慎觀察後市走向及外資動向。",
+  "summary": "目前市場在外資賣超的影響下，指數微幅上升，成交量穩定，但外資情緒仍顯得偏弱。投信小幅買超可能顯示局部反彈機會。未來需要觀察外資動向以決定市場走勢。",
   "causality": [
-    "【因】外資大幅賣超 → 【果】市場情緒轉為悲觀",
-    "【因】投信小幅買超 → 【果】市場仍有資金支撐",
-    "【因】融資融券數據不明 → 【果】市場不確定性增加"
+    "外資賣超 → 指數漲幅受限",
+    "投信買超 → 短期反彈可能性提高",
+    "成交量穩定 → 投資者仍在觀望"
   ],
   "investment_advice": [
     {
-      "stock": "XYZ 1234",
-      "verdict": "觀察",
-      "reason": "近期表現穩定，可能具反彈潛力",
-      "risk": "高波動風險"
-    },
-    {
-      "stock": "ABC 5678",
-      "verdict": "可留意",
-      "reason": "有穩定的基本面支撐",
-      "risk": "市場情緒影響"
-    },
-    {
-      "stock": "DEF 9101",
+      "stock": "台積電 2330",
       "verdict": "謹慎",
-      "reason": "近期外資賣超較多，要注意回撤風險",
-      "risk": "可能的回調風險"
+      "reason": "受到整體市場情緒影響，短期反彈風險偏低。",
+      "risk": "市場風險與外資持續賣超"
+    },
+    {
+      "stock": "聯發科 2454",
+      "verdict": "可留意",
+      "reason": "即將發表新產品，有利業績。",
+      "risk": "競爭加劇可能影響市占率"
+    },
+    {
+      "stock": "鴻海 2317",
+      "verdict": "觀察",
+      "reason": "近期股價回檔，有反彈需求。",
+      "risk": "全球供應鏈變化影響業務"
     }
   ],
   "recommendations": [
     {
-      "stock": "GHI 2345",
-      "reason": "具防禦性的產業",
-      "risk": "市場整體情況"
+      "stock": "台達電 2308",
+      "reason": "穩定的基本面支撐股價。",
+      "risk": "產品需求波動風險"
     },
     {
-      "stock": "JKL 6789",
-      "reason": "大型企業基本面佳",
-      "risk": "政策風險"
+      "stock": "大立光 3008",
+      "reason": "在影像需求上持續受益。",
+      "risk": "市場競爭壓力"
     },
     {
-      "stock": "MNO 3456",
-      "reason": "受惠於新政策，成長潛力大",
-      "risk": "行業競爭激烈"
+      "stock": "國泰金 2882",
+      "reason": "獲利穩定且配息良好。",
+      "risk": "利率變動風險"
     }
   ],
   "disclaimer": "⚠️ 以上僅為籌碼面分析參考，不構成投資建議，投資人須自行判斷風險。"

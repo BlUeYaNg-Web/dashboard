@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/03 04:16",
+  "fetched_at": "2026/07/03 08:33",
   "rates": {
     "USD_TWD": {
       "rate": 31.92,
-      "rate_buy": 31.82,
-      "rate_sell": 32.02,
-      "change": 0.05,
-      "change_pct": 0.16
+      "rate_buy": 31.7,
+      "rate_sell": 32.1,
+      "change": -0.05,
+      "change_pct": -0.16
     },
     "CNY_TWD": {
       "rate": 4.7,
-      "rate_buy": 4.68,
-      "rate_sell": 4.72,
-      "change": -0.01,
-      "change_pct": -0.21
+      "rate_buy": 4.65,
+      "rate_sell": 4.75,
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
       "rate": 6.8,
-      "change": 0.02,
-      "change_pct": 0.29
+      "change": -0.1,
+      "change_pct": -1.45
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣強勁升值的原因",
-        "summary": "專家分析近期台幣升值趨勢的原因及影響。",
+        "title": "台幣穩定走勢持續",
+        "summary": "近期台幣表現穩定，外資流入增加",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走勢影響全球市場",
-        "summary": "美元走勢對全球金融市場的影響以及未來預測。",
-        "source": "金融時報",
+        "title": "美元匯率小幅波動",
+        "summary": "美元對多數貨幣出現小幅震盪",
+        "source": "財訊",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣匯率波動分析",
-        "summary": "分析人民幣匯率波動對經濟的影響。",
-        "source": "中國財經網",
+        "title": "人民幣貶值壓力增大",
+        "summary": "隨著中國經濟放緩，人民幣持續面臨貶值壓力",
+        "source": "市場報導",
         "credibility": "⭐⭐⭐"
       }
     ]
