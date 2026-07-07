@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/07 04:32",
+  "fetched_at": "2026/07/07 08:33",
   "rates": {
     "USD_TWD": {
       "rate": 32.08,
-      "rate_buy": 31.88,
-      "rate_sell": 32.28,
-      "change": -0.1,
-      "change_pct": -0.31
+      "rate_buy": 31.9,
+      "rate_sell": 32.3,
+      "change": 0.15,
+      "change_pct": 0.47
     },
     "CNY_TWD": {
       "rate": 4.72,
       "rate_buy": 4.68,
       "rate_sell": 4.76,
-      "change": 0.02,
-      "change_pct": 0.43
+      "change": -0.02,
+      "change_pct": -0.42
     },
     "USD_CNY": {
       "rate": 6.8,
-      "change": -0.05,
-      "change_pct": -0.73
+      "change": 0.1,
+      "change_pct": 1.49
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣小幅走弱",
-        "summary": "隨著全球市場波動，台幣對美元匯率小幅下跌。",
-        "source": "財經新聞網",
+        "title": "台幣走勢分析",
+        "summary": "分析師預測台幣將保持穩定至年底。",
+        "source": "金融報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元指數走強",
-        "summary": "全球經濟數據超出預期，推動美元指數上升。",
-        "source": "國際金融報",
+        "title": "美元匯率趨勢",
+        "summary": "美元因經濟數據強勁而上升。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣匯率穩定",
-        "summary": "人民幣對主要貨幣穩定，市場預期未出現大幅波動。",
-        "source": "中國經濟網",
+        "title": "人民幣貶值壓力",
+        "summary": "市場對人民幣的貶值擔憂加劇。",
+        "source": "中國新聞網",
         "credibility": "⭐⭐⭐"
       }
     ]
