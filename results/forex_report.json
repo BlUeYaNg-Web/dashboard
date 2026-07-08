@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/07 11:36",
+  "fetched_at": "2026/07/08 01:02",
   "rates": {
     "USD_TWD": {
-      "rate": 32.08,
+      "rate": 32.13,
       "rate_buy": 32.0,
-      "rate_sell": 32.16,
+      "rate_sell": 32.26,
       "change": -0.05,
       "change_pct": -0.16
     },
     "CNY_TWD": {
       "rate": 4.72,
       "rate_buy": 4.7,
-      "rate_sell": 4.74,
-      "change": 0.02,
-      "change_pct": 0.43
+      "rate_sell": 4.75,
+      "change": 0.01,
+      "change_pct": 0.21
     },
     "USD_CNY": {
       "rate": 6.8,
-      "change": 0.01,
-      "change_pct": 0.15
+      "change": -0.02,
+      "change_pct": -0.29
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣兌美元小幅走高",
-        "summary": "台幣兌美元小幅上升，市場持平靜態度。",
-        "source": "台灣經濟新聞",
+        "title": "台幣穩定走勢影響外資流入",
+        "summary": "分析指出，台幣穩定的匯率吸引了更多外資家庭投資台灣市場。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元持平於近期高點",
-        "summary": "美元在多重經濟數據後持平，投資者持觀望態度。",
-        "source": "金融時報",
+        "title": "美元指數小幅下滑",
+        "summary": "受全球經濟數據影響，美元指數持平或微幅走低。",
+        "source": "財訊",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣反彈，市場需求增加",
-        "summary": "隨著中國經濟數據改善，人民幣出現小幅反彈。",
-        "source": "新華社",
+        "title": "人民幣微漲，市場情緒回暖",
+        "summary": "隨著經濟回暖，人民幣匯率略有上升，市場預期樂觀。",
+        "source": "新浪財經",
         "credibility": "⭐⭐⭐"
       }
     ]
