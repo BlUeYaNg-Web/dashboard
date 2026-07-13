@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/13 01:03",
+  "fetched_at": "2026/07/13 04:08",
   "rates": {
     "USD_TWD": {
       "rate": 32.07,
-      "rate_buy": 31.87,
-      "rate_sell": 32.27,
-      "change": 0.05,
-      "change_pct": 0.16
+      "rate_buy": 31.9,
+      "rate_sell": 32.24,
+      "change": -0.1,
+      "change_pct": -0.31
     },
     "CNY_TWD": {
       "rate": 4.73,
-      "rate_buy": 4.68,
-      "rate_sell": 4.78,
-      "change": -0.02,
-      "change_pct": -0.42
+      "rate_buy": 4.7,
+      "rate_sell": 4.76,
+      "change": 0.02,
+      "change_pct": 0.43
     },
     "USD_CNY": {
       "rate": 6.78,
-      "change": 0.02,
-      "change_pct": 0.3
+      "change": -0.05,
+      "change_pct": -0.74
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣小幅升值",
-        "summary": "台灣經濟穩健，台幣對美元小幅升值。",
+        "title": "台幣小幅波動，市場持平",
+        "summary": "近期台幣兌美元平穩，市場對未來走勢看法謹慎。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美國經濟指標上升",
-        "summary": "美國最新經濟數據顯示強勁，支持美元走強。",
-        "source": "華爾街日報",
+        "title": "美元走勢穩定，投資需求增加",
+        "summary": "美國經濟數據持續向好，美元指數小幅上揚。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣持平",
-        "summary": "人民幣匯率相對穩定，市場保持觀望。",
-        "source": "第一財經",
+        "title": "人民幣匯率調整，出口預期升高",
+        "summary": "市場對人民幣的走勢有所調整，預計出口將受到支持。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐"
       }
     ]
