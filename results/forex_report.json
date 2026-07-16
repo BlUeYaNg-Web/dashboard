@@ -1,17 +1,17 @@
 {
-  "fetched_at": "2026/07/15 10:32",
+  "fetched_at": "2026/07/16 01:03",
   "rates": {
     "USD_TWD": {
-      "rate": 32.15,
-      "rate_buy": 31.9,
-      "rate_sell": 32.4,
+      "rate": 32.19,
+      "rate_buy": 32.15,
+      "rate_sell": 32.23,
       "change": 0.05,
       "change_pct": 0.16
     },
     "CNY_TWD": {
-      "rate": 4.74,
-      "rate_buy": 4.7,
-      "rate_sell": 4.78,
+      "rate": 4.75,
+      "rate_buy": 4.74,
+      "rate_sell": 4.76,
       "change": -0.01,
       "change_pct": -0.21
     },
@@ -24,25 +24,25 @@
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣匯率回升的原因",
-        "summary": "分析指出，台幣走強受益於出口增長與資本流入。",
-        "source": "經濟日報",
+        "title": "台幣匯率穩定維持",
+        "summary": "台幣相較於美元和人民幣穩定，市場持平。",
+        "source": "中央銀行新聞網",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走勢持平，市場持觀望態度",
-        "summary": "美國經濟數據公布後，美元保持穩定。",
-        "source": "金融時報",
+        "title": "美元升值趨勢持續",
+        "summary": "美元在全球市場上保持強勢，預計將持續升值。",
+        "source": "財經時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣貶值壓力加大",
-        "summary": "隨著經濟增長放緩，人民幣面臨貶值壓力。",
-        "source": "市場觀察",
+        "title": "人民幣小幅回落",
+        "summary": "受到貿易壓力影響，人民幣對其他貨幣小幅回落。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐"
       }
     ]
