@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/17 01:02",
+  "fetched_at": "2026/07/17 03:46",
   "rates": {
     "USD_TWD": {
       "rate": 32.25,
-      "rate_buy": 32.15,
-      "rate_sell": 32.35,
+      "rate_buy": 32.1,
+      "rate_sell": 32.4,
       "change": -0.05,
       "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.76,
-      "rate_buy": 4.75,
-      "rate_sell": 4.77,
-      "change": 0.01,
-      "change_pct": 0.21
+      "rate_buy": 4.74,
+      "rate_sell": 4.78,
+      "change": 0.02,
+      "change_pct": 0.42
     },
     "USD_CNY": {
       "rate": 6.78,
-      "change": 0.02,
-      "change_pct": 0.3
+      "change": -0.02,
+      "change_pct": -0.29
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台灣經濟持平，匯率保持穩定",
-        "summary": "近期台灣經濟狀況穩定，進出口表現良好，台幣匯率保持在合理範圍內。",
-        "source": "經濟日報",
+        "title": "台幣匯率持平",
+        "summary": "台幣匯率保持穩定，市場反應平淡。",
+        "source": "中央社",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美國通脹回升，美元強勢回歸",
-        "summary": "受通脹影響，美國聯準會可能進一步升息，推動美元上漲。",
-        "source": "華爾街日報",
+        "title": "美元走勢分析",
+        "summary": "美元受影響於經濟數據發布，短期內波動有限。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣匯率小幅波動",
-        "summary": "由於市場情緒影響，人民幣相對台幣出現小幅波動。",
-        "source": "第一財經",
+        "title": "人民幣波動趨緩",
+        "summary": "人民幣相對其他貨幣波動減少，市場持續觀望。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐"
       }
     ]
