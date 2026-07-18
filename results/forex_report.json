@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/18 01:02",
+  "fetched_at": "2026/07/18 03:41",
   "rates": {
     "USD_TWD": {
       "rate": 32.36,
-      "rate_buy": 32.2,
-      "rate_sell": 32.52,
-      "change": -0.05,
-      "change_pct": -0.15
+      "rate_buy": 32.25,
+      "rate_sell": 32.47,
+      "change": -0.15,
+      "change_pct": -0.46
     },
     "CNY_TWD": {
       "rate": 4.77,
       "rate_buy": 4.75,
       "rate_sell": 4.79,
-      "change": 0.01,
-      "change_pct": 0.21
+      "change": 0.02,
+      "change_pct": 0.42
     },
     "USD_CNY": {
       "rate": 6.78,
-      "change": -0.02,
-      "change_pct": -0.29
+      "change": -0.05,
+      "change_pct": -0.73
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣持穩於32.36",
-        "summary": "受到外資流入影響，台幣匯率保持穩定。",
-        "source": "台灣經濟日報",
+        "title": "台幣升值趨勢持續",
+        "summary": "專家分析台幣受益於外資回流，近期將維持強勢。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元持續疲弱",
-        "summary": "美國經濟數據不佳，美元兌其他貨幣持穩。",
-        "source": "華爾街日報",
+        "title": "美元走勢疲弱",
+        "summary": "由於美國經濟數據不如預期，美元指數下滑。",
+        "source": "聯合報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣稍微反彈",
-        "summary": "中國經濟數據回穩，令人民幣稍微反彈。",
-        "source": "第一財經",
+        "title": "人民幣波動加劇",
+        "summary": "隨著中美貿易 tensions 加劇，人民幣面臨賣壓。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐"
       }
     ]
