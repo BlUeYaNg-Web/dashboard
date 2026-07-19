@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/19 04:03",
+  "fetched_at": "2026/07/19 08:31",
   "rates": {
     "USD_TWD": {
       "rate": 32.34,
-      "rate_buy": 32.0,
-      "rate_sell": 32.68,
-      "change": 0.1,
-      "change_pct": 0.31
+      "rate_buy": 32.2,
+      "rate_sell": 32.48,
+      "change": -0.05,
+      "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.76,
-      "rate_buy": 4.72,
-      "rate_sell": 4.8,
-      "change": -0.02,
-      "change_pct": -0.42
+      "rate_buy": 4.75,
+      "rate_sell": 4.77,
+      "change": 0.01,
+      "change_pct": 0.21
     },
     "USD_CNY": {
       "rate": 6.79,
-      "change": 0.05,
-      "change_pct": 0.74
+      "change": 0.02,
+      "change_pct": 0.3
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣走勢分析",
-        "summary": "近期台幣匯率波動，小幅回升。",
-        "source": "經濟日報",
+        "title": "台幣匯率穩定趨勢",
+        "summary": "專家分析台幣在全球市場中的位置穩定，預期未來將持續走強。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元強勢持續",
-        "summary": "隨著經濟數據公布，美元指數持穩。",
-        "source": "財訊報導",
+        "title": "美元持平於主要市場",
+        "summary": "美元在主要貨幣市場保持平穩，投資者觀望未來利率政策。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣降幅加劇",
-        "summary": "由於貿易緊張，人民幣面臨下行壓力。",
-        "source": "中新網",
+        "title": "人民幣面臨下行壓力",
+        "summary": "隨著經濟數據不佳，人民幣出現下行壓力，但市場信心尚存。",
+        "source": "資本市場觀察",
         "credibility": "⭐⭐⭐"
       }
     ]
