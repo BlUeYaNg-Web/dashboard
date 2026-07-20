@@ -1,19 +1,19 @@
 {
-  "fetched_at": "2026/07/20 08:33",
+  "fetched_at": "2026/07/20 11:33",
   "rates": {
     "USD_TWD": {
       "rate": 32.4,
       "rate_buy": 32.3,
       "rate_sell": 32.5,
-      "change": -0.02,
-      "change_pct": -0.06
+      "change": -0.05,
+      "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.78,
       "rate_buy": 4.75,
       "rate_sell": 4.81,
-      "change": 0.01,
-      "change_pct": 0.21
+      "change": 0.02,
+      "change_pct": 0.42
     },
     "USD_CNY": {
       "rate": 6.78,
@@ -24,25 +24,25 @@
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台灣經濟進一步復甦",
-        "summary": "根據最新數據，台灣經濟持續增長，預期將進一步影響台幣匯率走勢。",
-        "source": "經濟日報",
+        "title": "台幣走勢分析",
+        "summary": "近期台幣兌美元略微走弱，市場關注美國經濟數據。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美聯儲利率決策預告",
-        "summary": "市場預期美聯儲將保留目前利率不變，影響美元走勢。",
-        "source": "華爾街日報",
+        "title": "美元強勢持續",
+        "summary": "美元兌其他貨幣表現堅挺，許多投資者轉向美元避險。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "中國經濟面臨挑戰",
-        "summary": "近期數據顯示中國經濟增長放緩，影響人民幣表現。",
-        "source": "央視新聞",
+        "title": "人民幣貶值壓力",
+        "summary": "人民幣因貿易摩擦而面臨貶值壓力，市場表現疲弱。",
+        "source": "華爾街日報",
         "credibility": "⭐⭐⭐"
       }
     ]
