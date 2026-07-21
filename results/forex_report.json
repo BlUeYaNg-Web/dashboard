@@ -1,19 +1,19 @@
 {
-  "fetched_at": "2026/07/21 01:02",
+  "fetched_at": "2026/07/21 03:54",
   "rates": {
     "USD_TWD": {
       "rate": 32.33,
       "rate_buy": 32.2,
-      "rate_sell": 32.46,
+      "rate_sell": 32.45,
       "change": -0.05,
       "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.77,
       "rate_buy": 4.75,
-      "rate_sell": 4.79,
-      "change": 0.01,
-      "change_pct": 0.21
+      "rate_sell": 4.8,
+      "change": 0.02,
+      "change_pct": 0.42
     },
     "USD_CNY": {
       "rate": 6.78,
@@ -24,25 +24,25 @@
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣持穩應對全球市場動盪",
-        "summary": "分析師指出，台幣因國際情勢影響而保持穩定。",
-        "source": "金融時報",
+        "title": "台幣匯率小幅波動",
+        "summary": "近期因國際形勢影響，台幣匯率出現小幅波動。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美國聯準會即將公布政策動向",
-        "summary": "市場關注聯準會會議結果對美元影響。",
-        "source": "經濟日報",
+        "title": "美元強勢回升",
+        "summary": "隨著經濟數據向好，美元強勢回升引發市場關注。",
+        "source": "自由時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣匯率波動分析",
-        "summary": "專家預測人民幣可能在短期內面臨壓力。",
-        "source": "財經新聞",
+        "title": "人民幣匯率穩定",
+        "summary": "在貿易緊張局勢下，人行施政保持人民幣匯率穩定。",
+        "source": "工商時報",
         "credibility": "⭐⭐⭐"
       }
     ]
