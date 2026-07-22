@@ -1,17 +1,17 @@
 {
-  "fetched_at": "2026/07/22 08:33",
+  "fetched_at": "2026/07/22 10:57",
   "rates": {
     "USD_TWD": {
       "rate": 32.34,
-      "rate_buy": 32.1,
-      "rate_sell": 32.58,
+      "rate_buy": 32.2,
+      "rate_sell": 32.48,
       "change": -0.05,
       "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.77,
       "rate_buy": 4.75,
-      "rate_sell": 4.8,
+      "rate_sell": 4.79,
       "change": 0.02,
       "change_pct": 0.42
     },
@@ -24,25 +24,25 @@
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣兌美元匯率持平",
-        "summary": "近期台灣經濟表現穩健，台幣匯率持平。",
+        "title": "台灣經濟回暖 繼續拉抬台幣",
+        "summary": "專家指出，台灣經濟活動回升，帶動對台幣需求，短期內將持穩走強。",
         "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元指數持續走強",
-        "summary": "受到經濟數據支持，美元指數持續上升。",
-        "source": "華爾街日報",
+        "title": "美聯準會政策調整影響美元走勢",
+        "summary": "隨著利率政策的不確定性增加，美元走勢波動加劇，投資人需謹慎應對。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣小幅貶值",
-        "summary": "因貿易因素影響，人民幣小幅貶值至新低。",
-        "source": "中新網",
+        "title": "中國經濟數據出爐 人民幣承壓",
+        "summary": "最新的經濟指標顯示，中國經濟增長放緩，人民幣面臨貶值壓力。",
+        "source": "財經新聞",
         "credibility": "⭐⭐⭐"
       }
     ]
