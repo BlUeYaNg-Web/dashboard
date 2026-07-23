@@ -1,48 +1,48 @@
 {
-  "fetched_at": "2026/07/23 08:32",
+  "fetched_at": "2026/07/23 10:56",
   "rates": {
     "USD_TWD": {
       "rate": 32.41,
       "rate_buy": 32.3,
       "rate_sell": 32.52,
-      "change": 0.02,
-      "change_pct": 0.06
+      "change": -0.05,
+      "change_pct": -0.15
     },
     "CNY_TWD": {
       "rate": 4.78,
       "rate_buy": 4.75,
       "rate_sell": 4.81,
-      "change": -0.01,
-      "change_pct": -0.21
+      "change": 0.02,
+      "change_pct": 0.42
     },
     "USD_CNY": {
       "rate": 6.78,
-      "change": 0.01,
-      "change_pct": 0.15
+      "change": -0.02,
+      "change_pct": -0.29
     }
   },
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣匯率走勢分析",
-        "summary": "分析師指出，近期台幣表現相對穩健，可能受利率影響。",
-        "source": "經濟日報",
+        "title": "台幣穩定，市場淡定",
+        "summary": "台幣在近期保持穩定走勢，市場情緒樂觀。",
+        "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走強背後的原因",
-        "summary": "美元近期表現攀升，主要因經濟數據強勁導致市場信心提升。",
-        "source": "財訊快報",
+        "title": "美元匯率波動",
+        "summary": "美元對多種貨幣匯率出現小幅波動，市場觀察後續走勢。",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣貶值壓力加大",
-        "summary": "市場分析認為，人民幣匯率面臨壓力，尤其是在貿易緊張局勢影響下。",
-        "source": "華爾街日報",
+        "title": "人民幣匯率小幅上升",
+        "summary": "人民幣對多數亞洲貨幣小幅上升，受到出口增長影響。",
+        "source": "財經新聞",
         "credibility": "⭐⭐⭐"
       }
     ]
