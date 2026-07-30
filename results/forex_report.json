@@ -1,22 +1,22 @@
 {
-  "fetched_at": "2026/07/29 11:14",
+  "fetched_at": "2026/07/30 01:02",
   "rates": {
     "USD_TWD": {
-      "rate": 32.39,
-      "rate_buy": 32.15,
-      "rate_sell": 32.63,
-      "change": -0.05,
-      "change_pct": -0.15
+      "rate": 32.38,
+      "rate_buy": 32.2,
+      "rate_sell": 32.56,
+      "change": 0.05,
+      "change_pct": 0.15
     },
     "CNY_TWD": {
       "rate": 4.78,
-      "rate_buy": 4.75,
-      "rate_sell": 4.81,
-      "change": 0.01,
-      "change_pct": 0.21
+      "rate_buy": 4.76,
+      "rate_sell": 4.8,
+      "change": -0.01,
+      "change_pct": -0.21
     },
     "USD_CNY": {
-      "rate": 6.78,
+      "rate": 6.77,
       "change": 0.02,
       "change_pct": 0.3
     }
@@ -24,25 +24,25 @@
   "news": {
     "台幣（TWD）": [
       {
-        "title": "新台幣匯率波動最新消息",
-        "summary": "今日匯率略微下跌，市場情緒影響",
-        "source": "台灣經濟日報",
+        "title": "台幣走勢回顧",
+        "summary": "台幣兌美元小幅上升，穩定表現吸引外資",
+        "source": "經濟日報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元升值趨勢分析",
-        "summary": "專家預測美元在短期內將保持強勢",
+        "title": "美元指數持平",
+        "summary": "美元指數保持平穩，對其他貨幣影響有限",
         "source": "金融時報",
         "credibility": "⭐⭐⭐⭐"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣匯率變化動態",
-        "summary": "人民幣匯率持平，外部因素影響有限",
-        "source": "中國報",
+        "title": "人民幣走軟",
+        "summary": "人民幣對美元匯率下滑，市場情緒不佳",
+        "source": "環球網",
         "credibility": "⭐⭐⭐"
       }
     ]
