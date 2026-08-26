@@ -1,49 +1,129 @@
 {
-  "fetched_at": "2026/07/30 10:57",
+  "fetched_at": "2026/08/26 12:29",
   "rates": {
     "USD_TWD": {
-      "rate": 32.38,
-      "rate_buy": 32.18,
-      "rate_sell": 32.58,
-      "change": -0.05,
-      "change_pct": -0.15
+      "rate_buy": 31.785,
+      "rate_sell": 31.935,
+      "change": -0.45,
+      "change_pct": -1.37,
+      "trend": "升"
     },
     "CNY_TWD": {
-      "rate": 4.78,
-      "rate_buy": 4.75,
-      "rate_sell": 4.81,
-      "change": 0.02,
-      "change_pct": 0.42
+      "rate_buy": 4.7157,
+      "rate_sell": 4.7657,
+      "change": -0.01,
+      "change_pct": -0.3,
+      "trend": "升"
     },
     "USD_CNY": {
-      "rate": 6.77,
-      "change": -0.03,
-      "change_pct": -0.44
+      "rate_sell": 6.701,
+      "change": -0.07,
+      "change_pct": -1.02,
+      "trend": "升"
     }
   },
+  "notes": "【資料查核備註】1) 台灣銀行官網(rate.bot.com.tw)目前對自動化查詢啟用機器人驗證(Cloudflare式挑戰)，本次無法直接存取該站，改以findrate.tw(比率網)及taiwanlife.com等站彙整之台灣銀行牌告匯率進行比對；2) USD/TWD 台灣銀行即期買賣價(31.785/31.935)已與上海商銀、兆豐、第一、彰化、匯豐、渣打、盤谷等7家銀行同時段報價(集中於31.5~31.94區間)交叉比對一致，可信度高；3) CNY/TWD部分，findrate.tw所列台灣銀行牌告(4.66/4.72)明顯偏離其餘6家銀行(4.64~4.72買/4.70~4.765賣)之群聚區間，判斷為該站快取過期之離群值，改採taiwanlife.com之台灣銀行報價(4.7157/4.7657，2026/08/25 17:00)，與findrate.tw同時段其他銀行群聚區間(買4.715~4.72、賣4.76~4.765)高度吻合，故採用後者，可信度中高；4) 因排程中斷，forex_history.json最後一筆歷史資料為2026/07/30，本次「較前日變動」實為與該筆資料相比(間隔約27天)，非真正的日增減，僅供參考；5) 新聞來源已排除大紀元(Epoch Times)，並優先採用中央社、經濟日報、Bloomberg、鉅亨網等來源，單一來源新聞已標註較低可信度星等。",
   "news": {
     "台幣（TWD）": [
       {
-        "title": "台幣穩定走勢分析",
-        "summary": "專家預測台幣將在未來幾週保持穩定。",
-        "source": "經濟日報",
-        "credibility": "⭐⭐⭐⭐"
+        "title": "新台幣升7.7分 收31.848元",
+        "source": "中央社 CNA",
+        "date": "2026-08-21",
+        "url": "https://www.cna.com.tw/news/afe/202608210185.aspx",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "中央社為台北外匯市場收盤價之第一手權威報導，惟本則屬單一來源。"
+      },
+      {
+        "title": "外資大舉匯入 新台幣大升1.22角收32.046元，創逾1個月新高，央行進場調節",
+        "source": "中央社 CNA",
+        "date": "2026-08-14",
+        "url": "https://www.cna.com.tw/news/afe/202608140271.aspx",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "note": "與PChome/Yahoo轉載之中央社8/13報導(外資匯入推升新台幣收32.168元創逾1個月高點)方向一致，互相佐證。來源：https://news.pchome.com.tw/finance/cna_business/20260813/index-17866162641653122003.html"
+      },
+      {
+        "title": "美CPI/PPI雙降溫、Fed升息預期降低，美元指數承壓，外資匯入推動新台幣升破31元、盤中觸31.991元",
+        "source": "蕃新聞（綜合報導）",
+        "date": "2026-08-11",
+        "url": "https://n.yam.com/Article/20260811387747",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "總經背景與鉅亨網「聯準會升息預期降溫 美元匯率跌至兩個月來新低」報導一致，互相佐證。來源：https://news.cnyes.com/news/id/6579348"
+      },
+      {
+        "title": "新台幣重貶1.46角 收32.438元",
+        "source": "中央社 CNA",
+        "date": "2026-08-03",
+        "url": "https://www.cna.com.tw/news/afe/202608030189.aspx",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "顯示8月初台幣曾走貶，與月中後轉升走勢形成對照，屬單一來源之官方收盤報導。"
       }
     ],
     "美元（USD）": [
       {
-        "title": "美元走勢分析報告",
-        "summary": "美元因經濟數據而出現輕微波動。",
-        "source": "財經時報",
-        "credibility": "⭐⭐⭐⭐"
+        "title": "Fed 7月FOMC以9比3投票維持利率3.5%-3.75%不變，主席Warsh稱抗通膨不會手軟",
+        "source": "CNBC",
+        "date": "2026-07-29",
+        "url": "https://www.cnbc.com/2026/07/29/fed-meeting-today-live-updates.html",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "note": "與NBC News同日報導互相佐證。來源：https://www.nbcnews.com/business/economy/inflation-kevin-warsh-fed-fomc-meeting-rcna350411"
+      },
+      {
+        "title": "美國7月非農就業意外減少2.3萬人，5、6月數據大幅下修10.3萬，失業率降至4.1%",
+        "source": "新華網",
+        "date": "2026-08-07",
+        "url": "https://www.news.cn/20260807/3eeffc35d995406389d68ec9b80e481a/c.html",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "note": "與Yahoo奇摩財經同步報導佐證，同主題之大紀元報導已依規定排除不採用。"
+      },
+      {
+        "title": "美元指數因就業數據疲軟、Fed升息預期降溫跌至三個月低點(99.501)，CME FedWatch顯示9月按兵不動機率約70%",
+        "source": "鉅亨網 cnyes",
+        "date": "2026-08",
+        "url": "https://news.cnyes.com/news/id/6579348",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "單一財經媒體來源，惟數據引用CME FedWatch官方工具，可信度尚可。"
+      },
+      {
+        "title": "Dollar Extends Slide as Traders Scale Back Fed Tightening Bets",
+        "source": "Bloomberg",
+        "date": "2026-08-17",
+        "url": "https://www.bloomberg.com/news/articles/2026-08-17/dollar-extends-slide-as-traders-scale-back-fed-tightening-bets",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "note": "國際權威財經媒體，與鉅亨網同期報導方向一致。"
       }
     ],
     "人民幣（CNY）": [
       {
-        "title": "人民幣影響因素解析",
-        "summary": "人民幣匯率受到多重因素影響，預計持平。",
-        "source": "明報",
-        "credibility": "⭐⭐⭐"
+        "title": "人民幣兌美元中間價報6.7808，較前日6.7854上調46基點，創2023年2月來新高",
+        "source": "香港文匯報",
+        "date": "2026-08-20",
+        "url": "https://www.wenweipo.com/a/202608/20/AP6a865faae4b0c1e500258652.html",
+        "credibility": "⭐⭐⭐⭐⭐",
+        "note": "與香港電台RTHK同日報導互相佐證。來源：https://news.rthk.hk/rthk/ch/component/k2/1866820-20260820.htm"
+      },
+      {
+        "title": "在岸人民幣兌美元即期匯率盤中升至6.7203，創2023年2月以來新高；離岸人民幣同步觸及近3年半高點",
+        "source": "Yahoo香港財經",
+        "date": "2026-08-20",
+        "url": "https://hk.finance.yahoo.com/news/%E4%BA%BA%E6%B0%91%E5%B9%A3%E5%8C%AF%E7%8E%87%E5%8D%87%E7%A0%B46-73%E5%89%B5%E4%B8%89%E5%B9%B4%E5%8D%8A%E6%96%B0%E9%AB%98-%E7%BE%8E%E5%85%83%E5%A4%B1%E5%AE%8899-%E4%B8%AD%E5%9C%8B%E8%B3%87%E7%94%A2%E8%B5%B0%E5%BC%B7-035636822.html",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "與ETtoday大陸新聞同日報導方向一致，互相佐證。來源：https://www.ettoday.net/news/20260820/3222480.htm"
+      },
+      {
+        "title": "人行第二季貨幣政策執行報告：做好跨境資金流動監測、增強外匯市場韌性、防範匯率超調風險，維持人民幣匯率合理均衡水平基本穩定",
+        "source": "經濟日報（udn）",
+        "date": "2026-08",
+        "url": "https://money.udn.com/money/story/5616/9693783",
+        "credibility": "⭐⭐⭐⭐",
+        "note": "轉引人行官方報告內容，惟本則檢索為單一媒體來源。"
+      },
+      {
+        "title": "人民幣升值受惠美元指數走弱(8/19單日跌0.83%，創5月中旬來新低)；瑞銀預期人民幣中長期偏強，估2026年底在岸匯率上看6.7",
+        "source": "香港01（綜合報導）",
+        "date": "2026-08",
+        "url": "https://www.hk01.com/%E8%B2%A1%E7%B6%93%E5%BF%AB%E8%A8%8A/60381353/%E4%BA%BA%E6%B0%91%E5%B9%A3%E5%B0%8D%E7%BE%8E%E5%85%83%E5%89%B5%E4%B8%89%E5%B9%B4%E5%8D%8A%E6%96%B0%E9%AB%98-%E5%B0%88%E5%AE%B6%E6%96%99%E5%B9%B4%E5%85%A7%E6%9C%89%E6%9C%9B%E6%B8%A9%E5%92%8C%E5%8D%87%E5%80%BC",
+        "credibility": "⭐⭐⭐",
+        "note": "含機構預測性質內容，屬單一媒體綜合報導，可信度標示中等。"
       }
     ]
   }
